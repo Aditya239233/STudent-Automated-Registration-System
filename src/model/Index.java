@@ -8,8 +8,8 @@ public class Index {
 	private int maxLimit;
 	private List<String> studentsEnrolled;
 	private List<String> studentsWaitlist;
-	private List<TimeSlot> tutorial;
-	private List<TimeSlot> lab;
+	private List<Session> tutorial;
+	private List<Session> lab;
 	
 	public Index(String CourseIndex, int maxLimit) {
 		this.CourseIndex = CourseIndex;

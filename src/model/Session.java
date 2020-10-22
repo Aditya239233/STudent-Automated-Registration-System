@@ -2,21 +2,21 @@ package model;
 
 import java.time.LocalTime;
 
-public class TimeSlot {
+public class Session {
 	
 	private Day day;
 	private LocalTime startTime;
 	private LocalTime endTime;
 	private String location;
 	
-	public TimeSlot(Day day, LocalTime startTime, LocalTime endTime, String location) {
+	public Session(Day day, LocalTime startTime, LocalTime endTime, String location) {
 		this.day = day;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.location = location;
 	}
 	
-	public TimeSlot(Day day, LocalTime startTime, LocalTime endTime) {
+	public Session(Day day, LocalTime startTime, LocalTime endTime) {
 		this.day = day;
 		this.startTime = startTime;
 		this.endTime = endTime;

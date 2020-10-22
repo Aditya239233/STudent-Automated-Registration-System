@@ -8,7 +8,7 @@ public class Course {
 	private String ID;
 	private String faculty;
 	private List<Index> indexList;
-	private List<TimeSlot> lecture;
+	private List<Session> lecture;
 	
 	public Course(String Name, String ID, String faculty) {
 		this.Name = Name;
