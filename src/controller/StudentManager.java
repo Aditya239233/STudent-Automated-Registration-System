@@ -32,7 +32,6 @@ public class StudentManager {
 		else {
 			System.out.println("Student Does not Exist");
 		}
-		}
 	}
 	
 	public boolean checkIfStudentExists(String MatricNo) {
