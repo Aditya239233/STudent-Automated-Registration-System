@@ -10,9 +10,10 @@ public class CourseManager {
 	private static List<Course> CourseList;
 	
 	public static void addCourse(String Name, String ID, String faculty) {
+		
 		Course newCourse = new Course(Name, ID, faculty);
 		CourseList.add(newCourse);
-		System.out.println("Course Added");
+		System.out.println("Succesfully Course Added");
 	}
 	
 	public static void deleteCourse(String CourseID) {
