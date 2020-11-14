@@ -1,32 +1,44 @@
 package model;
 
 import java.time.LocalTime;
+import java.time.DayOfWeek;
 
 public class Session {
 	
-	private Day day;
+	private int ID;
+	private DayOfWeek day;
 	private LocalTime startTime;
 	private LocalTime endTime;
 	private String location;
+	private String teacher;
 	
-	public Session(Day day, LocalTime startTime, LocalTime endTime, String location) {
-		this.day = day;
+	public Session(int ID, int day, LocalTime startTime, LocalTime endTime, String location, String teacher) {
+		this.ID = ID;
+		this.day = DayOfWeek.of(day);
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.location = location;
+		this.teacher = teacher;
 	}
 	
-	public Session(Day day, LocalTime startTime, LocalTime endTime) {
-		this.day = day;
-		this.startTime = startTime;
-		this.endTime = endTime;
+	public void printSessionDetails() {
+		System.out.println("		Every " + getDay() + ", " + getStartTime() + " to " + getEndTime()
+		+ " at " + getLocation() + " by " + getTeacher());
 	}
 	
-	public void setDay(Day day) {
-		this.day = day;
+	public int getID() {
+		return this.ID;
 	}
 	
-	public Day getDay() {
+	public void setID() {
+		this.ID = ID;
+	}
+	
+	public void setDay(int day) {
+		this.day = DayOfWeek.of(day);
+	}
+	
+	public DayOfWeek getDay() {
 		return this.day;
 	}
 	
@@ -52,5 +64,13 @@ public class Session {
 	
 	public String getLocation() {
 		return this.location;
+	}
+	
+	public void setTeacher(String teacher) {
+		this.teacher = teacher;
+	}
+	
+	public String getTeacher() {
+		return this.teacher;
 	}
 }

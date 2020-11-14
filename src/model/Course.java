@@ -7,15 +7,28 @@ public class Course {
 	private String Name;
 	private String ID;
 	private String faculty;
-	private int totalVacancies;
-	private int totalEnrolled;
+	private int au;
 	private List<Index> indexList;
-	private List<Session> lecture;
+	private List<Session> lectures;
 	
-	public Course(String Name, String ID, String faculty) {
+	public Course(String Name, String ID, String faculty, int au, List<Index> indexList, List<Session> lectures) {
 		this.Name = Name;
 		this.ID = ID;
 		this.faculty = faculty;
+		this.au = au;
+		
+		this.indexList = indexList;
+		this.lectures = lectures;
+	}
+	
+	public void printIndexList() {
+		if (this.indexList == null) {
+			System.out.println("There are currently no index found in this course.");
+		} else {
+			for(Index index: indexList) {
+				index.printIndexDetails();
+			}
+		}
 	}
 	
 	public String getName() {
@@ -42,21 +55,18 @@ public class Course {
 		this.faculty = faculty;
 	}
 	
-	public int getTotalVacancies() {
-		return this.totalVacancies;
+	public void setAu(int au) {
+		this.au = au;
 	}
 	
-	public void setTotalVacancies(int totalVacancies) {
-		this.totalVacancies = totalVacancies;
+	public int getAu() {
+		return this.au;
 	}
 	
-	public int getTotalEnrolled() {
-		return this.totalVacancies;
+	public void addLecture(Session lecture) {
+		this.lectures.add(lecture); 
 	}
 	
-	public void setTotalEnrolled(int totalEnrolled) {
-		this.totalEnrolled = totalEnrolled;
-	}
-	
+	public void deleteLecture()
 	// TODO: Implement other functions 
 }
