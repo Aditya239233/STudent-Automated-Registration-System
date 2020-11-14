@@ -30,7 +30,7 @@ public class Session {
 		return this.ID;
 	}
 	
-	public void setID() {
+	public void setID(int ID) {
 		this.ID = ID;
 	}
 	

@@ -1,55 +1,49 @@
 package controller;
-import model.Tutorial;
-import model.Lab;
 
 import model.Course;
 import model.Index;
 import model.Session;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Scanner;
 
 public class CourseManager {
 	private static List<Course> CourseList;
 	
-	public static void addCourse(String Name, String ID, String faculty, int au, int totalVacancies,  List<Session> tutorials, List<Session> labs) {
+	public static void printCourseIDs() {
+		int length = CourseList.size();
+		for (int i=0; i<length; i++) {
+			System.out.println(i + ") " + CourseList.get(i).getID());
+		}
+	}
+	
+	public static void addCourse(String Name, String ID, String faculty, int au,  List<Index> indexList, List<Session> lectures) {
 		if (checkIfCourseExists(ID)) {
 			System.out.println("Course already exists");
 			return;
 		}
-		Course newCourse = new Course(Name, ID, faculty, tutorials, labs);
+		
+		Course newCourse = new Course(ID, Name, faculty, au);
 		CourseList.add(newCourse);
 		System.out.println("Succesfully Course Added");
 	}
 	
-	public static void deleteCourse(List<Course> CourseList, String CourseID) {
+	public static void deleteCourse(String CourseID) {
 		if (checkIfCourseExists(CourseID)) {
-			for (Course course : CourseList) {
-				if (CourseID.equals(course.getID())) {
-					CourseList.remove(course);
-					break;
-				}
-			}
+			Course course = findCourse(CourseID);
+			CourseList.remove(course);
 			System.out.println("Course Has been deleted");
-		}
-		else {
+		} else {
 			System.out.println("Course Does not Exist");
 		}
 	}
 	
-	public static void updateCourse(List<Course> CourseList, String CourseID) {
-		// Updates a Course in the CourseList
+	public static void updateCourse(String CourseID) {
 		if (checkIfCourseExists(CourseID)) {
-			for (Course course : CourseList) {
-				if (CourseID.equals(course.getID())) {
-					// implement update course logic: name, index (tutorials, labs), lectures
-					// add appropriate input parameters  (Follow updated implementation of addCourse
-					break;
-				}
-			}
+			Course course = findCourse(CourseID);
+			
 			System.out.println("Course Has been updated");
-		}
-		else {
+		} else {
 			System.out.println("Course Does not Exist");
 		}
 	}
