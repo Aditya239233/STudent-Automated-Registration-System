@@ -5,7 +5,7 @@ import model.Student;
 import java.util.Date;
 import java.util.List;
 
-public class StudentManager {
+public class StudentManager extends UserManager{
 	private static List<Student> StudentList;
 	
 	public void addStudent(String Name, String Password, String Email, Date dob, String MatricNo, String SchoolID, String Degree) {

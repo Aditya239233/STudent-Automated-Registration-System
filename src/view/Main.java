@@ -1,21 +1,29 @@
 package view;
 
 import java.util.Scanner;
-import controller.UserManager;
+import controller.StudentManager;
+import controller.AdminManager;
 
 public class Main {
 	
 	private String username;
 	private String password;
 	private int user;
-	private UserManager User;
+	private StudentManager student;
+	private AdminManager admin;
+	
 	Scanner sc = new Scanner(System.in);
 	
 	public void main() {
 		login();
 		while (true) {
-			if (User.checkLogin(username, password, user) == true)
+			if (user == 1) {
+				student.checkLogin(username, password);
 				break;
+			}
+			else if (user == 2) {
+				admin.checkLogin(username, password);
+			}
 			else 
 				System.out.println("Incorrect Username or Password! Try Again ");
 		}
