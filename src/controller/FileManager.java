@@ -3,11 +3,12 @@ package controller;
 import model.Admin;
 import model.Course;
 import model.Student;
-import java.io.*
-;
+import java.io.*;
+import java.util.Calendar;
+
 public class FileManager {
-    public void writeStudentObject(Student student) throws Exception{
-        String filepath = "src/Data/Students/"+student.getName()+".txt"; 
+	public void writeStudentObject(Student student) throws Exception{
+        String filepath = "data/Students.ser"; 
         File f = new File(filepath);
         FileOutputStream fos = new FileOutputStream(f);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -17,7 +18,7 @@ public class FileManager {
     }
 
     public void writeAdminObject(Admin admin) throws Exception{
-        String filepath = "src/Data/Admins/"+admin.getName()+".txt";
+        String filepath = "data/Admins.ser";
         File f = new File(filepath);
         FileOutputStream fos = new FileOutputStream(f);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -27,7 +28,7 @@ public class FileManager {
     }
 
     public void writeCourseObject(Course course) throws Exception{
-        String filepath = "src/Data/Courses/"+course.getName()+".txt";
+        String filepath = "data/Courses.ser";
         File f = new File(filepath);
         FileOutputStream fos = new FileOutputStream(f);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -38,7 +39,7 @@ public class FileManager {
 
     public Student readStudentObject(String name) throws Exception{
 
-        String filepath = "src/Data/Students/"+name+".txt";
+        String filepath = "data/Students.ser";
         File file = new File(filepath);
         FileInputStream fis = new FileInputStream(file);
         ObjectInputStream ois = new ObjectInputStream(fis);
@@ -49,7 +50,7 @@ public class FileManager {
 
     public Admin readAdminObject(String name) throws Exception{
 
-        String filepath = "src/Data/Admins/"+name+".txt";
+        String filepath = "data/Admins.ser";
         File file = new File(filepath);
         FileInputStream fis = new FileInputStream(file);
         ObjectInputStream ois = new ObjectInputStream(fis);
@@ -60,7 +61,7 @@ public class FileManager {
 
     public Course readCourseObject(String name) throws Exception{
 
-        String filepath = "src/Data/Courses/"+name+".txt";
+        String filepath = "data/Courses.ser";
         File file = new File(filepath);
         FileInputStream fis = new FileInputStream(file);
         ObjectInputStream ois = new ObjectInputStream(fis);
