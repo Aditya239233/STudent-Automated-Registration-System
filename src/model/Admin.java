@@ -1,10 +1,18 @@
 package model;
 
-import java.util.Date;
+import java.util.*;
+import java.io.Serializable;
 
-public class Admin extends User{
+public class Admin extends User implements Serializable{
 	
-	public Admin(String Name, String Password, String Email, Date dob) {
+	
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public Admin(String Name, String Password, String Email, Calendar dob) {
 		super(Name, Password, Email, dob);
 	}
 

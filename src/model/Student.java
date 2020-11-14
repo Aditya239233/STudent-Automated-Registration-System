@@ -1,16 +1,21 @@
 package model;
 
-import java.util.Date;
-import java.util.List;
+import java.io.Serializable;
+import java.util.*;
 
-public class Student extends User {
+public class Student extends User implements Serializable {
 	
+	
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
 	private String MatricNo;
 	private String SchoolID;
 	private String Degree;
 	private List<Course> courses;
 	
-	public Student(String Name, String Password, String Email, Date dob, String MatricNo, String SchoolID, String Degree) {
+	public Student(String Name, String Password, String Email, Calendar dob, String MatricNo, String SchoolID, String Degree) {
 		super(Name, Password, Email, dob);
 		this.MatricNo = MatricNo;
 		this.SchoolID = SchoolID;

@@ -1,15 +1,15 @@
 package model;
 
-import java.util.Date;
+import java.util.*;
 
 public class User {
 	
 	private String Name;
 	private String Password;
 	private String Email;
-	private Date dob;
+	private Calendar dob;
 	
-	public User(String Name, String Password, String Email, Date dob) {
+	public User(String Name, String Password, String Email, Calendar dob) {
 		this.Name = Name;
 		this.Password = Password;
 		this.Email = Email;
@@ -24,7 +24,7 @@ public class User {
 		return this.Password;
 	}
 	
-	public Date getDob() {
+	public Calendar getDob() {
 		return this.dob;
 	}
 	
