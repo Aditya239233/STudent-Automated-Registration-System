@@ -29,6 +29,7 @@ public class Main {
 			}
 			login();
 			if (this.user == 1) {
+				// Verify Login for Student
 				StudentUI newUI = new StudentUI();
 				newUI.display();
 				// Perform Student Login

@@ -3,8 +3,8 @@ package model;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
-public class Course {
 
 import java.io.Serializable;
 import java.util.List;
@@ -17,11 +17,11 @@ public class Course implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String Name;
 	private String ID;
-	private String Name;
 	private String faculty;
 	private int au;
 	private List<Index> indexList;
 	private List<Session> lectures;
+	Scanner sc = new Scanner(System.in);
 	
 	public Course(String ID, String Name, String faculty, int au) {
 		this.ID = ID;
@@ -52,7 +52,6 @@ public class Course implements Serializable {
 		}
 	}
 	
-
 	public String getName() {
 		return this.Name;
 	}
@@ -67,14 +66,6 @@ public class Course implements Serializable {
 
 	public void setID(String ID) {
 		this.ID = ID;
-	}
-	
-	public String getName() {
-		return this.Name;
-	}
-	
-	public void setName(String Name) {
-		this.Name = Name;
 	}
 
 	public String getFaculty() {
@@ -94,19 +85,18 @@ public class Course implements Serializable {
 	}
 	
 	public void addIndex(int day, LocalTime startTime, LocalTime endTime, String location, String teacher) {  // To-do figure out addIndex addLab addTutorial interaction logic
-		Scanner sc = new Scanner();
 		int ID = this.indexList.size();
-		Session tutorial = new Session(ID, day, startTime, endTime, location, teacher);
-		if (this.indexList == null) {
-			this.indexList = Arrays.asList(tutorial);
-		} else {
-			this.indexList.add(tutorial);
-		}
+//		Session tutorial = new Session(ID, day, startTime, endTime, location, teacher);
+//		if (this.indexList == null) {
+//			this.indexList = Arrays.asList(tutorial);
+//		} else {
+//			this.indexList.add(tutorial);
+//		}
 	}
 	
 	public void deleteIndex(int index) {
-		if (index < this.tutorials.size() && index >= 0) {
-			this.tutorials.remove(index);
+		if (index < this.indexList.size() && index >= 0) {
+			this.indexList.remove(index);
 		} else {
 			System.out.println("Tutorial index does not exist");
 		}

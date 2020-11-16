@@ -16,8 +16,6 @@ public class CourseManager {
 			System.out.println(i + ") " + CourseList.get(i).getID());
 		}
 	}
-	
-	public static void addCourse(String Name, String ID, String faculty, int au,  List<Index> indexList, List<Session> lectures) {
 
 	public static void addCourse(String Name, String ID, String faculty, int au, List<Index> indexList,
 			List<Session> lectures) {
@@ -27,12 +25,6 @@ public class CourseManager {
 		}
 		
 		Course newCourse = new Course(ID, Name, faculty, au);
-		CourseList.add(newCourse);
-		System.out.println("Succesfully Course Added");
-	}
-	
-	public static void deleteCourse(String CourseID) {
-		Course newCourse = new Course(Name, ID, faculty, au, indexList, lectures);
 		CourseList.add(newCourse);
 		System.out.println("Succesfully Course Added");
 	}

@@ -17,8 +17,6 @@ public class Index {
 	public Index(int ID, int totalVacancies, List<Session> tutorials) { // constructor for index without lab sessions
 		this.ID = ID;
 		this.totalVacancies = totalVacancies;
-		this.CourseIndex = CourseIndex;
-		this.maxLimit = maxLimit;
 		this.numStudentsEnrolled = 0;
 		this.waitList = new LinkedList<String>();
 
