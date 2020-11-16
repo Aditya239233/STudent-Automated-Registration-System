@@ -21,6 +21,11 @@ public class Course implements Serializable {
 	private int au;
 	private List<Index> indexList;
 	private List<Session> lectures;
+	
+	// Adi's Edit for Managing Courses
+	private boolean isTutorial;
+	private boolean isLab;
+	
 	Scanner sc = new Scanner(System.in);
 	
 	public Course(String ID, String Name, String faculty, int au) {
