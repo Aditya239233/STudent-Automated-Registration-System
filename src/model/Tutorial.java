@@ -4,17 +4,18 @@ import java.time.LocalTime;
 
 public class Tutorial extends Session {
 	private String professor;
-	
-	public Tutorial(String professor, int day, LocalTime startTime, LocalTime endTime, String location) {
-		super(day, startTime, endTime, location);
-		
+
+	public Tutorial(int ID, int day, LocalTime startTime, LocalTime endTime, String location, String teacher,
+			String professor) {
+		super(ID, day, startTime, endTime, location, teacher);
+
 		this.professor = professor;
 	}
-	
+
 	public void setProfessor(String professor) {
 		this.professor = professor;
 	}
-	
+
 	public String getProfessor() {
 		return this.professor;
 	}

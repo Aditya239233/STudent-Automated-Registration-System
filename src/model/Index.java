@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 public class Index {
-	
+
 	private int ID;
 	private int totalVacancies;
 	private int numStudentsEnrolled;
@@ -17,9 +17,11 @@ public class Index {
 	public Index(int ID, int totalVacancies, List<Session> tutorials) { // constructor for index without lab sessions
 		this.ID = ID;
 		this.totalVacancies = totalVacancies;
+		this.CourseIndex = CourseIndex;
+		this.maxLimit = maxLimit;
 		this.numStudentsEnrolled = 0;
 		this.waitList = new LinkedList<String>();
-		
+
 		this.tutorials = tutorials;
 		this.labs = null;
 	}
@@ -29,11 +31,11 @@ public class Index {
 		this.totalVacancies = totalVacancies;
 		this.numStudentsEnrolled = 0;
 		this.waitList = new LinkedList<String>();
-		
+
 		this.tutorials = tutorials;
 		this.labs = labs;
 	}
-	
+
 	public void printIndexDetails() {
 		System.out.println("Index " + ID + " :");
 		
@@ -45,7 +47,7 @@ public class Index {
 				tutorial.printSessionDetails();
 			}
 		}
-		
+
 		if (labs == null) {
 			System.out.println("	Lab Sessions: None");
 		} else {
@@ -55,7 +57,7 @@ public class Index {
 			}
 		}
 	}
-	
+
 	public int getID() {
 		return this.ID;
 	}
@@ -71,7 +73,7 @@ public class Index {
 	public int getTotalVacancies() {
 		return this.totalVacancies;
 	}
-	
+
 	public void setNumStudentEnrolled(int numStudentsEnrolled) {
 		if (numStudentsEnrolled > getTotalVacancies()) {
 			this.numStudentsEnrolled = getTotalVacancies();
@@ -79,7 +81,7 @@ public class Index {
 			this.numStudentsEnrolled = numStudentsEnrolled;
 		}
 	}
-	
+
 	public int getNumStudentsEnrolled() {
 		return this.numStudentsEnrolled;
 	}
@@ -87,15 +89,15 @@ public class Index {
 	public LinkedList<String> getWaitList() {
 		return this.waitList;
 	}
- 	
+
 	public void addToWaitList(String studentMatricNo) {
 		this.waitList.addFirst(studentMatricNo);
 	}
-	
+
 	public String removeFromWaitList(String studentMatricNo) {
 		return this.waitList.removeLast();
 	}
-	
+
 	public String viewLastWaitList() {
 		return this.waitList.peekLast();
 	}

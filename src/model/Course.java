@@ -6,6 +6,16 @@ import java.util.List;
 
 public class Course {
 
+import java.io.Serializable;
+import java.util.List;
+
+public class Course implements Serializable {
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
+	private String Name;
 	private String ID;
 	private String Name;
 	private String faculty;
@@ -27,24 +37,34 @@ public class Course {
 		this.Name = Name;
 		this.faculty = faculty;
 		this.au = au;
+
 		this.indexList = indexList;
 		this.lectures = lectures;
 	}
-	
+
 	public void printIndexList() {
 		if (this.indexList == null) {
 			System.out.println("There are currently no index found in this course.");
 		} else {
-			for(Index index: indexList) {
+			for (Index index : indexList) {
 				index.printIndexDetails();
 			}
 		}
 	}
 	
+
+	public String getName() {
+		return this.Name;
+	}
+
+	public void setName(String Name) {
+		this.Name = Name;
+	}
+
 	public String getID() {
 		return this.ID;
 	}
-	
+
 	public void setID(String ID) {
 		this.ID = ID;
 	}
@@ -60,15 +80,15 @@ public class Course {
 	public String getFaculty() {
 		return this.faculty;
 	}
-	
+
 	public void setFaculty(String faculty) {
 		this.faculty = faculty;
 	}
-	
+
 	public void setAu(int au) {
 		this.au = au;
 	}
-	
+
 	public int getAu() {
 		return this.au;
 	}
@@ -109,4 +129,12 @@ public class Course {
 			System.out.println("Lecture index does not exist");
 		}
 	}
+
+	public void addLecture(Session lecture) {
+		this.lectures.add(lecture);
+	}
+
+	public void deleteLecture() {
+	}
+	// TODO: Implement other functions
 }

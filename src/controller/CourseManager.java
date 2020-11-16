@@ -18,6 +18,9 @@ public class CourseManager {
 	}
 	
 	public static void addCourse(String Name, String ID, String faculty, int au,  List<Index> indexList, List<Session> lectures) {
+
+	public static void addCourse(String Name, String ID, String faculty, int au, List<Index> indexList,
+			List<Session> lectures) {
 		if (checkIfCourseExists(ID)) {
 			System.out.println("Course already exists");
 			return;
@@ -29,6 +32,12 @@ public class CourseManager {
 	}
 	
 	public static void deleteCourse(String CourseID) {
+		Course newCourse = new Course(Name, ID, faculty, au, indexList, lectures);
+		CourseList.add(newCourse);
+		System.out.println("Succesfully Course Added");
+	}
+
+	public static void deleteCourse(List<Course> CourseList, String CourseID) {
 		if (checkIfCourseExists(CourseID)) {
 			Course course = findCourse(CourseID);
 			CourseList.remove(course);
@@ -42,20 +51,18 @@ public class CourseManager {
 		if (checkIfCourseExists(CourseID)) {
 			Course course = findCourse(CourseID);
 			
+			
 			System.out.println("Course Has been updated");
 		} else {
 			System.out.println("Course Does not Exist");
 		}
 	}
-	
+
 	public static Course findCourse(String CourseID) {
 		// finds Course with specific ID in CourseList
-		return	CourseList.stream()
-				.filter(Course -> Course.getID() == CourseID)
-				.findFirst()
-				.orElse(null);
+		return CourseList.stream().filter(Course -> Course.getID() == CourseID).findFirst().orElse(null);
 	}
-	
+
 	private static boolean checkIfCourseExists(String CourseID) {
 		return CourseList.stream().anyMatch(Course -> CourseID.equals(Course.getID()));
 	}
