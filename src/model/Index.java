@@ -1,20 +1,22 @@
 package model;
 
 import java.util.List;
+import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class Index {
 
 	private int ID;
-	private String CourseIndex;
-	private int maxLimit;
+	private int totalVacancies;
 	private int numStudentsEnrolled;
 	private LinkedList<String> waitList; // first is head, last is tail
 	private List<Session> tutorials;
 	private List<Session> labs;
-
-	public Index(String CourseIndex, int maxLimit, List<Session> tutorials) { // constructor for index without lab
-																				// sessions
+	
+	public Index(int ID, int totalVacancies, List<Session> tutorials) { // constructor for index without lab sessions
+		this.ID = ID;
+		this.totalVacancies = totalVacancies;
 		this.CourseIndex = CourseIndex;
 		this.maxLimit = maxLimit;
 		this.numStudentsEnrolled = 0;
@@ -24,13 +26,9 @@ public class Index {
 		this.labs = null;
 	}
 
-	public Index(int ID, String CourseIndex, int maxLimit, List<Session> tutorials, List<Session> labs) { // constructor
-																											// for index
-																											// with lab
-																											// sessions
+	public Index(int ID, String CourseIndex, int totalVacancies, List<Session> tutorials, List<Session> labs) { // constructor for index with lab sessions
 		this.ID = ID;
-		this.CourseIndex = CourseIndex;
-		this.maxLimit = maxLimit;
+		this.totalVacancies = totalVacancies;
 		this.numStudentsEnrolled = 0;
 		this.waitList = new LinkedList<String>();
 
@@ -39,8 +37,8 @@ public class Index {
 	}
 
 	public void printIndexDetails() {
-		System.out.println("Index " + ID + " for Course " + CourseIndex);
-
+		System.out.println("Index " + ID + " :");
+		
 		if (tutorials == null) {
 			System.out.println("	Tutorial Sessions: None");
 		} else {
@@ -63,26 +61,22 @@ public class Index {
 	public int getID() {
 		return this.ID;
 	}
-
-	public void setCourseIndex(String CourseIndex) {
-		this.CourseIndex = CourseIndex;
+	
+	public void setID(int ID) {
+		this.ID = ID;
 	}
-
-	public String getCourseIndex() {
-		return this.CourseIndex;
+	
+	public void setTotalVacancies(int totalVacancies) {
+		this.totalVacancies = totalVacancies;
 	}
-
-	public void setMaxLimit(int maxLimit) {
-		this.maxLimit = maxLimit;
-	}
-
-	public int getMaxLimit() {
-		return this.maxLimit;
+	
+	public int getTotalVacancies() {
+		return this.totalVacancies;
 	}
 
 	public void setNumStudentEnrolled(int numStudentsEnrolled) {
-		if (numStudentsEnrolled > getMaxLimit()) {
-			this.numStudentsEnrolled = getMaxLimit();
+		if (numStudentsEnrolled > getTotalVacancies()) {
+			this.numStudentsEnrolled = getTotalVacancies();
 		} else {
 			this.numStudentsEnrolled = numStudentsEnrolled;
 		}
@@ -91,23 +85,7 @@ public class Index {
 	public int getNumStudentsEnrolled() {
 		return this.numStudentsEnrolled;
 	}
-
-	public void setTutorials(List<Session> tutorials) {
-		this.tutorials = tutorials;
-	}
-
-	public List<Session> getTutorials() {
-		return tutorials;
-	}
-
-	public void setLabs(List<Session> labs) {
-		this.labs = labs;
-	}
-
-	public List<Session> getLabs() {
-		return this.labs;
-	}
-
+	
 	public LinkedList<String> getWaitList() {
 		return this.waitList;
 	}
@@ -123,5 +101,41 @@ public class Index {
 	public String viewLastWaitList() {
 		return this.waitList.peekLast();
 	}
-	// TODO: Implement other functions
+	
+	public void addTutorial(int day, LocalTime startTime, LocalTime endTime, String location, String teacher) {
+		int ID = this.tutorials.size();
+		Session tutorial = new Session(ID, day, startTime, endTime, location, teacher);
+		if (this.tutorials == null) {
+			this.tutorials = Arrays.asList(tutorial);
+		} else {
+			this.tutorials.add(tutorial);
+		}
+	}
+	
+	public void deleteTutorial(int index) {
+		if (index < this.tutorials.size() && index >= 0) {
+			this.tutorials.remove(index);
+		} else {
+			System.out.println("Tutorial index does not exist");
+		}
+	}
+	
+	public void addLab(int day, LocalTime startTime, LocalTime endTime, String location, String teacher) {
+		int ID = this.labs.size();
+		Session lab = new Session(ID, day, startTime, endTime, location, teacher);
+		if (this.labs == null) {
+			this.labs = Arrays.asList(lab);
+		} else {
+			this.labs.add(lab);
+		}
+	}
+	
+	public void deleteLab(int index) {
+		if (index < this.labs.size() && index >= 0) {
+			this.labs.remove(index);
+		} else {
+			System.out.println("Lab index does not exist");
+		}
+	}
+	// TODO: Implement other functions 
 }
