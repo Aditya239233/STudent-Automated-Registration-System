@@ -8,17 +8,17 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class FileManager {
-	
-	public String checkObjectType(Object object) {
+
+	public String getFilePath(Object object) {
 		if (object instanceof Student)
 			return "data/student.dat";
 		else if (object instanceof Course)
 			return "data/course.dat";
 		else if (object instanceof Admin)
-				return "data/admin.dat";
+			return "data/admin.dat";
 		return "Error";
 	}
-	
+
 	public List<Object> readObjectFromFile(String filename) {
 		List<Object> objects = null;
 		FileInputStream fis = null;
@@ -36,7 +36,7 @@ public class FileManager {
 
 		return objects;
 	}
-	
+
 	public void writeObjectToFile(String filename, List<Object> object) {
 		FileOutputStream fos = null;
 		ObjectOutputStream out = null;
@@ -49,19 +49,22 @@ public class FileManager {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public void addObjectToFile(Object object) {
 		try {
-			String filename = checkObjectType(object);
+			String filename = getFilePath(object);
+			if (filename == "Error") {
+				System.out.println("File for this Object type does not exist.");
+				return;
+			}
 			List<Object> objects = new ArrayList<>();
 			objects = readObjectFromFile(filename);
 			objects.add(object);
 			writeObjectToFile(filename, objects);
 			System.out.println("Record Succesfully added!");
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 }
