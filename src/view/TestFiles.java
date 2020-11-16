@@ -23,7 +23,7 @@ public class TestFiles {
 		fm.writeCourseObject(oodp);
 		Admin a = fm.readAdminObject(chaiyu.getName());
 		Course course = fm.readCourseObject(oodp.getName());
-	    Student d = fm.readStudentObject(devansh.getName());
+		Student d = fm.readStudentObject(devansh.getName());
 		System.out.println(course.getFaculty());
 		System.out.println(a.getEmail());
 		System.out.println(d.getDegree());
