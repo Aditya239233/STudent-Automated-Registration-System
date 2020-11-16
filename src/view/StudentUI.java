@@ -8,6 +8,7 @@ public class StudentUI {
 	Scanner sc = new Scanner(System.in);
 
 	public void display() {
+		
 		do {
 			System.out.println("Please Select One of the Options Below");
 			System.out.println("1. Register Course");
@@ -17,7 +18,7 @@ public class StudentUI {
 			System.out.println("5. Change Index Number of Course");
 			System.out.println("6. Swop Index Number with Another Student");
 			System.out.println("7. Change notification mode");
-			System.out.println("8. Change Number or Email");
+			System.out.println("8. Change Email");
 			System.out.println("9. Log out");
 			while (!sc.hasNextInt()) {
 				sc.next();

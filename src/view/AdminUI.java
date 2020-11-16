@@ -12,11 +12,13 @@ public class AdminUI {
 			System.out.println("Please Select One of the Options Below");
 			System.out.println("1. Edit Student Access Period");
 			System.out.println("2. Add a Student");
-			System.out.println("3. Add/Update a course");
-			System.out.println("4. Check available slot for an index number");
-			System.out.println("5. Print student list by index number");
-			System.out.println("6. Print student list by course");
-			System.out.println("7. Log out");
+			System.out.println("3. Add a course");
+			System.out.println("4. Update a course");
+			System.out.println("5. Delete a course");
+			System.out.println("6. Check available slot for an index number");
+			System.out.println("7. Print student list by index number");
+			System.out.println("8. Print student list by course");
+			System.out.println("9. Log out");
 			while (!sc.hasNextInt()) {
 				sc.next();
 				System.out.println("Please enter valid option:");
@@ -30,18 +32,24 @@ public class AdminUI {
 				// Add a new Student
 				break;
 			case 3:
-				// Add/Update Course
+				// Add Course
 				break;
 			case 4:
-				// Check available slot for an index number
+				// Update Course
 				break;
 			case 5:
-				// Print student list by index number
+				// Delete Course
 				break;
 			case 6:
-				// Print student list by course
+				// Check available slot for an index number
 				break;
 			case 7:
+				// Print student list by index number
+				break;
+			case 8:
+				// Print student list by course
+				break;
+			case 9:
 				break;
 			default:
 				System.out.print("Enter a valid Option");
