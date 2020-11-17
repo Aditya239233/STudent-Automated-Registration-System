@@ -1,5 +1,11 @@
 package model;
 
+import java.time.LocalTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -15,10 +21,25 @@ public class Course implements Serializable {
 	private int au;
 	private List<Index> indexList;
 	private List<Session> lectures;
-
-	public Course(String Name, String ID, String faculty, int au, List<Index> indexList, List<Session> lectures) {
-		this.Name = Name;
+	
+	// Adi's Edit for Managing Courses
+	private boolean isTutorial;
+	private boolean isLab;
+	
+	Scanner sc = new Scanner(System.in);
+	
+	public Course(String ID, String Name, String faculty, int au) {
 		this.ID = ID;
+		this.Name = Name;
+		this.faculty = faculty;
+		this.au = au;
+		this.indexList = null;
+		this.lectures = null;
+	}
+	
+	public Course(String ID, String Name, String faculty, int au, List<Index> indexList, List<Session> lectures) {
+		this.ID = ID;
+		this.Name = Name;
 		this.faculty = faculty;
 		this.au = au;
 
@@ -35,7 +56,7 @@ public class Course implements Serializable {
 			}
 		}
 	}
-
+	
 	public String getName() {
 		return this.Name;
 	}
@@ -66,6 +87,42 @@ public class Course implements Serializable {
 
 	public int getAu() {
 		return this.au;
+	}
+	
+	public void addIndex(int day, LocalTime startTime, LocalTime endTime, String location, String teacher) {  // To-do figure out addIndex addLab addTutorial interaction logic
+		int ID = this.indexList.size();
+//		Session tutorial = new Session(ID, day, startTime, endTime, location, teacher);
+//		if (this.indexList == null) {
+//			this.indexList = Arrays.asList(tutorial);
+//		} else {
+//			this.indexList.add(tutorial);
+//		}
+	}
+	
+	public void deleteIndex(int index) {
+		if (index < this.indexList.size() && index >= 0) {
+			this.indexList.remove(index);
+		} else {
+			System.out.println("Tutorial index does not exist");
+		}
+	}
+	
+	public void addLecture(int day, LocalTime startTime, LocalTime endTime, String location, String teacher) {
+		int ID = this.lectures.size();
+		Session lecture = new Session(ID, day, startTime, endTime, location, teacher);
+		if (this.lectures == null) {
+			this.lectures = Arrays.asList(lecture);
+		} else {
+			this.lectures.add(lecture);
+		}
+	}
+	
+	public void deleteLecture(int index) {
+		if (index < this.lectures.size() && index >= 0) {
+			this.lectures.remove(index);
+		} else {
+			System.out.println("Lecture index does not exist");
+		}
 	}
 
 	public void addLecture(Session lecture) {

@@ -4,70 +4,67 @@ import model.Admin;
 import model.Course;
 import model.Student;
 import java.io.*;
-import java.util.Calendar;
+import java.util.List;
+import java.util.ArrayList;
 
 public class FileManager {
-	public void writeStudentObject(Student student) throws Exception{
-        String filepath = "data/Students.ser"; 
-        File f = new File(filepath);
-        FileOutputStream fos = new FileOutputStream(f);
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(student);
-        System.out.println("Student records saved");
-        oos.flush();
-        oos.close();
-    }
 
-    public void writeAdminObject(Admin admin) throws Exception{
-        String filepath = "data/Admins.ser";
-        File f = new File(filepath);
-        FileOutputStream fos = new FileOutputStream(f);
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(admin);
-        System.out.println("Admin records saved");
-        oos.close();
-    }
+	public String getFilePath(Object object) {
+		if (object instanceof Student)
+			return "data/student.dat";
+		else if (object instanceof Course)
+			return "data/course.dat";
+		else if (object instanceof Admin)
+			return "data/admin.dat";
+		return "Error";
+	}
 
-    public void writeCourseObject(Course course) throws Exception{
-        String filepath = "data/Courses.ser";
-        File f = new File(filepath);
-        FileOutputStream fos = new FileOutputStream(f);
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(course);
-        System.out.println("Course records saved");
-        oos.close();
-    }
+	public List<Object> readObjectFromFile(String filename) {
+		List<Object> objects = null;
+		FileInputStream fis = null;
+		ObjectInputStream in = null;
+		try {
+			fis = new FileInputStream(filename);
+			in = new ObjectInputStream(fis);
+			objects = (ArrayList) in.readObject();
+			in.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 
-    public Student readStudentObject(String name) throws Exception{
+		return objects;
+	}
 
-        String filepath = "data/Students.ser";
-        File file = new File(filepath);
-        FileInputStream fis = new FileInputStream(file);
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        Student s = (Student)ois.readObject(); 
-        ois.close();
-        return s;
-    }
+	public void writeObjectToFile(String filename, List<Object> object) {
+		FileOutputStream fos = null;
+		ObjectOutputStream out = null;
+		try {
+			fos = new FileOutputStream(filename);
+			out = new ObjectOutputStream(fos);
+			out.writeObject(object);
+			out.close();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
 
-    public Admin readAdminObject(String name) throws Exception{
+	public void addObjectToFile(Object object) {
+		try {
+			String filename = getFilePath(object);
+			if (filename == "Error") {
+				System.out.println("File for this Object type does not exist.");
+				return;
+			}
+			List<Object> objects = new ArrayList<>();
+			objects = readObjectFromFile(filename);
+			objects.add(object);
+			writeObjectToFile(filename, objects);
+			System.out.println("Record Succesfully added!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-        String filepath = "data/Admins.ser";
-        File file = new File(filepath);
-        FileInputStream fis = new FileInputStream(file);
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        Admin a = (Admin)ois.readObject(); 
-        ois.close();
-        return a;
-    }
-
-    public Course readCourseObject(String name) throws Exception{
-
-        String filepath = "data/Courses.ser";
-        File file = new File(filepath);
-        FileInputStream fis = new FileInputStream(file);
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        Course obj = (Course)ois.readObject(); 
-        ois.close();
-        return obj;
-    }
 }
