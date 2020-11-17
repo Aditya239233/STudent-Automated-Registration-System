@@ -11,11 +11,11 @@ public class FileManager {
 
 	public String getFilePath(Object object) {
 		if (object instanceof Student)
-			return "data/student.dat";
+			return "student.dat";
 		else if (object instanceof Course)
-			return "data/course.dat";
+			return "course.dat";
 		else if (object instanceof Admin)
-			return "data/admin.dat";
+			return "admin.dat";
 		return "Error";
 	}
 
@@ -24,7 +24,7 @@ public class FileManager {
 		FileInputStream fis = null;
 		ObjectInputStream in = null;
 		try {
-			fis = new FileInputStream(filename);
+			fis = new FileInputStream("data/" + filename);
 			in = new ObjectInputStream(fis);
 			objects = (ArrayList) in.readObject();
 			in.close();
@@ -41,7 +41,7 @@ public class FileManager {
 		FileOutputStream fos = null;
 		ObjectOutputStream out = null;
 		try {
-			fos = new FileOutputStream(filename);
+			fos = new FileOutputStream("data/" + filename);
 			out = new ObjectOutputStream(fos);
 			out.writeObject(object);
 			out.close();

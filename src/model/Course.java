@@ -116,4 +116,8 @@ public class Course implements Serializable {
 			System.out.println("Lecture index does not exist");
 		}
 	}
+	
+	public List<Session> getLecture() {
+		return this.lectures;
+	}
 }

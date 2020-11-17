@@ -5,14 +5,12 @@ import java.util.*;
 
 public class Student extends User implements Serializable {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 1L;
 	private String MatricNo;
 	private String SchoolID;
 	private String Degree;
 	private List<Course> courses;
+	private List<Index> indexes;
 
 	public Student(String Name, String Password, String Email, Calendar dob, String MatricNo, String SchoolID,
 			String Degree) {
@@ -44,8 +42,9 @@ public class Student extends User implements Serializable {
 
 	public boolean addCourse(Course newCourse, Index index) {
 		// Check and Update the max Limit
-		if (!checkClash(newCourse)){
-			courses.add(newCourse);
+		if (!checkTimeTableClash(index)){
+			indexes.add(index);
+			System.out.println("Course Succesfully added to Timetable");
 			return true;
 		}
 			
@@ -53,14 +52,15 @@ public class Student extends User implements Serializable {
 			System.out.println("There is a timetable clash. Please resolve it.");
 			return false;
 		}
-			
 	}
 
 	public boolean removeCourse(String ID) {
 		// Update the max Limit
-		for (Course course : courses) {
+		Course course;
+		for (Index index : indexes) {
+			course = index.getCourse();
 			if (course.getID().equals(ID)) {
-				courses.remove(course);
+				indexes.remove(index);
 				System.out.println("Course Succesfully Removed");
 				return true;
 			}
@@ -69,16 +69,102 @@ public class Student extends User implements Serializable {
 		return false;
 	}
 
-	public Boolean checkClash(Course newCourse, Index index) {
-		// Need to work on this -- Shoudln't the parameter for this be an Index? -Devansh
-		return true;
+	public Boolean checkTimeTableClash(Index index) {
+		Boolean isClash = false;
+		Course newCourse = index.getCourse();
+		for (Index i: indexes) {
+			if (isClash)
+				break;
+			Course c = i.getCourse();
+			// Lecture Clash
+			for (Session lecture: c.getLecture()) {
+				for (Session newLecture: c.getLecture()) {
+					isClash = checkClash(lecture, newLecture);
+					if (isClash)
+						return isClash;
+				}
+				for (Session newTutorial: index.getTutorial()) {
+					isClash = checkClash(newTutorial, lecture);
+					if (isClash)
+						return isClash;
+				}
+				for (Session newLab: index.getLab()) {
+					isClash = checkClash(newLab, lecture);
+					if (isClash)
+						return isClash;
+				}
+			}
+			
+			// Tutorial Clash
+			for (Session tutorial: i.getTutorial()) {
+				for (Session newLecture: c.getLecture()) {
+					isClash = checkClash(newLecture, tutorial);
+					if (isClash)
+						return isClash;
+				}
+				for (Session newTutorial: index.getTutorial()) {
+					isClash = checkClash(newTutorial, tutorial);
+					if (isClash)
+						return isClash;
+				}
+				for (Session newLab: index.getLab()) {
+					isClash = checkClash(newLab, tutorial);
+					if (isClash)
+						return isClash;
+				}
+			}
+			
+			// Lab Clash
+			for (Session lab: i.getLab()) {
+				for (Session newLecture: c.getLecture()) {
+					isClash = checkClash(newLecture, lab);
+					if (isClash)
+						return
+								isClash;
+				}
+				for (Session newTutorial: index.getTutorial()) {
+					isClash = checkClash(newTutorial, lab);
+					if (isClash)
+						return isClash;
+				}
+				for (Session newLab: index.getLab()) {
+					isClash = checkClash(newLab, lab);
+					if (isClash)
+						return isClash;
+				}
+			}
+		}
+		return isClash;
+	}
+	
+	public Boolean checkClash(Session s1, Session s2) {
+		Boolean isClash = false;
+		int val1;
+		int val2;
+		if (s1.getDay() == s2.getDay()) {
+			val1 = s2.getStartTime().compareTo(s1.getStartTime());
+			val2 = s2.getEndTime().compareTo(s1.getStartTime());
+			if (val1<=0 && val2>0)
+				isClash = true;
+			val2 = s1.getStartTime().compareTo(s2.getEndTime());
+			if (val1 <= 0 && val2 <= 0)
+				isClash = true;
+		}
+		return isClash;
 	}
 
 	public void printCoursesRegistered() {
-		for (Course course : courses) {
-			System.out.println("Course ID: " + course.getID());
-			System.out.println("Course Name: " + course.getName());
-			System.out.println("-------------------");
+		if (indexes.size() == 0) {
+			System.out.println("No Courses Registered");
+			return;
+		}
+		for (Index i: indexes) {
+			Course c = i.getCourse();
+			System.out.println("Course Code: "+c.getID());
+			System.out.println("Course Name: "+c.getName());
+			System.out.println("AUs: "+c.getAu());
+			System.out.println("Index: "+i.getID());
+			System.out.println("-----------------------------------------------------------------");
 		}
 	}
 
@@ -89,7 +175,7 @@ public class Student extends User implements Serializable {
 				List<Index> indexList = course.getIndexList();
 				for (Index index : indexList){
 					if(index.getID() == newIndex){
-						if(checkClash(course, index)){
+						if(checkTimeTableClash(index)){
 							System.out.println("Cannot swap index, there is a clash");
 							return false;
 						}

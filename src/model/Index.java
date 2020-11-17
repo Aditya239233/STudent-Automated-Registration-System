@@ -157,6 +157,10 @@ public class Index {
 		}
 	}
 	
+	public List<Session> getTutorial() {
+		return this.tutorials;
+	}
+	
 	public void addLab(int day, LocalTime startTime, LocalTime endTime, String location, String teacher) {
 		int ID = this.labs.size();
 		Session lab = new Session(ID, day, startTime, endTime, location, teacher);
@@ -178,5 +182,9 @@ public class Index {
 		} else {
 			System.out.println("Lab index does not exist");
 		}
+	}
+	
+	public List<Session> getLab() {
+		return this.labs;
 	}
 }

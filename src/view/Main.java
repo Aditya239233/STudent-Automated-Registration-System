@@ -31,9 +31,9 @@ public class Main {
 			login();
 			if (this.user == 1) {
 				// Verify Login for Student
-				Student logged_in = new Student(); // This student object is to be passed to the StudentUI so that we know who is logged in
-				StudentUI newUI = new StudentUI(logged_in);
-				newUI.display();
+//				Student logged_in = new Student(); // This student object is to be passed to the StudentUI so that we know who is logged in
+//				StudentUI newUI = new StudentUI(logged_in);
+//				newUI.display();
 				// Perform Student Login
 				break;
 			} else {
@@ -56,7 +56,7 @@ public class Main {
 		System.out.println("#\t\t\\_|  |_/\\__, \\____/  \\_/\\_| |_/\\_| \\_|\\____/ \t\t#");
 		System.out.println("#\t\t         __/ |                               \t\t#");
 		System.out.println("#\t\t        |___/                                \t\t#");
-		System.out.println("#\t    Welcome to My Student Automated Registration System    \t#");
+		System.out.println("#\t    Welcome to My STudent Automated Registration System    \t#");
 		System.out.println("#########################################################################");
 	}
 
