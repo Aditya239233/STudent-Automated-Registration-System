@@ -2,6 +2,7 @@ package view;
 
 import java.util.Scanner;
 import controller.StudentManager;
+import model.Student;
 import controller.AdminManager;
 
 public class Main {
@@ -30,7 +31,8 @@ public class Main {
 			login();
 			if (this.user == 1) {
 				// Verify Login for Student
-				StudentUI newUI = new StudentUI();
+				Student logged_in = new Student(); // This student object is to be passed to the StudentUI so that we know who is logged in
+				StudentUI newUI = new StudentUI(logged_in);
 				newUI.display();
 				// Perform Student Login
 				break;

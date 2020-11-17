@@ -79,6 +79,10 @@ public class Student extends User implements Serializable {
 		for (Course course : courses) {
 			if (course.getID().equals(courseID)) {
 				// swap index if vacancy
+				List<Index> indexList = course.getIndexList();
+				for (Index index : indexList){
+					
+				}
 				break;
 			}
 		}

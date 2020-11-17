@@ -47,6 +47,10 @@ public class Course implements Serializable {
 		this.lectures = lectures;
 	}
 
+	public List<Index> getIndexList(){
+		return this.indexList;
+	}
+
 	public void printIndexList() {
 		if (this.indexList == null) {
 			System.out.println("There are currently no index found in this course.");
