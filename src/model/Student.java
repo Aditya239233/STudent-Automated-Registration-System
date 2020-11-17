@@ -42,28 +42,35 @@ public class Student extends User implements Serializable {
 		return this.MatricNo;
 	}
 
-	public void addCourse(Course newCourse) {
+	public boolean addCourse(Course newCourse, Index index) {
 		// Check and Update the max Limit
-		if (!checkClash(newCourse))
+		if (!checkClash(newCourse)){
 			courses.add(newCourse);
-		else
+			return true;
+		}
+			
+		else{
 			System.out.println("There is a timetable clash. Please resolve it.");
+			return false;
+		}
+			
 	}
 
-	public void removeCourse(String ID) {
+	public boolean removeCourse(String ID) {
 		// Update the max Limit
 		for (Course course : courses) {
 			if (course.getID().equals(ID)) {
 				courses.remove(course);
-				System.out.println("Course Succesfully Reoved");
-				return;
+				System.out.println("Course Succesfully Removed");
+				return true;
 			}
 		}
 		System.out.println("You have not registered for this Course. Cannot Drop a Course which hasn't been added");
+		return false;
 	}
 
-	public Boolean checkClash(Course newCourse) {
-		// Need to work on this
+	public Boolean checkClash(Course newCourse, Index index) {
+		// Need to work on this -- Shoudln't the parameter for this be an Index? -Devansh
 		return true;
 	}
 
@@ -75,17 +82,32 @@ public class Student extends User implements Serializable {
 		}
 	}
 
-	public void swapIndex(String courseID, String newIndex) {
+	public boolean swapIndex(String courseID, String newIndex) {
 		for (Course course : courses) {
 			if (course.getID().equals(courseID)) {
 				// swap index if vacancy
 				List<Index> indexList = course.getIndexList();
 				for (Index index : indexList){
-					
+					if(checkClash(course, index)){
+						System.out.println("Cannot swap index, there is a clash");
+						return false;
+					}
+					else{
+						if(removeCourse(courseID)){
+							if(addCourse(course, index)) 
+								return true;
+						}
+						else{
+							System.out.println("Error: Course has not been addded. You can only swap index for added courses");
+							return false;
+						}
+					}
 				}
 				break;
 			}
 		}
+		System.out.println("Error: Course has not been addded. You can only swap index for added courses");
+		return false;
 	}
 
 	// Swap index with student should be in Student Manager or higher Level Class

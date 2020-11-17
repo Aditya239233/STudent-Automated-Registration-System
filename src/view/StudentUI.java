@@ -62,8 +62,10 @@ public class StudentUI {
 				System.out.println("Enter the index number you want to transfer to: ");
 				String new_index = sc.nextLine();
 				Course c = CourseManager.findCourse(course);
-				logged_in.swapIndex(course, new_index);
-
+				if(logged_in.swapIndex(course, new_index))
+					System.out.println("Index swap successful!");
+				else 
+					System.out.println("Index swap unsuccesful. Please try again.");
 				break;
 			case 7:
 				// Change Notification mode. But for Notification we need to implement only
