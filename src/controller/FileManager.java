@@ -14,6 +14,7 @@ public class FileManager {
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(student);
         System.out.println("Student records saved");
+        oos.flush();
         oos.close();
     }
 
