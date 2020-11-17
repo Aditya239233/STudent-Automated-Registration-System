@@ -7,15 +7,28 @@ import java.util.LinkedList;
 
 public class Index {
 
-	private int ID;
+	private String ID;
+	private Course course;
 	private int totalVacancies;
 	private int numStudentsEnrolled;
 	private LinkedList<String> waitList; // first is head, last is tail
 	private List<Session> tutorials;
 	private List<Session> labs;
 	
-	public Index(int ID, int totalVacancies, List<Session> tutorials) { // constructor for index without lab sessions
+	public Index(String ID, Course course, int totalVacancies) { // constructor for index without tutorial and lab sessions
 		this.ID = ID;
+		this.course = course;
+		this.totalVacancies = totalVacancies;
+		this.numStudentsEnrolled = 0;
+		this.waitList = new LinkedList<String>();
+
+		this.tutorials = null;
+		this.labs = null;
+	}
+	
+	public Index(String ID, Course course, int totalVacancies, List<Session> tutorials) { // constructor for index without lab sessions
+		this.ID = ID;
+		this.course = course;
 		this.totalVacancies = totalVacancies;
 		this.numStudentsEnrolled = 0;
 		this.waitList = new LinkedList<String>();
@@ -24,8 +37,9 @@ public class Index {
 		this.labs = null;
 	}
 
-	public Index(int ID, String CourseIndex, int totalVacancies, List<Session> tutorials, List<Session> labs) { // constructor for index with lab sessions
+	public Index(String ID, Course course, int totalVacancies, List<Session> tutorials, List<Session> labs) {
 		this.ID = ID;
+		this.course = course;
 		this.totalVacancies = totalVacancies;
 		this.numStudentsEnrolled = 0;
 		this.waitList = new LinkedList<String>();
@@ -41,8 +55,9 @@ public class Index {
 			System.out.println("	Tutorial Sessions: None");
 		} else {
 			System.out.println("	Tutorial Sessions: ");
-			for (Session tutorial : tutorials) {
-				tutorial.printSessionDetails();
+			for (int i=0; i<tutorials.size(); i++) {
+				System.out.print("Tutorial ID:" + i);
+				tutorials.get(i).printSessionDetails();
 			}
 		}
 
@@ -56,12 +71,20 @@ public class Index {
 		}
 	}
 
-	public int getID() {
+	public String getID() {
 		return this.ID;
 	}
 	
-	public void setID(int ID) {
+	public void setID(String ID) {
 		this.ID = ID;
+	}
+	
+	public Course getCourse() {
+		return this.course;
+	}
+	
+	public void setCourse(Course course) {
+		this.course = course;
 	}
 	
 	public void setTotalVacancies(int totalVacancies) {
@@ -89,10 +112,21 @@ public class Index {
 	}
 
 	public void addToWaitList(String studentMatricNo) {
-		this.waitList.addFirst(studentMatricNo);
+		if (this.numStudentsEnrolled < this.totalVacancies) {
+			this.setNumStudentEnrolled(getNumStudentsEnrolled() + 1);
+			this.waitList.addFirst(studentMatricNo);
+		}
+		else {
+			System.out.println("Error, Index " + getID() + " is full!");
+		}
 	}
 
 	public String removeFromWaitList(String studentMatricNo) {
+		if (this.numStudentsEnrolled > 0) {
+			this.setNumStudentEnrolled(getNumStudentsEnrolled() - 1);
+		} else {
+			System.out.println("Error, Index " + getID() + " is empty!");
+		}
 		return this.waitList.removeLast();
 	}
 
@@ -110,9 +144,14 @@ public class Index {
 		}
 	}
 	
-	public void deleteTutorial(int index) {
-		if (index < this.tutorials.size() && index >= 0) {
-			this.tutorials.remove(index);
+	public void updateTutorial(int tutorialID, int day, LocalTime startTime, LocalTime endTime, String location, String teacher) {
+		Session tutorial = new Session(tutorialID, day, startTime, endTime, location, teacher);
+		tutorials.set(tutorialID, tutorial);
+	}
+	
+	public void deleteTutorial(int tutorialID) {
+		if (tutorialID < this.tutorials.size() && tutorialID >= 0) {
+			this.tutorials.remove(tutorialID);
 		} else {
 			System.out.println("Tutorial index does not exist");
 		}
@@ -128,12 +167,16 @@ public class Index {
 		}
 	}
 	
-	public void deleteLab(int index) {
-		if (index < this.labs.size() && index >= 0) {
-			this.labs.remove(index);
+	public void updateLab(int labID, int day, LocalTime startTime, LocalTime endTime, String location, String teacher) {
+		Session lab = new Session(labID, day, startTime, endTime, location, teacher);
+		tutorials.set(labID, lab);
+	}
+	
+	public void deleteLab(int labID) {
+		if (labID < this.labs.size() && labID >= 0) {
+			this.labs.remove(labID);
 		} else {
 			System.out.println("Lab index does not exist");
 		}
 	}
-	// TODO: Implement other functions 
 }
