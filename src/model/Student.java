@@ -88,18 +88,20 @@ public class Student extends User implements Serializable {
 				// swap index if vacancy
 				List<Index> indexList = course.getIndexList();
 				for (Index index : indexList){
-					if(checkClash(course, index)){
-						System.out.println("Cannot swap index, there is a clash");
-						return false;
-					}
-					else{
-						if(removeCourse(courseID)){
-							if(addCourse(course, index)) 
-								return true;
+					if(index.getID() == newIndex){
+						if(checkClash(course, index)){
+							System.out.println("Cannot swap index, there is a clash");
+							return false;
 						}
 						else{
-							System.out.println("Error: Course has not been addded. You can only swap index for added courses");
-							return false;
+							if(removeCourse(courseID)){
+								if(addCourse(course, index)) 
+									return true;
+							}
+							else{
+								System.out.println("Error: Course has not been addded. You can only swap index for added courses");
+								return false;
+							}
 						}
 					}
 				}

@@ -66,7 +66,7 @@ public class CourseManager {
 		return CourseList.stream().filter(Course -> Course.getID() == CourseID).findFirst().orElse(null);
 	}
 
-	private static boolean checkIfCourseExists(String CourseID) {
+	public static boolean checkIfCourseExists(String CourseID) {
 		return CourseList.stream().anyMatch(Course -> CourseID.equals(Course.getID()));
 	}
 
