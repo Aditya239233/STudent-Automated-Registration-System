@@ -12,6 +12,14 @@ public class Student extends User implements Serializable {
 	private List<Course> courses;
 	private List<Index> indexes;
 
+	public Student(){
+		super();
+		this.MatricNo = "undefined";
+		this.SchoolID = "undefined";
+		this.Degree = "undefined";
+
+	}
+
 	public Student(String Name, String Password, String Email, Calendar dob, String MatricNo, String SchoolID,
 			String Degree) {
 		super(Name, Password, Email, dob);
@@ -22,6 +30,10 @@ public class Student extends User implements Serializable {
 
 	public void setDegree(String Degree) {
 		this.Degree = Degree;
+	}
+
+	public List<Index> getIndexes(){
+		return this.indexes;
 	}
 
 	public String getDegree() {
@@ -40,7 +52,7 @@ public class Student extends User implements Serializable {
 		return this.MatricNo;
 	}
 
-	public boolean addCourse(Course newCourse, Index index) {
+	public boolean addCourse(Index index) {
 		// Check and Update the max Limit
 		if (!checkTimeTableClash(index)){
 			indexes.add(index);
@@ -168,34 +180,34 @@ public class Student extends User implements Serializable {
 		}
 	}
 
-	public boolean swapIndex(String courseID, String newIndex) {
-		for (Course course : courses) {
-			if (course.getID().equals(courseID)) {
-				// swap index if vacancy
-				List<Index> indexList = course.getIndexList();
-				for (Index index : indexList){
-					if(index.getID() == newIndex){
-						if(checkTimeTableClash(index)){
-							System.out.println("Cannot swap index, there is a clash");
-							return false;
-						}
-						else{
-							if(removeCourse(courseID)){
-								if(addCourse(course, index)) 
-									return true;
-							}
-							else{
-								System.out.println("Error: Course has not been addded. You can only swap index for added courses");
-								return false;
-							}
-						}
-					}
-				}
-				break;
+	public boolean checkIfCourseRegistered(String index){
+		for(Index i : this.indexes){
+			if(i.getID() == index){
+				return true;
 			}
 		}
-		System.out.println("Error: Course has not been addded. You can only swap index for added courses");
 		return false;
+	}
+
+	public void swapIndex(String s1_index, Student s2, String s2_index) {
+		String course = " ";
+		for(Index i: indexes){
+			if(i.getID() == s1_index){
+				course = i.getCourse().getID();
+			}
+		}
+		this.removeCourse(course);
+		s2.removeCourse(course);
+		List<Index> s1_indexes = this.getIndexes();
+		List<Index> s2_indexes = s2.getIndexes();
+		for(Index i:s2_indexes){
+			if(i.getID() == s2_index)
+				this.addCourse(i);
+		}
+		for(Index i:s1_indexes){
+			if(i.getID() == s1_index)
+				s2.addCourse(i);
+		}
 	}
 
 	// Swap index with student should be in Student Manager or higher Level Class

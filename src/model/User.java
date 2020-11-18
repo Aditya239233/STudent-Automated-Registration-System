@@ -10,6 +10,13 @@ public class User implements Serializable{
 	private String Email;
 	private Calendar dob;
 
+	public User(){
+		this.Name = "undefined";
+		this.Password = "undefined";
+		this.Email = "undefined";
+		this.dob = Calendar.getInstance();
+	}
+
 	public User(String Name, String Password, String Email, Calendar dob) {
 		this.Name = Name;
 		this.Password = Password;

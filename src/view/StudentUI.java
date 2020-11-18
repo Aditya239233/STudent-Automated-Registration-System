@@ -9,6 +9,7 @@ import model.Course;
 import model.Index;
 import model.Student;
 import controller.FileManager;
+import controller.StudentManager;
 
 public class StudentUI {
 
@@ -112,18 +113,68 @@ public class StudentUI {
 	}
 	
 	public void swopIndex() {
+		StudentManager sm = new StudentManager();
+		FileManager fm = new FileManager();
+		String s1_index = " ";
+		String s2_index = " ";
+		Student s2 = new Student();
 		System.out.println("Enter the course code whose index number you would like to swap: ");
 		String course = sc.nextLine();
 		while(!CourseManager.checkIfCourseExists(course)){
 			System.out.println("Invalid course code, please enter a valid course code: ");
 			course = sc.next();
 		}
-		System.out.println("Enter the index number you want to transfer to: ");
-		String new_index = sc.nextLine();
-		Course c = CourseManager.findCourse(course);
-		if(student.swapIndex(course, new_index))
-			System.out.println("Index swap successful!");
-		else 
-			System.out.println("Index swap unsuccesful. Please try again.");
+		List<Index> indexes = student.getIndexes();
+		boolean is_registered = false;
+		while(!is_registered){
+			for(Index i : indexes){
+				if(i.getCourse().getID() == course){
+					is_registered = true;
+					s1_index = i.getID();
+					break;
+				}
+
+			}
+			if(is_registered){
+				break;
+			}
+			else{
+				System.out.println("You are not registered for this course. Index can only be swapped for registered courses");
+				System.out.println("Enter the course code whose index number you would like to swap: ");
+				course = sc.nextLine();
+				continue;
+			}
+		}
+		boolean is_valid = false;
+		while(!is_valid){ // This loop ensures that the user enters a valid combo of student+index, i.e. student must be registered for the index
+			System.out.println("Enter the matric number of the student you would like to swap with: ");
+			String s2_mat = sc.nextLine();
+			while(!sm.checkIfStudentExists(s2_mat)){
+				System.out.println("Invalid student matric number, please enter a valid number: ");
+				course = sc.next();
+			}
+			List<Object> students = fm.readObjectFromFile("Students.ser");
+			Student s;
+			for(Object o: students){
+				s = (Student) o;
+				if(s.getMatricNo() == s2_mat){
+					is_valid = true;
+					s2 = s;
+				}
+			}
+
+			System.out.println("Enter the index number you want to transfer to: ");
+			s2_index = sc.nextLine();
+			if(s2.checkIfCourseRegistered(s2_index) && is_valid) 
+				break;
+			else{
+				System.out.println("The given student and index number combination is invalid. Student must be registered for the given index");
+				System.out.println("Please enter details again");
+				is_valid = false;
+			}
+		}
+		
+
+		student.swapIndex(s1_index, s2, s2_index);
 	}
 }
