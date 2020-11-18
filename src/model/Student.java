@@ -214,7 +214,7 @@ public class Student extends User implements Serializable {
 		}
 		for(Index i:s1_indexes){
 			if(i.getID() == s1_index){
-				if(this.checkTimeTableClash(i)){
+				if(s2.checkTimeTableClash(i)){
 					System.out.println("Cannot swap index due to Timetable clash. Please select another index.");
 					isValid2 = false;
 				}
