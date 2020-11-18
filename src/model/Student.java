@@ -3,6 +3,8 @@ package model;
 import java.io.Serializable;
 import java.util.*;
 
+import controller.CourseManager;
+
 public class Student extends User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -189,25 +191,61 @@ public class Student extends User implements Serializable {
 		return false;
 	}
 
-	public void swapIndex(String s1_index, Student s2, String s2_index) {
+	public boolean swapIndex(String s1_index, Student s2, String s2_index) {
 		String course = " ";
-		for(Index i: indexes){
-			if(i.getID() == s1_index){
-				course = i.getCourse().getID();
-			}
-		}
-		this.removeCourse(course);
-		s2.removeCourse(course);
 		List<Index> s1_indexes = this.getIndexes();
 		List<Index> s2_indexes = s2.getIndexes();
+		String i1 = " ", i2 = " ";
+		boolean isValid1 = false;
+		boolean isValid2 = false;
+
 		for(Index i:s2_indexes){
-			if(i.getID() == s2_index)
-				this.addCourse(i);
+			if(i.getID() == s2_index){
+				if(this.checkTimeTableClash(i)){
+					System.out.println("Cannot swap index due to Timetable clash. Please select another index.");
+					isValid1 = false;
+				}
+				else{
+					i1 = i.getID();
+					course = i.getCourse().getID();
+					isValid1 = true;
+				}
+			}
 		}
 		for(Index i:s1_indexes){
-			if(i.getID() == s1_index)
-				s2.addCourse(i);
+			if(i.getID() == s1_index){
+				if(this.checkTimeTableClash(i)){
+					System.out.println("Cannot swap index due to Timetable clash. Please select another index.");
+					isValid2 = false;
+				}
+				else{
+					i2 = i.getID();
+					course = i.getCourse().getID();
+					isValid2 = true;
+				}
+			}
 		}
+
+		if(isValid1 && isValid2){
+			this.removeCourse(course);
+			s2.removeCourse(course);
+			Course c = CourseManager.findCourse(course);
+			List<Index> iList = c.getIndexList();
+			for(Index i : iList){
+				if(i.getID() == i1){
+					this.addCourse(i);
+				}
+				else if(i.getID() == i2){
+					s2.addCourse(i);
+				}
+			}			
+			System.out.println("Index swap successful!");
+			return true;
+		}
+		else
+			return false;
+		
+		
 	}
 
 	// Swap index with student should be in Student Manager or higher Level Class
