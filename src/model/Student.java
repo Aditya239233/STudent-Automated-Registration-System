@@ -5,6 +5,12 @@ import java.util.*;
 
 import controller.CourseManager;
 
+public enum NotificationMode{
+	EMAIL,
+	SMS,
+	WHATSAPP
+}
+
 public class Student extends User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -13,12 +19,14 @@ public class Student extends User implements Serializable {
 	private String Degree;
 	private List<Course> courses;
 	private List<Index> indexes;
+	private NotificationMode nm;
 
 	public Student(){
 		super();
 		this.MatricNo = "undefined";
 		this.SchoolID = "undefined";
 		this.Degree = "undefined";
+		nm = NotificationMode.EMAIL;
 
 	}
 
@@ -28,6 +36,15 @@ public class Student extends User implements Serializable {
 		this.MatricNo = MatricNo;
 		this.SchoolID = SchoolID;
 		this.Degree = Degree;
+		nm = NotificationMode.EMAIL;
+	}
+
+	public void setNotificationMode(NotificationMode nm){
+		this.nm = nm;
+	}
+
+	public NotificationMode getNotificationMode(){
+		return this.nm;
 	}
 
 	public void setDegree(String Degree) {

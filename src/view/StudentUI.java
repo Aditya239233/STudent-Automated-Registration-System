@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import controller.CourseManager;
 import model.Course;
 import model.Index;
+import model.NotificationMode;
 import model.Student;
 import controller.FileManager;
 import controller.StudentManager;
@@ -67,6 +68,7 @@ public class StudentUI {
 			case 7:
 				// Change Notification mode. But for Notification we need to implement only
 				// email.
+				changeNotificationMode();
 				break;
 			case 8:
 				// Change Email or Password
@@ -180,5 +182,68 @@ public class StudentUI {
 		}
 		else
 			System.out.println("Index swap unsuccessful. Please try again with a valid index.");
+	}
+
+	public void changeNotificationMode(){
+		NotificationMode curr_nm = student.getNotificationMode();
+		boolean val1, val2 = false;
+		System.out.println("Your current notification mode is: "+curr_nm);
+		System.out.println("Would you like to change your notification mode? (y/n)");
+		char opt = sc.next().charAt(0);
+		while(!val1 || !val2){
+			switch(opt){
+				case 'y':
+				{
+					System.out.println("Choose new notification mode: ");
+					System.out.println("1. Email");
+					System.out.println("2. SMS");
+					System.out.println("3. WhatsApp");
+					int new_nm = sc.nextInt();
+					switch(new_nm){
+						case 1:
+						{
+							student.setNotificationMode(NotificationMode.EMAIL);
+							System.out.println("Notification mode changed successfully to EMAIL");
+							val1 = true;
+							break;
+						}
+						case 2:
+						{
+							student.setNotificationMode(NotificationMode.SMS);
+							System.out.println("Notification mode changed successfully to SMS");
+							val1 = true;
+							break;
+						}
+						case 3:
+						{
+							student.setNotificationMode(NotificationMode.WHATSAPP);
+							System.out.println("Notification mode changed successfully to WHATSAPP");
+							val1 = true;
+							break;
+						}
+						default:
+						{
+							System.out.println("Invalid choice")
+						}
+					}
+					val2 = true;
+					break;
+				}
+				case 'n':
+				{
+					System.out.println("Notification mode will remain unchanged: "+curr_nm);
+					val1 = true;
+					val2 = true;
+					break;
+				}
+				default:
+				{
+					System.out.println("Invalid choice");
+				}
+			}
+
+		}
+
+		
 	}
 }
