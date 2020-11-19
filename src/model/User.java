@@ -47,4 +47,8 @@ public class User implements Serializable{
 	public String getEmail() {
 		return this.Email;
 	}
+
+	public void setEmail(String email){
+		this.Email = email;
+	}
 }

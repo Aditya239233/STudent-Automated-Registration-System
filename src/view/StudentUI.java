@@ -3,6 +3,7 @@ package view;
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
+import java.io.Console;
 
 import controller.CourseManager;
 import model.Course;
@@ -72,6 +73,7 @@ public class StudentUI {
 				break;
 			case 8:
 				// Change Email or Password
+				changeLoginDetails();
 				break;
 			case 9:
 				break;
@@ -245,5 +247,86 @@ public class StudentUI {
 		}
 
 		
+	}
+
+	public void changeLoginDetails(){
+		String curr_email = student.getEmail();
+		String curr_pass = student.getPassword();
+		System.out.println("Your current registered email is "+curr_email);
+		System.out.print("Your current password is ");
+		for(int i = 0; i <= curr_pass.length(); i++){
+			System.out.print("*");
+		}
+		Console console = System.console();
+		System.out.println("Please select which details you would like to change: ");
+		System.out.println("1. Email ID");
+		System.out.println("2. Password");
+		System.out.println("3. Both Email ID and Password");
+		int opt = sc.nextInt();
+		boolean isValid = false;
+		char[] p;
+		String pwd;
+		while(!isValid){
+			switch(opt){
+				case 1:
+				{
+					System.out.println("Please enter your password for verification: ");
+					p = console.readPassword("Password: ");
+					pwd = new String(p);
+					if(pwd == curr_pass){
+						System.out.println("Enter the new email ID: ");
+						String new_email = sc.nextLine();
+						student.setEmail(new_email);
+						isValid = true;
+					}
+					else{
+						System.out.println("Incorrect password. Please try again.");
+					}
+					break;
+				}
+				case 2:
+				{
+					System.out.println("Please enter your password for verification: ");
+					p = console.readPassword("Password: ");
+					pwd = new String(p);
+					if(pwd == curr_pass){
+						System.out.println("Please enter your new password: ");
+						p = console.readPassword("New password: ");
+						pwd = new String(p);
+						student.setPassword(pwd);
+						isValid = true;
+					}
+					else{
+						System.out.println("Incorrect password. Please try again.");
+					}
+					break;
+				}
+				case 3:
+				{
+					System.out.println("Please enter your password for verification: ");
+					p = console.readPassword("Password: ");
+					pwd = new String(p);
+					if(pwd == curr_pass){
+						System.out.println("Enter the new email ID: ");
+						String new_email = sc.nextLine();
+						student.setEmail(new_email);
+						System.out.println("Please enter your new password: ");
+						p = console.readPassword("New password: ");
+						pwd = new String(p);
+						student.setPassword(pwd);
+						isValid = true;
+					}
+					else{
+						System.out.println("Incorrect password. Please try again.");
+					}
+					break;
+				}
+				default:
+				{
+					System.out.println("Invalid option, please select again.");
+					break;
+				}
+			}
+		}
 	}
 }
