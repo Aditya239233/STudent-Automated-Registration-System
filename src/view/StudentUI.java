@@ -175,6 +175,10 @@ public class StudentUI {
 		}
 		
 
-		student.swapIndex(s1_index, s2, s2_index);
+		if(student.swapIndex(s1_index, s2, s2_index)){
+			System.out.println("Index swap successful!");
+		}
+		else
+			System.out.println("Index swap unsuccessful. Please try again with a valid index.");
 	}
 }

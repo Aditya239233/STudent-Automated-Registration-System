@@ -239,7 +239,6 @@ public class Student extends User implements Serializable {
 					s2.addCourse(i);
 				}
 			}			
-			System.out.println("Index swap successful!");
 			return true;
 		}
 		else
