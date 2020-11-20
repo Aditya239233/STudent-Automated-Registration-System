@@ -58,6 +58,7 @@ public class StudentUI {
 				break;
 			case 4:
 				// Check vacancies available
+				checkVacancyAvailable();
 				break;
 			case 5:
 				// Change index number of Course
@@ -100,7 +101,7 @@ public class StudentUI {
 				String IndexCode = sc.nextLine();
 				for (Index i: c.getIndexList()) {
 					if (i.getID().equals(IndexCode)) {
-						student.addCourse(c, i);
+						student.addCourse(i);
 						break;
 					}
 				}
@@ -188,7 +189,7 @@ public class StudentUI {
 
 	public void changeNotificationMode(){
 		NotificationMode curr_nm = student.getNotificationMode();
-		boolean val1, val2 = false;
+		boolean val1 = false, val2 = false;
 		System.out.println("Your current notification mode is: "+curr_nm);
 		System.out.println("Would you like to change your notification mode? (y/n)");
 		char opt = sc.next().charAt(0);
@@ -225,7 +226,7 @@ public class StudentUI {
 						}
 						default:
 						{
-							System.out.println("Invalid choice")
+							System.out.println("Invalid choice");
 						}
 					}
 					val2 = true;
@@ -328,5 +329,23 @@ public class StudentUI {
 				}
 			}
 		}
+	}
+	
+	public void checkVacancyAvailable() {
+		System.out.println("Enter the Course Code: ");
+		String CourseCode = sc.nextLine();
+		List<Course> courseList = new ArrayList<Course>();
+		List<Object> objectList = f.readObjectFromFile("dat/course.dat");
+        for(Object o: objectList){
+            courseList.add((Course)o);
+        }
+        for (Course c:courseList) {
+        	if (c.getID().equals(CourseCode)) {
+        		for (Index i: c.getIndexList()) {
+        			System.out.println("Index ID: " + i.getID() + " Vacancy: "+Integer.toString(i.getTotalVacancies()-i.getNumStudentsEnrolled()));
+        		}
+        		break;
+        	}
+        }
 	}
 }

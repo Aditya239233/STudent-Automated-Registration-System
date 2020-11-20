@@ -5,12 +5,6 @@ import java.util.*;
 
 import controller.CourseManager;
 
-public enum NotificationMode{
-	EMAIL,
-	SMS,
-	WHATSAPP
-}
-
 public class Student extends User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
