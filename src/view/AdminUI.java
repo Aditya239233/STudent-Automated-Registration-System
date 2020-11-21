@@ -27,9 +27,9 @@ public class AdminUI {
 			System.out.println("3. Add a course");
 			System.out.println("4. Update a course");
 			System.out.println("5. Delete a course");
-			System.out.println("6. Add a course");
-			System.out.println("7. Update a course");
-			System.out.println("8. Delete a course");
+			System.out.println("6. Add a index");
+			System.out.println("7. Update a index");
+			System.out.println("8. Delete a index");
 			System.out.println("9. Check available slot for an index number");
 			System.out.println("10. Print student list by index number");
 			System.out.println("11. Print student list by course");

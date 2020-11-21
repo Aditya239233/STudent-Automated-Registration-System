@@ -70,7 +70,6 @@ public class Student extends User implements Serializable {
 	}
 
 	public int addCourse(Index index) {
-		// Check and Update the max Limit
 		if (index.getTotalVacancies() - index.getNumStudentsEnrolled() < 1) {
 			index.addToWaitList(this.MatricNo);
 			return -1;
@@ -220,7 +219,7 @@ public class Student extends User implements Serializable {
 		return false;
 	}
 
-	public boolean swapIndex(String s1_index, Student s2, String s2_index) {
+	public boolean swapIndexWithPeer(String s1_index, Student s2, String s2_index) {
 		String course = " ";
 		List<Index> s1_indexes = this.getIndexes();
 		List<Index> s2_indexes = s2.getIndexes();
@@ -270,7 +269,5 @@ public class Student extends User implements Serializable {
 			return false;
 
 	}
-
-	// Swap index with student should be in Student Manager or higher Level Class
 
 }

@@ -2,7 +2,6 @@ package view;
 
 import java.util.Scanner;
 import java.util.List;
-import java.io.Console;
 
 import controller.CourseManager;
 import model.Index;
@@ -63,15 +62,16 @@ public class StudentUI {
 				changeNotificationMode();
 				break;
 			case 8:
+				writeStudentToFile();
 				break;
 			default:
 				System.out.print("Enter a valid Option");
 			}
 
-		} while (choice != 9);
+		} while (choice != 8);
 	}
 
-	public void addCourse() {
+	private void addCourse() {
 		System.out.println("Enter the Course Code: ");
 		String CourseCode = sc.nextLine();
 		System.out.println("Enter the Course Index: ");
@@ -89,7 +89,7 @@ public class StudentUI {
 			System.out.println("Succesfully Added " + CourseCode);
 	}
 
-	public void dropCourse() {
+	private void dropCourse() {
 		System.out.println("Enter the Course Code: ");
 		String CourseCode = sc.nextLine();
 		Boolean result = student.removeCourse(CourseCode);
@@ -99,13 +99,11 @@ public class StudentUI {
 			System.out.println("You're not enrolled in the Course " + CourseCode);
 	}
 
-	public void swopIndex() {
+	private void swopIndex() {
 		System.out.println("Enter the course code whose index number you would like to swap: ");
 		String CourseCode = sc.nextLine();
-		while (!CourseManager.checkIfCourseExists(CourseCode)) {
-			System.out.println("Invalid course code, please enter a valid course code: ");
-			CourseCode = sc.next();
-		}
+		System.out.println("Invalid course code, please enter a valid course code: ");
+		CourseCode = sc.next();
 		System.out.println("Enter the index code you would like to swap: ");
 		String IndexCode = sc.nextLine();
 		// Test if valid index
@@ -119,77 +117,23 @@ public class StudentUI {
 			System.out.println("Succesfully Swopped the index of " + CourseCode + " to " + IndexCode);
 	}
 
-	public void swopIndexWithPeer() {
-		StudentManager sm = new StudentManager();
-		FileManager fm = new FileManager();
-		String s1_index = " ";
-		String s2_index = " ";
-		Student s2 = new Student();
+	private void swopIndexWithPeer() {
 		System.out.println("Enter the course code whose index number you would like to swap: ");
-		String course = sc.nextLine();
-		while (!CourseManager.checkIfCourseExists(course)) {
-			System.out.println("Invalid course code, please enter a valid course code: ");
-			course = sc.next();
-		}
-		List<Index> indexes = student.getIndexes();
-		boolean is_registered = false;
-		while (!is_registered) {
-			for (Index i : indexes) {
-				if (i.getCourse().getID() == course) {
-					is_registered = true;
-					s1_index = i.getID();
-					break;
-				}
-
-			}
-			if (is_registered) {
-				break;
-			} else {
-				System.out.println(
-						"You are not registered for this course. Index can only be swapped for registered courses");
-				System.out.println("Enter the course code whose index number you would like to swap: ");
-				course = sc.nextLine();
-				continue;
-			}
-		}
-		boolean is_valid = false;
-		while (!is_valid) { // This loop ensures that the user enters a valid combo of student+index, i.e.
-							// student must be registered for the index
-			System.out.println("Enter the matric number of the student you would like to swap with: ");
-			String s2_mat = sc.nextLine();
-			while (!sm.checkIfStudentExists(s2_mat)) {
-				System.out.println("Invalid student matric number, please enter a valid number: ");
-				course = sc.next();
-			}
-			List<Object> students = fm.readObjectFromFile("Students.ser");
-			Student s;
-			for (Object o : students) {
-				s = (Student) o;
-				if (s.getMatricNo() == s2_mat) {
-					is_valid = true;
-					s2 = s;
-				}
-			}
-
-			System.out.println("Enter the index number you want to transfer to: ");
-			s2_index = sc.nextLine();
-			if (s2.checkIfCourseRegistered(s2_index) && is_valid)
-				break;
-			else {
-				System.out.println(
-						"The given student and index number combination is invalid. Student must be registered for the given index");
-				System.out.println("Please enter details again");
-				is_valid = false;
-			}
-		}
-
-		if (student.swapIndex(s1_index, s2, s2_index)) {
-			System.out.println("Index swap successful!");
-		} else
-			System.out.println("Index swap unsuccessful. Please try again with a valid index.");
+		String CourseCode = sc.nextLine();
+		System.out.println("Enter the matric number of the student you would like to swap with: ");
+		String s2_mat = sc.nextLine();
+		int result = scm.swopIndexWithPeer(student, CourseCode, s2_mat);
+		if (result == -1)
+			System.out.println("You have not been enrolled in the course " + CourseCode);
+		else if (result == -2)
+			System.out.println("Matric Number " + s2_mat + " does not exist");
+		if (result == -3)
+			System.out.println("Your peer has not been enrolled in the course " + CourseCode);
+		else
+			System.out.println("Succesfully Added Course");
 	}
 
-	public void changeNotificationMode() {
+	private void changeNotificationMode() {
 		NotificationMode curr_nm = student.getNotificationMode();
 		boolean val1 = false, val2 = false;
 		System.out.println("Your current notification mode is: " + curr_nm);
@@ -243,7 +187,7 @@ public class StudentUI {
 		}
 	}
 
-	public void checkVacancyAvailable() {
+	private void checkVacancyAvailable() {
 		System.out.println("Enter the Course Code: ");
 		String CourseCode = sc.nextLine();
 		int result = cm.getCourseVacancy(CourseCode);
@@ -251,5 +195,9 @@ public class StudentUI {
 			System.out.println("Course does not exist");
 		else
 			System.out.println("Vacancy for the Course " + CourseCode + " is " + result);
+	}
+
+	private void writeStudentToFile() {
+
 	}
 }

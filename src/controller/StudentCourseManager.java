@@ -59,4 +59,43 @@ public class StudentCourseManager {
 		return result;
 	}
 
+	public int swopIndexWithPeer(Student student, String CourseCode, String MatricNumber) {
+		List<Index> indexes = student.getIndexes();
+
+		int result = -1;
+		String s1_index = "";
+		for (Index i : indexes) {
+			if (i.getCourse().getID() == CourseCode) {
+				result = 1;
+				s1_index = i.getID();
+				break;
+			}
+		}
+		if (result == -1)
+			return result;
+		result = -2;
+		Student s2 = null;
+		List<Object> students = FileManager.readObjectFromFile("Students.ser");
+		Student s;
+		for (Object o : students) {
+			s = (Student) o;
+			if (s.getMatricNo().equals(MatricNumber)) {
+				result = 1;
+				s2 = s;
+				break;
+			}
+		}
+		if (result == -2)
+			return result;
+		result = -3;
+		for (Index i : s2.getIndexes())
+			if (i.getCourse().getID().equals(CourseCode)) {
+				result = 0;
+				if (student.swapIndexWithPeer(s1_index, s2, i.getID()))
+					result = 1;
+				break;
+			}
+		return result;
+	}
+
 }
