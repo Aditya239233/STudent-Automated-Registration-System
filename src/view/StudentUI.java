@@ -34,9 +34,9 @@ public class StudentUI {
 			System.out.println("3. Check / Print Courses Registered");
 			System.out.println("4. Check Vacancies Available");
 			System.out.println("5. Change Index Number of Course");
-			System.out.println("6. Swop Index Number with Another Student"); //Devansh
-			System.out.println("7. Change notification mode"); // Devansh
-			System.out.println("8. Change Email"); // Devansh
+			System.out.println("6. Swop Index Number with Another Student");
+			System.out.println("7. Change notification mode");
+			System.out.println("8. Change Email");
 			System.out.println("9. Log out");
 			while (!sc.hasNextInt()) {
 				sc.next();
@@ -45,35 +45,26 @@ public class StudentUI {
 			choice = sc.nextInt();
 			switch (choice) {
 			case 1:
-				// Register Course
 				addCourse();	
 				break;
 			case 2:
-				// Drop Course
 				dropCourse();
 				break;
 			case 3:
-				// Check/Print Courses Registered
 				student.printCoursesRegistered();
 				break;
 			case 4:
-				// Check vacancies available
 				checkVacancyAvailable();
 				break;
 			case 5:
-				// Change index number of Course
+				swopIndex();
 				break;
 			case 6:
-				// Swop index with another student
-				student.printCoursesRegistered();
-				swopIndex();
+				swopIndexWithPeer();
 			case 7:
-				// Change Notification mode. But for Notification we need to implement only
-				// email.
 				changeNotificationMode();
 				break;
 			case 8:
-				// Change Email or Password
 				changeLoginDetails();
 				break;
 			case 9:
@@ -118,6 +109,46 @@ public class StudentUI {
 	}
 	
 	public void swopIndex() {
+		System.out.println("Enter the course code whose index number you would like to swap: ");
+		String courseCode = sc.nextLine();
+		while(!CourseManager.checkIfCourseExists(courseCode)){
+			System.out.println("Invalid course code, please enter a valid course code: ");
+			courseCode = sc.next();
+		}
+		List<Index> indexes= student.getIndexes();
+		Index currIndex = null;
+		Course course = null;
+		for (Index i: indexes) {
+			if (i.getCourse().getID().equals(courseCode)) {
+				course = i.getCourse();
+				currIndex = i;
+				break;
+			}
+		}
+		System.out.println("Enter the index code you would like to swap: ");
+		String index = sc.nextLine();
+		Boolean testIndex = true;
+		while (testIndex) {
+		for (Index i: course.getIndexList()) {
+			if (i.getID().equals(index)) {
+				testIndex = false;
+				student.removeCourse(course.getID());
+				if (student.addCourse(i)) 
+					System.out.println("Succesfully swopped indexes");
+				else {
+					System.out.println("Couldnt swop index");
+					student.addCourse(currIndex);
+				}
+			break;
+			}
+		}
+		System.out.println("You're not registered to this index. Try Again!");
+		index = sc.nextLine();
+		}
+		
+	}
+	
+	public void swopIndexWithPeer() {
 		StudentManager sm = new StudentManager();
 		FileManager fm = new FileManager();
 		String s1_index = " ";

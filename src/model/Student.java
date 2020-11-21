@@ -69,6 +69,11 @@ public class Student extends User implements Serializable {
 
 	public boolean addCourse(Index index) {
 		// Check and Update the max Limit
+		if (index.getTotalVacancies()-index.getNumStudentsEnrolled() < 1) {
+			index.addToWaitList(this.MatricNo);
+			System.out.println("Added to WaitList");
+			return false;
+		}
 		if (!checkTimeTableClash(index)){
 			indexes.add(index);
 			System.out.println("Course Succesfully added to Timetable");
@@ -89,11 +94,18 @@ public class Student extends User implements Serializable {
 			if (course.getID().equals(ID)) {
 				indexes.remove(index);
 				System.out.println("Course Succesfully Removed");
+				handleWaitList(index);
 				return true;
 			}
 		}
 		System.out.println("You have not registered for this Course. Cannot Drop a Course which hasn't been added");
 		return false;
+	}
+	
+	private void handleWaitList(Index index) {
+		String matricNumber = index.getWaitList().getFirst();
+		
+		index.removeFromWaitList(matricNumber);
 	}
 
 	public Boolean checkTimeTableClash(Index index) {
