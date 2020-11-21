@@ -2,6 +2,7 @@ package view;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Scanner;
 
@@ -44,6 +45,7 @@ public class AdminUI {
 				break;
 			case 2:
 				// Add a new Student
+				addStudent();
 				break;
 			case 3:
 				// Add Course
@@ -317,5 +319,47 @@ public class AdminUI {
 				System.out.println(StudentManager.StudentList.get(i));
 			}
 		}
+	}
+
+	public void addStudent(){
+		System.out.println("Enter the following details to add a new student to the system:");
+		System.out.println("Full name of student: ");
+		String name = sc.nextLine();
+		System.out.println("Student account password: ");
+		String password = sc.nextLine();
+		System.out.println("Student account email: ");
+		String email = sc.nextLine();
+		while(!email.contains("@e.ntu.edu.sg")){
+			System.out.println("Invalid email address. The email address should be of the form emailId@e.ntu.edu.sg");
+			System.out.println("Please enter the email ID again: ");
+			email = sc.nextLine();
+		}
+		System.out.println("Student's date of birth (DD-MM-YYYY format):");
+		String dob = sc.nextLine();
+		String[] arrOfStr = dob.split("-", 3);
+		while(dob.length() != 10 || arrOfStr.length != 3){
+			System.out.println("Invalid date of birth. Please enter again in DD-MM-YYYY format and include the hyphens.");
+			System.out.println("Student's date of birth (DD-MM-YYYY format):");
+		    dob = sc.nextLine();
+		    arrOfStr = dob.split("-", 3);
+		}
+		int dd = Integer.parseInt(arrOfStr[0]);
+		int mm = Integer.parseInt(arrOfStr[1]);
+		int yy = Integer.parseInt(arrOfStr[2]);
+		Calendar c = Calendar.getInstance();
+		c.set(yy, mm, dd);
+		System.out.println("Enter the student's school ID: ");
+		String school = sc.nextLine();
+		System.out.println("Enter the student's degree code: ");
+		String degree = sc.nextLine();
+		System.out.println("Student's Matric Number: ");
+		String mat_num = sc.nextLine();
+		while(!StudentManager.addStudent(name, password, email, c, mat_num, school, degree)){
+			System.out.println("Cannot add students with duplicate matric numbers.");
+			System.out.println("Please enter another matric number: ");
+			mat_num = sc.nextLine();
+		}
+		System.out.println("Student added successfully!");
+		return;
 	}
 }
