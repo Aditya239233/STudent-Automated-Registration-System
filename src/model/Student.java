@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.*;
 
 import controller.CourseManager;
+import controller.FileManager;
 
 public class Student extends User implements Serializable {
 	
@@ -16,6 +17,7 @@ public class Student extends User implements Serializable {
 	private String Degree;
 	private List<Index> indexes;
 	private NotificationMode nm;
+	private FileManager fm;
 
 	public Student(){
 		super();
@@ -76,6 +78,7 @@ public class Student extends User implements Serializable {
 		}
 		if (!checkTimeTableClash(index)){
 			indexes.add(index);
+			index.setNumStudentEnrolled(index.getNumStudentsEnrolled()-1);
 			System.out.println("Course Succesfully added to Timetable");
 			return true;
 		}
@@ -104,7 +107,14 @@ public class Student extends User implements Serializable {
 	
 	private void handleWaitList(Index index) {
 		String matricNumber = index.getWaitList().getFirst();
-		
+		List<Object> objects = fm.readObjectFromFile("student.dat");
+		List<Student> students = new ArrayList<Student>();
+		for (Object o: objects)
+			students.add((Student)o);
+		Student student;
+		for (Student s: students)
+			if (s.getMatricNo().equals(matricNumber))
+				s.addCourse(index);
 		index.removeFromWaitList(matricNumber);
 	}
 
