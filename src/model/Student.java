@@ -5,6 +5,7 @@ import java.util.*;
 
 import controller.CourseManager;
 import controller.FileManager;
+import controller.SendEmail;
 
 public class Student extends User implements Serializable {
 
@@ -107,9 +108,11 @@ public class Student extends User implements Serializable {
 			students.add((Student) o);
 		Student student;
 		for (Student s : students)
-			if (s.getMatricNo().equals(matricNumber))
+			if (s.getMatricNo().equals(matricNumber)) {
 				s.addCourse(index);
-		index.removeFromWaitList(matricNumber);
+				SendEmail.sendEmail(s, index);
+				index.removeFromWaitList(matricNumber);
+			}
 	}
 
 	public Boolean checkTimeTableClash(Index index) {

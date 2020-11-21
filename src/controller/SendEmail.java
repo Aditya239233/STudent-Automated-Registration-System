@@ -13,7 +13,7 @@ import model.Student;
 import model.Index;
 
 public class SendEmail {
-	public void sendEmail(Student s, Index i) {
+	public static void sendEmail(Student s, Index i) {
 
 		final String username = "donotreplyblackboard5@gmail.com";
 		String password = "Pokemon@1234";
