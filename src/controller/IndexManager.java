@@ -17,16 +17,16 @@ public class IndexManager {
 		}
 	}
 
-	public static void addIndex(String ID, Course course, int totalVacancies, List<Session> lectures, List<Session> labs) { // check hasTutorial and hasLab in AdminUI => pass null is has__ = false
+	public static void addIndex(String ID, Course course, int totalVacancies, List<Session> tutorials, List<Session> labs) { // check hasTutorial and hasLab in AdminUI => pass null is has__ = false
 		if (checkIfIndexExists(ID)) {
 			System.out.println("Index already exists");
 			return;
 		}
 		Index newIndex;
-		if (lectures != null && labs != null) {
-			newIndex = new Index(ID, course, totalVacancies, lectures, labs);
-		} else if (lectures != null) {
-			newIndex = new Index(ID, course, totalVacancies, lectures);
+		if (tutorials != null && labs != null) {
+			newIndex = new Index(ID, course, totalVacancies, tutorials, labs);
+		} else if (tutorials != null) {
+			newIndex = new Index(ID, course, totalVacancies, tutorials);
 		} else {
 			newIndex = new Index(ID, course, totalVacancies);
 		}
@@ -34,22 +34,21 @@ public class IndexManager {
 		System.out.println("Succesfully added Index");
 	}
 	
-	public static void updateIndex(String indexID, Course course, int totalVacancies, List<Session> lectures, List<Session> labs) {
+	public static void updateIndex(String indexID, Course course, int totalVacancies, List<Session> tutorials, List<Session> labs) {
 		if (checkIfIndexExists(indexID)) {
 			Index index = findIndex(indexID);
 			int i = IndexList.indexOf(index);
 			Index newIndex;
-			if (lectures != null && labs != null) {
-				newIndex = new Index(indexID, course, totalVacancies, lectures, labs);
-			} else if (lectures != null) {
-				newIndex = new Index(indexID, course, totalVacancies, lectures);
+			if (tutorials != null && labs != null) {
+				newIndex = new Index(indexID, course, totalVacancies, tutorials, labs);
+			} else if (tutorials != null) {
+				newIndex = new Index(indexID, course, totalVacancies, tutorials);
 			} else {
 				newIndex = new Index(indexID, course, totalVacancies);
 			}
 			IndexList.set(i, newIndex);
 			System.out.println("Succesfully updated Index");
 		} else {
-			System.out.println("Index Does not Exist");
 		}
 	}
 
@@ -68,7 +67,7 @@ public class IndexManager {
 		return IndexList.stream().filter(index -> index.getID() == indexID).findFirst().orElse(null);
 	}
 
-	private static boolean checkIfIndexExists(String indexID) {
+	public static boolean checkIfIndexExists(String indexID) {
 		return IndexList.stream().anyMatch(index -> indexID.equals(index.getID()));
 	}
 }
