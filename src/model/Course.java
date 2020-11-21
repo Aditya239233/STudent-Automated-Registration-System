@@ -6,7 +6,10 @@ import java.util.List;
 import java.io.Serializable;
 
 public class Course implements Serializable {
-
+	
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 	private String Name;
 	private String ID;

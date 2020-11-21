@@ -73,15 +73,15 @@ public class AdminUI {
 				break;
 			case 9:
 				// Check available slot for an index number
-				checkIndexSlot();
+				//checkIndexSlot();
 				break;
 			case 10:
 				// Print student list by index number
-				printStudentListIndex();
+				//printStudentListIndex();
 				break;
 			case 11:
 				// Print student list by course
-				printStudentListCourse();
+				//printStudentListCourse();
 				break;
 			case 12:
 				break;
@@ -157,7 +157,7 @@ public class AdminUI {
 	public void addIndex() {
 		System.out.println("Adding a new index... See below for the list of Course IDs "); 
 		CourseManager.printCourseIDs();
-		Course course;
+		Course course = null;
 		do {
 			System.out.println("What is the ID of the course that the index belongs? e.g. CZ2002");
 			String courseID = sc.next();
@@ -211,7 +211,7 @@ public class AdminUI {
 			}
 		} while(index != null);
 		CourseManager.printCourseIDs();
-		Course course;
+		Course course = null;
 		do {
 			System.out.println("What is the ID of the course that the index belongs? e.g. CZ2002");
 			String courseID = sc.next();
@@ -278,48 +278,48 @@ public class AdminUI {
 		return session;
 	}
 	
-	public void checkIndexSlot() {
-		System.out.println("Enter the Index: ");
-		String indexID = sc.next();
-		while(!IndexManager.checkIfIndexExists(indexID)) {
-			System.out.println("Invalid Index, please enter a valid Index: ");
-			indexID = sc.next();
-		}
-		for (int i = 0; i < IndexManager.IndexList.size(); i++) {
-			if (indexID == IndexManager.IndexList.get(i)) {
-				System.out.println(indexID + "has" + IndexManager.IndexList.get(i).getTotalVacancies() + "vacancies");
-			}
-		}
-		
-	}in
-	
-	public void printStudentListIndex() {
-		System.out.println("Enter the Index: ");
-		String indexID = sc.next();
-		while(!IndexManager.checkIfIndexExists(indexID)) {
-			System.out.println("Invalid Index, please enter a valid Index: ");
-			indexID = sc.next();
-		}
-		for (int i = 0; i < StudentManager.StudentList.size(); i++) {
-			if (indexID == StudentManager.StudentList.get(i).getIndexes()) {
-				System.out.println(StudentManager.StudentList.get(i));
-			}
-		}
-	}
-	
-	public void printStudentListCourse() {
-		System.out.println("Enter the Couse: ");
-		String course = sc.next();
-		while(!CourseManager.checkIfCourseExists(course)){
-			System.out.println("Invalid course code, please enter a valid course code: ");
-			course = sc.next();
-		}
-		for (int i = 0; i < StudentManager.StudentList.size(); i++) {
-			if (course == StudentManager.StudentList.get(i).getID()) {
-				System.out.println(StudentManager.StudentList.get(i));
-			}
-		}
-	}
+//	public void checkIndexSlot() {
+//		System.out.println("Enter the Index: ");
+//		String indexID = sc.next();
+//		while(!IndexManager.checkIfIndexExists(indexID)) {
+//			System.out.println("Invalid Index, please enter a valid Index: ");
+//			indexID = sc.next();
+//		}
+//		for (int i = 0; i < IndexManager.IndexList.size(); i++) {
+//			if (indexID == IndexManager.IndexList.get(i)) {
+//				System.out.println(indexID + "has" + IndexManager.IndexList.get(i).getTotalVacancies() + "vacancies");
+//			}
+//		}
+//		
+//	}
+//	
+//	public void printStudentListIndex() {
+//		System.out.println("Enter the Index: ");
+//		String indexID = sc.next();
+//		while(!IndexManager.checkIfIndexExists(indexID)) {
+//			System.out.println("Invalid Index, please enter a valid Index: ");
+//			indexID = sc.next();
+//		}
+//		for (int i = 0; i < StudentManager.StudentList.size(); i++) {
+//			if (indexID == StudentManager.StudentList.get(i).getIndexes()) {
+//				System.out.println(StudentManager.StudentList.get(i));
+//			}
+//		}
+//	}
+//	
+//	public void printStudentListCourse() {
+//		System.out.println("Enter the Couse: ");
+//		String course = sc.next();
+//		while(!CourseManager.checkIfCourseExists(course)){
+//			System.out.println("Invalid course code, please enter a valid course code: ");
+//			course = sc.next();
+//		}
+//		for (int i = 0; i < StudentManager.StudentList.size(); i++) {
+//			if (course == StudentManager.StudentList.get(i).getID()) {
+//				System.out.println(StudentManager.StudentList.get(i));
+//			}
+//		}
+//	}
 
 	public void addStudent(){
 		System.out.println("Enter the following details to add a new student to the system:");

@@ -6,12 +6,14 @@ import java.util.*;
 import controller.CourseManager;
 
 public class Student extends User implements Serializable {
-
+	
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 	private String MatricNo;
 	private String SchoolID;
 	private String Degree;
-	private List<Course> courses;
 	private List<Index> indexes;
 	private NotificationMode nm;
 
