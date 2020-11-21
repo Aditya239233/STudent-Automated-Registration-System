@@ -8,8 +8,8 @@ import java.util.List;
 public class StudentManager extends UserManager {
 	private static List<Student> StudentList;
 
-	public static boolean addStudent(String Name, String Password, String Email, Calendar dob, String MatricNo, String SchoolID,
-			String Degree) {
+	public static boolean addStudent(String Name, String Password, String Email, Calendar dob, String MatricNo,
+			String SchoolID, String Degree) {
 		if (checkIfStudentExists(MatricNo)) {
 			System.out.println("Matriculation Number already exists");
 			return false;

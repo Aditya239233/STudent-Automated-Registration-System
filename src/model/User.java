@@ -4,7 +4,7 @@ import java.util.*;
 import controller.PasswordManager;
 import java.io.Serializable;
 
-public class User implements Serializable{
+public class User implements Serializable {
 
 	/**
 	 * 
@@ -16,7 +16,7 @@ public class User implements Serializable{
 	private Calendar dob;
 	PasswordManager pm = new PasswordManager();
 
-	public User(){
+	public User() {
 		this.Name = "undefined";
 		this.Password = "undefined";
 		this.Email = "undefined";
@@ -54,7 +54,7 @@ public class User implements Serializable{
 		return this.Email;
 	}
 
-	public void setEmail(String email){
+	public void setEmail(String email) {
 		this.Email = email;
 	}
 }

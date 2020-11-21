@@ -36,19 +36,17 @@ public class Main {
 					StudentUI ui = new StudentUI(this.student);
 					ui.display();
 					break;
-				}
-				else {
+				} else {
 					System.out.println("Incorrect Login Credentials");
 					continue;
 				}
-					
+
 			} else {
 				Boolean isLogged = adminLogin();
 				if (isLogged) {
 					AdminUI ui = new AdminUI();
 					ui.display();
-				}
-				else {
+				} else {
 					System.out.println("Incorrect Login Credentials");
 					continue;
 				}
@@ -71,7 +69,6 @@ public class Main {
 		System.out.println("#########################################################################");
 	}
 
-	
 	public Boolean studentLogin() {
 		System.out.print("Enter your Matric Number: ");
 		String matricNumber = sc.next();
@@ -82,16 +79,16 @@ public class Main {
 		password = pm.hashPassword(password);
 		List<Object> records = fm.readObjectFromFile("student.dat");
 		List<Student> students = new ArrayList<Student>();
-		for (Object o: records)
-			students.add((Student)o);
-		for (Student s: students) 
+		for (Object o : records)
+			students.add((Student) o);
+		for (Student s : students)
 			if (s.getMatricNo().equals(matricNumber) && s.getPassword().equals(password)) {
 				this.student = s;
 				return true;
 			}
 		return false;
 	}
-	
+
 	public Boolean adminLogin() {
 		System.out.print("Enter your Email ");
 		String email = sc.next();
@@ -102,9 +99,9 @@ public class Main {
 		password = pm.hashPassword(password);
 		List<Object> records = fm.readObjectFromFile("admin.dat");
 		List<Admin> admins = new ArrayList<Admin>();
-		for (Object o: records)
-			admins.add((Admin)o);
-		for (Admin a: admins) 
+		for (Object o : records)
+			admins.add((Admin) o);
+		for (Admin a : admins)
 			if (a.getEmail().equals(email) && a.getPassword().equals(password)) {
 				return true;
 			}
