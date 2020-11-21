@@ -29,6 +29,7 @@ public class StudentCourseManager {
 			if (result != 3)
 				break;
 		}
+
 		return result;
 	}
 
@@ -97,18 +98,18 @@ public class StudentCourseManager {
 			}
 		return result;
 	}
-	
+
 	public void writeStudentToFile(Student student) {
 		List<Object> objectList = FileManager.readObjectFromFile("student.dat");
 		List<Object> students = new ArrayList<Object>();
-		for (int i=0;i < objectList.size(); i++) {
-			Student s = (Student)objectList.get(i);
+		for (int i = 0; i < objectList.size(); i++) {
+			Student s = (Student) objectList.get(i);
 			if (s.getMatricNo().equals(student.getMatricNo()))
 				s = student;
 			students.add(s);
 		}
 		FileManager.writeObjectToFile("student.dat", students);
-		
+
 	}
 
 }
