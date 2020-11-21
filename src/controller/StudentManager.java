@@ -8,15 +8,16 @@ import java.util.List;
 public class StudentManager extends UserManager {
 	private static List<Student> StudentList;
 
-	public void addStudent(String Name, String Password, String Email, Calendar dob, String MatricNo, String SchoolID,
+	public static boolean addStudent(String Name, String Password, String Email, Calendar dob, String MatricNo, String SchoolID,
 			String Degree) {
 		if (checkIfStudentExists(MatricNo)) {
 			System.out.println("Matriculation Number already exists");
-			return;
+			return false;
 		}
 		Student newStudent = new Student(Name, Password, Email, dob, MatricNo, SchoolID, Degree);
 		StudentList.add(newStudent);
 		System.out.println("Succesfully Added Student");
+		return true;
 	}
 
 	public void deleteStudent(String MatricNo) {
@@ -33,7 +34,7 @@ public class StudentManager extends UserManager {
 		}
 	}
 
-	public boolean checkIfStudentExists(String MatricNo) {
+	public static boolean checkIfStudentExists(String MatricNo) {
 		return StudentList.stream().anyMatch(Student -> MatricNo.equals(Student.getMatricNo()));
 	}
 }
