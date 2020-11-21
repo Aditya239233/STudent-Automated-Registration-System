@@ -3,6 +3,7 @@ package view;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.Console;
 import model.Student;
 import model.Admin;
 import controller.FileManager;
@@ -13,8 +14,7 @@ public class Main {
 	private int user;
 	private Student student;
 	PasswordManager pm = new PasswordManager();
-	FileManager fm = new FileManager();
-
+	Console console = System.console();
 	Scanner sc = new Scanner(System.in);
 
 	public void main() {
@@ -75,9 +75,9 @@ public class Main {
 
 		// Mask Password
 		System.out.println("Enter your password: ");
-		String password = sc.next();
+		String password = console.readLine();
 		password = pm.hashPassword(password);
-		List<Object> records = fm.readObjectFromFile("student.dat");
+		List<Object> records = FileManager.readObjectFromFile("student.dat");
 		List<Student> students = new ArrayList<Student>();
 		for (Object o : records)
 			students.add((Student) o);
@@ -95,9 +95,9 @@ public class Main {
 
 		// Mask Password
 		System.out.println("Enter your password: ");
-		String password = sc.next();
+		String password = console.readLine();
 		password = pm.hashPassword(password);
-		List<Object> records = fm.readObjectFromFile("admin.dat");
+		List<Object> records = FileManager.readObjectFromFile("admin.dat");
 		List<Admin> admins = new ArrayList<Admin>();
 		for (Object o : records)
 			admins.add((Admin) o);

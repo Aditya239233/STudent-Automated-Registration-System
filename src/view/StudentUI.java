@@ -1,14 +1,10 @@
 package view;
 
 import java.util.Scanner;
-import java.util.List;
 
 import controller.CourseManager;
-import model.Index;
 import model.NotificationMode;
 import model.Student;
-import controller.FileManager;
-import controller.StudentManager;
 import controller.StudentCourseManager;
 
 public class StudentUI {
@@ -60,9 +56,9 @@ public class StudentUI {
 				swopIndexWithPeer();
 			case 7:
 				changeNotificationMode();
+				scm.writeStudentToFile(student);
 				break;
 			case 8:
-				writeStudentToFile();
 				break;
 			default:
 				System.out.print("Enter a valid Option");
@@ -85,17 +81,20 @@ public class StudentUI {
 			System.out.println("There are no vacancies. You've been added to the waitlist");
 		else if (result == 0)
 			System.out.println("There is a TimeTable Clash. Cannot Add Course");
-		else
+		else {
+			scm.writeStudentToFile(student);
 			System.out.println("Succesfully Added " + CourseCode);
+		}
 	}
 
 	private void dropCourse() {
 		System.out.println("Enter the Course Code: ");
 		String CourseCode = sc.nextLine();
 		Boolean result = student.removeCourse(CourseCode);
-		if (result)
+		if (result) {
+			scm.writeStudentToFile(student);
 			System.out.println("Succesfully Dropped the Course " + CourseCode);
-		else
+		} else
 			System.out.println("You're not enrolled in the Course " + CourseCode);
 	}
 
@@ -113,8 +112,10 @@ public class StudentUI {
 			System.out.println("You're not registered to the Course");
 		else if (result == 0)
 			System.out.println("Could not swop index! There's a timetable clash");
-		else
+		else {
+			scm.writeStudentToFile(student);
 			System.out.println("Succesfully Swopped the index of " + CourseCode + " to " + IndexCode);
+		}
 	}
 
 	private void swopIndexWithPeer() {
@@ -183,7 +184,7 @@ public class StudentUI {
 				System.out.println("Invalid choice");
 			}
 			}
-
+			scm.writeStudentToFile(student);
 		}
 	}
 
@@ -197,7 +198,4 @@ public class StudentUI {
 			System.out.println("Vacancy for the Course " + CourseCode + " is " + result);
 	}
 
-	private void writeStudentToFile() {
-
-	}
 }

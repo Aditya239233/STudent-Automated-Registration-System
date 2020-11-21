@@ -75,7 +75,7 @@ public class StudentCourseManager {
 			return result;
 		result = -2;
 		Student s2 = null;
-		List<Object> students = FileManager.readObjectFromFile("Students.ser");
+		List<Object> students = FileManager.readObjectFromFile("Students.dat");
 		Student s;
 		for (Object o : students) {
 			s = (Student) o;
@@ -96,6 +96,19 @@ public class StudentCourseManager {
 				break;
 			}
 		return result;
+	}
+	
+	public void writeStudentToFile(Student student) {
+		List<Object> objectList = FileManager.readObjectFromFile("student.dat");
+		List<Object> students = new ArrayList<Object>();
+		for (int i=0;i < objectList.size(); i++) {
+			Student s = (Student)objectList.get(i);
+			if (s.getMatricNo().equals(student.getMatricNo()))
+				s = student;
+			students.add(s);
+		}
+		FileManager.writeObjectToFile("student.dat", students);
+		
 	}
 
 }

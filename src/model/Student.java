@@ -6,6 +6,7 @@ import java.util.*;
 import controller.CourseManager;
 import controller.FileManager;
 import controller.SendEmail;
+import controller.StudentCourseManager;
 
 public class Student extends User implements Serializable {
 
@@ -18,7 +19,7 @@ public class Student extends User implements Serializable {
 	private String Degree;
 	private List<Index> indexes;
 	private NotificationMode nm;
-	private FileManager fm;
+	StudentCourseManager scm = new StudentCourseManager();
 
 	public Student() {
 		super();
@@ -105,11 +106,10 @@ public class Student extends User implements Serializable {
 
 	private void handleWaitList(Index index) {
 		String matricNumber = index.getWaitList().getFirst();
-		List<Object> objects = fm.readObjectFromFile("student.dat");
+		List<Object> objects = FileManager.readObjectFromFile("student.dat");
 		List<Student> students = new ArrayList<Student>();
 		for (Object o : objects)
 			students.add((Student) o);
-		Student student;
 		for (Student s : students) {
 			if (s.getMatricNo().equals(matricNumber))
 				if (s.addCourse(index) == 1) {
@@ -128,7 +128,7 @@ public class Student extends User implements Serializable {
 			Course c = i.getCourse();
 			// Lecture Clash
 			for (Session lecture : c.getLecture()) {
-				for (Session newLecture : c.getLecture()) {
+				for (Session newLecture : newCourse.getLecture()) {
 					isClash = checkClash(lecture, newLecture);
 					if (isClash)
 						return isClash;
@@ -147,7 +147,7 @@ public class Student extends User implements Serializable {
 
 			// Tutorial Clash
 			for (Session tutorial : i.getTutorial()) {
-				for (Session newLecture : c.getLecture()) {
+				for (Session newLecture : newCourse.getLecture()) {
 					isClash = checkClash(newLecture, tutorial);
 					if (isClash)
 						return isClash;
@@ -166,7 +166,7 @@ public class Student extends User implements Serializable {
 
 			// Lab Clash
 			for (Session lab : i.getLab()) {
-				for (Session newLecture : c.getLecture()) {
+				for (Session newLecture : newCourse.getLecture()) {
 					isClash = checkClash(newLecture, lab);
 					if (isClash)
 						return isClash;
@@ -271,6 +271,8 @@ public class Student extends User implements Serializable {
 					s2.addCourse(i);
 				}
 			}
+			scm.writeStudentToFile(this);
+			scm.writeStudentToFile(s2);
 			return true;
 		} else
 			return false;
