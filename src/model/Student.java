@@ -72,6 +72,9 @@ public class Student extends User implements Serializable {
 
 	public int addCourse(Index index) {
 		if (index.getTotalVacancies() - index.getNumStudentsEnrolled() < 1) {
+			for (String matric : index.getWaitList())
+				if (matric.equals(this.getMatricNo()))
+					return -1;
 			index.addToWaitList(this.MatricNo);
 			return -1;
 		}
@@ -107,12 +110,13 @@ public class Student extends User implements Serializable {
 		for (Object o : objects)
 			students.add((Student) o);
 		Student student;
-		for (Student s : students)
-			if (s.getMatricNo().equals(matricNumber)) {
-				s.addCourse(index);
-				SendEmail.sendEmail(s, index);
-				index.removeFromWaitList(matricNumber);
-			}
+		for (Student s : students) {
+			if (s.getMatricNo().equals(matricNumber))
+				if (s.addCourse(index) == 1) {
+					SendEmail.sendEmail(s, index);
+					index.removeFromWaitList(matricNumber);
+				}
+		}
 	}
 
 	public Boolean checkTimeTableClash(Index index) {
