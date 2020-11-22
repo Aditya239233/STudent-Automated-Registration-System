@@ -1,34 +1,28 @@
 package view;
 
 import controller.FileManager;
-import java.util.ArrayList;
 import model.Admin;
-import model.Course;
-import model.Index;
-import model.Session;
-import model.Student;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class TestFiles {
 	public static void main(String args[]) throws Exception {
-//		Calendar c = Calendar.getInstance();
-//		c.set(1999 + 1900, 10, 22);
-//		Student devansh = new Student("DevanshK", "password123", "devanshk22@gmail.com", c, "U1823660K", "EEE", "EEE");
-//		Student niyathi = new Student("Niyathi", "password789", "niyathi12@gmail.com", c, "U1840697F", "SBS", "BS");
-//		Admin chaiyu = new Admin("Chai Yu", "password456", "cy@ntu", c);
-//		Course oodp = new Course("OODP", "CZ2002", "SCSE", 3, new ArrayList<Index>(), new ArrayList<Session>());
-//		FileManager fm = new FileManager();
-//		fm.writeStudentObject(devansh);
-//		fm.writeAdminObject(chaiyu);
-//		fm.writeCourseObject(oodp);
-//		Admin a = fm.readAdminObject(chaiyu.getName());
-//		Course course = fm.readCourseObject(oodp.getName());
-//	    Student d = fm.readStudentObject(devansh.getName());
-//		System.out.println(course.getFaculty());
-//		System.out.println(a.getEmail());
-//		System.out.println(d.getDegree());
-
+		Calendar c = Calendar.getInstance();
+		c.set(1999 , 10, 22);
+		Admin SuperUser = new Admin("SuperUser", "Qwerty1!", "SuperUser@gmail.com", c);
+		Admin admin = new Admin("Admin", "P@ssword", "Admin@gmail.com", c);
+		List<Object> admins = new ArrayList<Object>();
+		admins.add(SuperUser);
+		admins.add(admin);
+		FileManager.writeObjectToFile("admin.dat", admins);
+		admins.clear();
+		admins = FileManager.readObjectFromFile("admin.dat");
+		for (Object o: admins) {
+			Admin a = (Admin)o;
+			System.out.println(a.getName());
+		}
 	}
 
 }

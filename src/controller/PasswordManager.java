@@ -3,8 +3,14 @@ package controller;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.io.Serializable;
 
-public class PasswordManager {
+public class PasswordManager implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private byte[] getSalt() throws NoSuchAlgorithmException {
 		SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
