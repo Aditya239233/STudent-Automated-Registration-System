@@ -8,6 +8,14 @@ import model.Session;
 
 public class IndexManager {
 	public static List<Index> IndexList;
+	
+	public static void init(List<Course> CourseList) {
+		List<Index> currentList;
+		for(Course course: CourseList) {
+			currentList = course.getIndexList();
+			IndexList.addAll(currentList);
+		}
+	}
 
 	public static void printIndexIDs() {
 		int length = IndexList.size();
@@ -15,7 +23,10 @@ public class IndexManager {
 			System.out.println(i + ") " + IndexList.get(i).getID());
 		}
 	}
-
+	
+	public static List<Index> getIndexList() {
+		return IndexList;
+	}
 
 	public static Index addIndex(String ID, Course course, int totalVacancies, List<Session> tutorials, List<Session> labs) { // check hasTutorial and hasLab in AdminUI => pass null is has__ = false
 

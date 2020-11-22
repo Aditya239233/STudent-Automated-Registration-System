@@ -24,7 +24,10 @@ public class CourseManager {
 			System.out.println(i + ") " + CourseList.get(i).getID());
 		}
 	}
-
+	
+	public static List<Course> getCourseList() {
+		return CourseList;
+	}
 
 	public static Course addCourse(String courseID, String Name, String faculty, int au, List<Index> indexList, List<Session> lectures) {
 
@@ -102,14 +105,9 @@ public class CourseManager {
 		return CourseList.stream().anyMatch(Course -> CourseID.equals(Course.getID()));
 	}
 
-	// Done by Aditya
 	public int getCourseVacancy(String CourseCode) {
 		int result = -1;
-		List<Course> courses = new ArrayList<Course>();
-		List<Object> objects = FileManager.readObjectFromFile("course.dat");
-		for (Object o : objects)
-			courses.add((Course) o);
-		for (Course course : courses)
+		for (Course course : getCourseList())
 			if (course.getID().equals(CourseCode)) {
 				result = 0;
 				for (Index i : course.getIndexList())
