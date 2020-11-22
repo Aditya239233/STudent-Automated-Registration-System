@@ -17,7 +17,7 @@ public class Student extends User implements Serializable {
 	private String MatricNo;
 	private String SchoolID;
 	private String Degree;
-	private List<Index> indexes;
+	private List<Index> indexes = new ArrayList<Index>();
 	private NotificationMode nm;
 	StudentCourseManager scm = new StudentCourseManager();
 

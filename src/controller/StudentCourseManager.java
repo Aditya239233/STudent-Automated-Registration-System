@@ -6,8 +6,13 @@ import java.util.List;
 import model.Course;
 import model.Index;
 import model.Student;
+import java.io.Serializable;
+public class StudentCourseManager implements Serializable {
 
-public class StudentCourseManager {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public int registerCourse(Student student, String CourseCode, String IndexCode) {
 		int result = -3;

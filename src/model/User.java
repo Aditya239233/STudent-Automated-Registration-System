@@ -27,13 +27,13 @@ public class User implements Serializable {
 
 	public User(String Name, String Password, String Email, Calendar dob) {
 		this.Name = Name;
-		this.Password = Password;
+		this.Password = pm.hashPassword(Password);
 		this.Email = Email;
 		this.dob = dob;
 	}
 
 	public void setPassword(String Password) {
-		//this.Password = pm.hashPassword(Password);
+		this.Password = pm.hashPassword(Password);
 	}
 
 	public String getPassword() {

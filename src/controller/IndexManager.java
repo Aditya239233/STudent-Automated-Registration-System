@@ -1,13 +1,13 @@
 package controller;
 
 import java.util.List;
-
+import java.util.ArrayList;
 import model.Course;
 import model.Index;
 import model.Session;
 
 public class IndexManager {
-	public static List<Index> IndexList;
+	public static List<Index> IndexList = new ArrayList<Index>();
 	
 	public static void init(List<Course> CourseList) {
 		List<Index> currentList;
@@ -29,8 +29,8 @@ public class IndexManager {
 	}
 
 	public static Index addIndex(String ID, Course course, int totalVacancies, List<Session> tutorials, List<Session> labs) { // check hasTutorial and hasLab in AdminUI => pass null is has__ = false
-
-		if (checkIfIndexExists(ID)) {
+		if (IndexList.size() == 0) {}
+		else if (checkIfIndexExists(ID)) {
 			System.out.println("Index already exists");
 			return null;
 		}
@@ -81,7 +81,14 @@ public class IndexManager {
 
 	public static Index findIndex(String indexID) {
 		// finds Index with specific ID in IndexList
-		return IndexList.stream().filter(index -> index.getID() == indexID).findFirst().orElse(null);
+		Index reqIndex = null;
+		for (Index index: IndexList) {
+			if (index.getID().equals(indexID)) {
+				reqIndex = index;
+				break;
+			}
+		}
+		return reqIndex;
 	}
 
 	public static boolean checkIfIndexExists(String indexID) {

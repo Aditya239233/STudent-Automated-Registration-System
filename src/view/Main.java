@@ -3,25 +3,31 @@ package view;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.io.Console;
+//import java.io.Console;
 import model.Student;
 import model.Admin;
 import controller.CourseManager;
 import controller.FileManager;
 import controller.IndexManager;
 import controller.PasswordManager;
+import controller.StudentManager;
 
 public class Main {
 
 	private static int user;
 	private static Student student;
 	private static PasswordManager pm = new PasswordManager();
-	private static Console console = System.console();
+	//private static Console console = System.console();
 	static Scanner sc = new Scanner(System.in);
 	
-	public void main() {
+	public static void main(String [] args) {
+		try {
 		CourseManager.init();
 		IndexManager.init(CourseManager.getCourseList());
+		StudentManager.init();
+		} catch(Exception e) {
+			
+		}
 		displayWelcome();
 		while (true) {
 			System.out.println("1. Student");
@@ -39,7 +45,6 @@ public class Main {
 				if (isLogged) {
 					StudentUI ui = new StudentUI(student);
 					ui.display();
-					break;
 				} else {
 					System.out.println("Incorrect Login Credentials");
 					continue;
@@ -79,16 +84,18 @@ public class Main {
 
 		// Mask Password
 		System.out.println("Enter your password: ");
-		String password = console.readLine();
+		String password = sc.next();
 		password = pm.hashPassword(password);
 		List<Object> records = FileManager.readObjectFromFile("student.dat");
 		List<Student> students = new ArrayList<Student>();
 		for (Object o : records)
 			students.add((Student) o);
 		for (Student s : students)
-			if (s.getMatricNo().equals(matricNumber) && s.getPassword().equals(password)) {
-				student = s;
-				return true;
+			if (s.getMatricNo().equals(matricNumber)) {
+				if (s.getPassword().equals(password)) {
+					student = s;
+					return true;
+				}
 			}
 		return false;
 	}
@@ -100,15 +107,17 @@ public class Main {
 		// Mask Password
 		System.out.println("Enter your password: ");
 		String password = sc.next();
-		password = pm.hashPassword(password);
+		String hashedPassword = pm.hashPassword(password);
 		List<Object> records = FileManager.readObjectFromFile("admin.dat");
 		List<Admin> admins = new ArrayList<Admin>();
 		for (Object o : records)
 			admins.add((Admin) o);
 		for (Admin a : admins)
 			if (a.getEmail().equals(email)) {
-				System.out.println(a.getName());
-				if (a.getPassword().equals(password))
+				System.out.println(a.getEmail());
+				System.out.println(a.getPassword());
+				System.out.println(password);
+				if (a.getPassword().equals(hashedPassword))
 					return true;
 			}
 		return false;

@@ -1,8 +1,8 @@
 package model;
 
 import java.time.LocalTime;
-import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 import java.io.Serializable;
 
 public class Course implements Serializable {
@@ -26,7 +26,7 @@ public class Course implements Serializable {
 		this.faculty = faculty;
 		this.au = au;
 
-		this.indexList = null;
+		this.indexList = new ArrayList<Index>();;
 		this.lectures = lectures;
 	}
 
@@ -109,11 +109,7 @@ public class Course implements Serializable {
 	public void addLecture(int day, LocalTime startTime, LocalTime endTime, String location, String teacher) {
 		int ID = this.lectures.size();
 		Session lecture = new Session(ID, day, startTime, endTime, location, teacher);
-		if (this.lectures == null) {
-			this.lectures = Arrays.asList(lecture);
-		} else {
-			this.lectures.add(lecture);
-		}
+		this.lectures.add(lecture);
 	}
 
 	public void deleteLecture(int index) {
@@ -126,11 +122,7 @@ public class Course implements Serializable {
 
 	
 	public void addIndex(Index index) {
-		if (this.indexList == null) {
-			this.indexList = Arrays.asList(index);
-		} else {
-			this.indexList.add(index);
-		}
+		this.indexList.add(index);
 	}
 	
 	public void deleteIndex(String indexID) {

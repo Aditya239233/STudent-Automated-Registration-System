@@ -90,7 +90,7 @@ public class AdminUI {
 				System.out.print("Enter a valid Option");
 			}
 
-		} while (choice != 7);
+		} while (choice != 12);
 	}
 
 	public void addCourse() {
@@ -165,10 +165,12 @@ public class AdminUI {
 		do {
 			System.out.println("What is the ID of the course that the index belongs? e.g. CZ2002");
 			String courseID = sc.next();
-			if (CourseManager.checkIfCourseExists(courseID)) {
-				course = CourseManager.findCourse(courseID);
-			} else {
+			if (!CourseManager.checkIfCourseExists(courseID)) {
 				System.out.println("The course ID you entered does not exist");
+			} else {
+				course = CourseManager.findCourse(courseID);
+				System.out.println(course.getID());
+				break;
 			}
 		} while (course != null);
 		System.out.println("What is the index's ID? e.g. BCG10");
@@ -199,12 +201,16 @@ public class AdminUI {
 		}
 
 		Index newIndex = IndexManager.addIndex(indexID, course, totalVacancies, tutorials, labs);
+		if (newIndex == null) {
+			System.out.println("Index already exists");
+		}
+		else {
 		CourseManager.addIndexToCourse(course.getID(), newIndex);
 		System.out.println("Succesfully added Index!");
 
 		IndexManager.addIndex(indexID, course, totalVacancies, tutorials, labs);
+		}
 	}
-
 	public void updateIndex() {
 		System.out.println("Updating an index... See below for the list of Index IDs ");
 		IndexManager.printIndexIDs();
@@ -214,6 +220,7 @@ public class AdminUI {
 		do {
 			if (IndexManager.checkIfIndexExists(indexID)) {
 				index = IndexManager.findIndex(indexID);
+				break;
 			} else {
 				System.out.println("The index ID you entered does not exist");
 			}
@@ -299,12 +306,8 @@ public class AdminUI {
 			System.out.println("Invalid Index, please enter a valid Index: ");
 			indexID = sc.next();
 		}
-		for (int i = 0; i < IndexManager.IndexList.size(); i++) {
-			if (indexID == IndexManager.IndexList.get(i).getID()) {
-				System.out.println(indexID + "has " + Integer.toString(IndexManager.IndexList.get(i).getTotalVacancies()-IndexManager.IndexList.get(i).getNumStudentsEnrolled())+ " vacancies");
-				break;
-			}
-		}
+		Index index = IndexManager.findIndex(indexID);
+		System.out.println(indexID + "has " + Integer.toString(index.getTotalVacancies()-index.getNumStudentsEnrolled())+ " vacancies");
 	}
 	
 	
@@ -365,24 +368,24 @@ public class AdminUI {
 	public void addStudent() {
 		System.out.println("Enter the following details to add a new student to the system:");
 		System.out.println("Full name of student: ");
-		String name = sc.nextLine();
+		String name = sc.next();
 		System.out.println("Student account password: ");
-		String password = sc.nextLine();
+		String password = sc.next();
 		System.out.println("Student account email: ");
-		String email = sc.nextLine();
-		while (!email.contains("@e.ntu.edu.sg")) {
+		String email = sc.next();
+		while (!email.contains("@")) {
 			System.out.println("Invalid email address. The email address should be of the form emailId@e.ntu.edu.sg");
 			System.out.println("Please enter the email ID again: ");
-			email = sc.nextLine();
+			email = sc.next();
 		}
 		System.out.println("Student's date of birth (DD-MM-YYYY format):");
-		String dob = sc.nextLine();
+		String dob = sc.next();
 		String[] arrOfStr = dob.split("-", 3);
 		while (dob.length() != 10 || arrOfStr.length != 3) {
 			System.out
 					.println("Invalid date of birth. Please enter again in DD-MM-YYYY format and include the hyphens.");
 			System.out.println("Student's date of birth (DD-MM-YYYY format):");
-			dob = sc.nextLine();
+			dob = sc.next();
 			arrOfStr = dob.split("-", 3);
 		}
 		int dd = Integer.parseInt(arrOfStr[0]);
@@ -391,16 +394,17 @@ public class AdminUI {
 		Calendar c = Calendar.getInstance();
 		c.set(yy, mm, dd);
 		System.out.println("Enter the student's school ID: ");
-		String school = sc.nextLine();
+		String school = sc.next();
 		System.out.println("Enter the student's degree code: ");
-		String degree = sc.nextLine();
+		String degree = sc.next();
 		System.out.println("Student's Matric Number: ");
-		String mat_num = sc.nextLine();
+		String mat_num = sc.next();
 		while (!StudentManager.addStudent(name, password, email, c, mat_num, school, degree)) {
 			System.out.println("Cannot add students with duplicate matric numbers.");
 			System.out.println("Please enter another matric number: ");
-			mat_num = sc.nextLine();
+			mat_num = sc.next();
 		}
+		StudentManager.addStudent(name, password, email, c, mat_num, school,degree);
 		System.out.println("Student added successfully!");
 		return;
 	}

@@ -13,10 +13,11 @@ import model.Student;
 import model.Index;
 
 public class SendEmail {
-	public static void sendEmail(Student s, Index i) {
+	
+	public static void sendEmail(Student student, Index index) {
 
 		final String username = "donotreplyblackboard5@gmail.com";
-		String password = "Pokemon@1234";
+		final String password = "Pokemon@1234";
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
@@ -34,11 +35,10 @@ public class SendEmail {
 
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("from-email@gmail.com"));
-			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(s.getEmail())); // to be added an
-																									// email addr
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("aditya.chandrasekhar2001@gmail.com")); 
 			message.setSubject("STARS Planner");
-			message.setText("Registered Courses: \nCourse" + i.getCourse().getID() + " " + i.getCourse().getName()
-					+ "\nIndex: " + i.getID());
+			message.setText("Registered Courses: \nCourse" + index.getCourse().getID() + " " + index.getCourse().getName()
+					+ "\nIndex: " + index.getID());
 
 			Transport.send(message);
 

@@ -2,9 +2,14 @@ package model;
 
 import java.time.LocalTime;
 import java.time.DayOfWeek;
+import java.io.Serializable;
 
-public class Session {
+public class Session implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int ID;
 	private DayOfWeek day;
 	private LocalTime startTime;

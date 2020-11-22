@@ -69,9 +69,9 @@ public class StudentUI {
 
 	private void addCourse() {
 		System.out.println("Enter the Course Code: ");
-		String CourseCode = sc.nextLine();
+		String CourseCode = sc.next();
 		System.out.println("Enter the Course Index: ");
-		String IndexCode = sc.nextLine();
+		String IndexCode = sc.next();
 		int result = scm.registerCourse(student, CourseCode, IndexCode);
 		if (result == -3)
 			System.out.println("Course Not Found");
@@ -89,7 +89,7 @@ public class StudentUI {
 
 	private void dropCourse() {
 		System.out.println("Enter the Course Code: ");
-		String CourseCode = sc.nextLine();
+		String CourseCode = sc.next();
 		Boolean result = student.removeCourse(CourseCode);
 		if (result) {
 			scm.writeStudentToFile(student);
@@ -100,11 +100,11 @@ public class StudentUI {
 
 	private void swopIndex() {
 		System.out.println("Enter the course code whose index number you would like to swap: ");
-		String CourseCode = sc.nextLine();
+		String CourseCode = sc.next();
 		System.out.println("Invalid course code, please enter a valid course code: ");
 		CourseCode = sc.next();
 		System.out.println("Enter the index code you would like to swap: ");
-		String IndexCode = sc.nextLine();
+		String IndexCode = sc.next();
 		// Test if valid index
 		int result = scm.swopIndex(student, CourseCode, IndexCode);
 
@@ -120,7 +120,7 @@ public class StudentUI {
 
 	private void swopIndexWithPeer() {
 		System.out.println("Enter the course code whose index number you would like to swap: ");
-		String CourseCode = sc.nextLine();
+		String CourseCode = sc.next();
 		System.out.println("Enter the matric number of the student you would like to swap with: ");
 		String s2_mat = sc.nextLine();
 		int result = scm.swopIndexWithPeer(student, CourseCode, s2_mat);
@@ -190,7 +190,7 @@ public class StudentUI {
 
 	private void checkVacancyAvailable() {
 		System.out.println("Enter the Course Code: ");
-		String CourseCode = sc.nextLine();
+		String CourseCode = sc.next();
 		int result = cm.getCourseVacancy(CourseCode);
 		if (result == -1)
 			System.out.println("Course does not exist");
