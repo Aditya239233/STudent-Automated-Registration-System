@@ -1,7 +1,5 @@
 package model;
 
 public enum NotificationMode {
-	EMAIL,
-	SMS,
-	WHATSAPP
+	EMAIL, SMS, WHATSAPP
 }

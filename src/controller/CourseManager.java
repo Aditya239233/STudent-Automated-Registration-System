@@ -5,24 +5,26 @@ import model.Index;
 import model.Session;
 
 import java.util.List;
+import java.util.ArrayList;
 
 public class CourseManager {
 	private static List<Course> CourseList;
-	
-	
+
 	public static void printCourseIDs() {
 		int length = CourseList.size();
-		for (int i=0; i<length; i++) {
+		for (int i = 0; i < length; i++) {
 			System.out.println(i + ") " + CourseList.get(i).getID());
 		}
 	}
 
+
 	public static Course addCourse(String courseID, String Name, String faculty, int au, List<Index> indexList, List<Session> lectures) {
+
 		if (checkIfCourseExists(courseID)) {
 			System.out.println("Course already exists");
 			return null;
 		}
-		
+
 		Course newCourse;
 		if (indexList != null) {
 			newCourse = new Course(courseID, Name, faculty, au, indexList, lectures);
@@ -34,7 +36,8 @@ public class CourseManager {
 		return newCourse;
 	}
 
-	public static void updateCourse(String courseID, String Name, String faculty, int au, List<Index> indexList, List<Session> lectures) {
+	public static void updateCourse(String courseID, String Name, String faculty, int au, List<Index> indexList,
+			List<Session> lectures) {
 		if (checkIfCourseExists(courseID)) {
 			Course course = findCourse(courseID);
 			int i = CourseList.indexOf(course);
@@ -51,7 +54,7 @@ public class CourseManager {
 			System.out.println("Course does not exist");
 		}
 	}
-	
+
 	public static void deleteCourse(String courseID) {
 		if (checkIfCourseExists(courseID)) {
 			Course course = findCourse(courseID);
@@ -89,6 +92,23 @@ public class CourseManager {
 
 	public static boolean checkIfCourseExists(String CourseID) {
 		return CourseList.stream().anyMatch(Course -> CourseID.equals(Course.getID()));
+	}
+
+	// Done by Aditya
+	public int getCourseVacancy(String CourseCode) {
+		int result = -1;
+		List<Course> courses = new ArrayList<Course>();
+		List<Object> objects = FileManager.readObjectFromFile("course.dat");
+		for (Object o : objects)
+			courses.add((Course) o);
+		for (Course course : courses)
+			if (course.getID().equals(CourseCode)) {
+				result = 0;
+				for (Index i : course.getIndexList())
+					result += i.getTotalVacancies() - i.getNumStudentsEnrolled();
+				break;
+			}
+		return result;
 	}
 
 }

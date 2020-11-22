@@ -7,6 +7,9 @@ import java.io.Serializable;
 
 public class Course implements Serializable {
 
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 	private String Name;
 	private String ID;
@@ -16,7 +19,7 @@ public class Course implements Serializable {
 	private int au;
 	private List<Index> indexList;
 	private List<Session> lectures;
-	
+
 	public Course(String ID, String Name, String faculty, int au, List<Session> lectures) {
 		this.ID = ID;
 		this.Name = Name;
@@ -26,7 +29,7 @@ public class Course implements Serializable {
 		this.indexList = null;
 		this.lectures = lectures;
 	}
-	
+
 	public Course(String ID, String Name, String faculty, int au, List<Index> indexList, List<Session> lectures) {
 		this.ID = ID;
 		this.Name = Name;
@@ -37,7 +40,7 @@ public class Course implements Serializable {
 		this.lectures = lectures;
 	}
 
-	public List<Index> getIndexList(){
+	public List<Index> getIndexList() {
 		return this.indexList;
 	}
 
@@ -50,7 +53,7 @@ public class Course implements Serializable {
 			}
 		}
 	}
-	
+
 	public String getName() {
 		return this.Name;
 	}
@@ -82,7 +85,7 @@ public class Course implements Serializable {
 	public boolean getHasTutorial() {
 		return this.hasTutorial;
 	}
-	
+
 	public void setHasLab(boolean hasLab) {
 		this.hasLab = hasLab;
 	}
@@ -90,7 +93,7 @@ public class Course implements Serializable {
 	public boolean getHasLab() {
 		return this.hasLab;
 	}
-	
+
 	public void setAu(int au) {
 		this.au = au;
 	}
@@ -112,7 +115,7 @@ public class Course implements Serializable {
 			this.lectures.add(lecture);
 		}
 	}
-	
+
 	public void deleteLecture(int index) {
 		if (index < this.lectures.size() && index >= 0) {
 			this.lectures.remove(index);
@@ -120,6 +123,7 @@ public class Course implements Serializable {
 			System.out.println("Lecture index does not exist");
 		}
 	}
+
 	
 	public void addIndex(Index index) {
 		if (this.indexList == null) {
@@ -138,5 +142,6 @@ public class Course implements Serializable {
 				System.out.println("Index " + indexID + " has been removed");
 			}
 		}
+
 	}
 }

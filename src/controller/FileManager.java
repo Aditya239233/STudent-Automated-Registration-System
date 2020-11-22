@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class FileManager {
 
-	public String getFilePath(Object object) {
+	public static String getFilePath(Object object) {
 		if (object instanceof Student)
 			return "student.dat";
 		else if (object instanceof Course)
@@ -19,7 +19,7 @@ public class FileManager {
 		return "Error";
 	}
 
-	public List<Object> readObjectFromFile(String filename) {
+	public static List<Object> readObjectFromFile(String filename) {
 		List<Object> objects = null;
 		FileInputStream fis = null;
 		ObjectInputStream in = null;
@@ -37,7 +37,7 @@ public class FileManager {
 		return objects;
 	}
 
-	public void writeObjectToFile(String filename, List<Object> object) {
+	public static void writeObjectToFile(String filename, List<Object> object) {
 		FileOutputStream fos = null;
 		ObjectOutputStream out = null;
 		try {
@@ -50,7 +50,7 @@ public class FileManager {
 		}
 	}
 
-	public void addObjectToFile(Object object) {
+	public static void addObjectToFile(Object object) {
 		try {
 			String filename = getFilePath(object);
 			if (filename == "Error") {

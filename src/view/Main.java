@@ -1,18 +1,20 @@
 package view;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
-import controller.StudentManager;
+import java.io.Console;
 import model.Student;
-import controller.AdminManager;
+import model.Admin;
+import controller.FileManager;
+import controller.PasswordManager;
 
 public class Main {
 
-	private String username;
-	private String password;
 	private int user;
-	private StudentManager student;
-	private AdminManager admin;
-
+	private Student student;
+	PasswordManager pm = new PasswordManager();
+	Console console = System.console();
 	Scanner sc = new Scanner(System.in);
 
 	public void main() {
@@ -28,19 +30,26 @@ public class Main {
 				System.out.println("Invalid Choice! Try Again");
 				continue;
 			}
-			login();
 			if (this.user == 1) {
-				// Verify Login for Student
-//				Student logged_in = new Student(); // This student object is to be passed to the StudentUI so that we know who is logged in
-//				StudentUI newUI = new StudentUI(logged_in);
-//				newUI.display();
-				// Perform Student Login
-				break;
+				Boolean isLogged = studentLogin();
+				if (isLogged) {
+					StudentUI ui = new StudentUI(this.student);
+					ui.display();
+					break;
+				} else {
+					System.out.println("Incorrect Login Credentials");
+					continue;
+				}
+
 			} else {
-				AdminUI newUI = new AdminUI();
-				newUI.display();
-				// Perform Admin Login
-				break;
+				Boolean isLogged = adminLogin();
+				if (isLogged) {
+					AdminUI ui = new AdminUI();
+					ui.display();
+				} else {
+					System.out.println("Incorrect Login Credentials");
+					continue;
+				}
 			}
 
 		}
@@ -60,29 +69,42 @@ public class Main {
 		System.out.println("#########################################################################");
 	}
 
-	private void login() {
-		System.out.print("Enter your Username: ");
-		this.setUsername(sc.next());
+	public Boolean studentLogin() {
+		System.out.print("Enter your Matric Number: ");
+		String matricNumber = sc.next();
 
 		// Mask Password
 		System.out.println("Enter your password: ");
-		this.setPassword(sc.next());
-
+		String password = console.readLine();
+		password = pm.hashPassword(password);
+		List<Object> records = FileManager.readObjectFromFile("student.dat");
+		List<Student> students = new ArrayList<Student>();
+		for (Object o : records)
+			students.add((Student) o);
+		for (Student s : students)
+			if (s.getMatricNo().equals(matricNumber) && s.getPassword().equals(password)) {
+				this.student = s;
+				return true;
+			}
+		return false;
 	}
 
-	public String getUsername() {
-		return username;
-	}
+	public Boolean adminLogin() {
+		System.out.print("Enter your Email ");
+		String email = sc.next();
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
+		// Mask Password
+		System.out.println("Enter your password: ");
+		String password = console.readLine();
+		password = pm.hashPassword(password);
+		List<Object> records = FileManager.readObjectFromFile("admin.dat");
+		List<Admin> admins = new ArrayList<Admin>();
+		for (Object o : records)
+			admins.add((Admin) o);
+		for (Admin a : admins)
+			if (a.getEmail().equals(email) && a.getPassword().equals(password)) {
+				return true;
+			}
+		return false;
 	}
 }

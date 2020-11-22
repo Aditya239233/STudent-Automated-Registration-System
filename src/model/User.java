@@ -1,16 +1,22 @@
 package model;
 
 import java.util.*;
+import controller.PasswordManager;
 import java.io.Serializable;
 
-public class User implements Serializable{
+public class User implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String Name;
 	private String Password;
 	private String Email;
 	private Calendar dob;
+	PasswordManager pm = new PasswordManager();
 
-	public User(){
+	public User() {
 		this.Name = "undefined";
 		this.Password = "undefined";
 		this.Email = "undefined";
@@ -19,13 +25,13 @@ public class User implements Serializable{
 
 	public User(String Name, String Password, String Email, Calendar dob) {
 		this.Name = Name;
-		this.Password = Password;
+		this.Password = pm.hashPassword(Password);
 		this.Email = Email;
 		this.dob = dob;
 	}
 
 	public void setPassword(String Password) {
-		this.Password = Password;
+		this.Password = pm.hashPassword(Password);
 	}
 
 	public String getPassword() {
@@ -48,7 +54,7 @@ public class User implements Serializable{
 		return this.Email;
 	}
 
-	public void setEmail(String email){
+	public void setEmail(String email) {
 		this.Email = email;
 	}
 }

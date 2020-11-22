@@ -8,16 +8,17 @@ import model.Session;
 
 public class IndexManager {
 	private static List<Index> IndexList;
-	
-	
+
 	public static void printIndexIDs() {
 		int length = IndexList.size();
-		for (int i=0; i<length; i++) {
+		for (int i = 0; i < length; i++) {
 			System.out.println(i + ") " + IndexList.get(i).getID());
 		}
 	}
 
+
 	public static Index addIndex(String ID, Course course, int totalVacancies, List<Session> tutorials, List<Session> labs) { // check hasTutorial and hasLab in AdminUI => pass null is has__ = false
+
 		if (checkIfIndexExists(ID)) {
 			System.out.println("Index already exists");
 			return null;
@@ -66,7 +67,7 @@ public class IndexManager {
 			System.out.println("Index Does not Exist");
 		}
 	}
-	
+
 	public static Index findIndex(String indexID) {
 		// finds Index with specific ID in IndexList
 		return IndexList.stream().filter(index -> index.getID() == indexID).findFirst().orElse(null);
