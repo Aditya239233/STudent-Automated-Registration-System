@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import controller.CourseManager;
+import controller.FileManager;
 import controller.IndexManager;
 import controller.StudentManager;
 import controller.StudentCourseManager;
@@ -43,6 +44,7 @@ public class AdminUI {
 			switch (choice) {
 			case 1:
 				// Edit Student Access Period
+				editStudentAccessPeriod();
 				break;
 			case 2:
 				// Add a new Student
@@ -82,7 +84,7 @@ public class AdminUI {
 				break;
 			case 11:
 				// Print student list by course
-				printStudentListByCourse(); //uml
+				printStudentListByCourse(); // uml
 				break;
 			case 12:
 				break;
@@ -91,6 +93,59 @@ public class AdminUI {
 			}
 
 		} while (choice != 12);
+	}
+
+	public void editStudentAccessPeriod() {
+		List<Object> objects = FileManager.readObjectFromFile("accessPeriod.dat");
+		List<Calendar> accessPeriod = new ArrayList<Calendar>();
+		for (Object o : objects)
+			accessPeriod.add((Calendar) o);
+		System.out.println("Start time: " + accessPeriod.get(0).getTime());
+		System.out.println("End time: " + accessPeriod.get(1).getTime());
+		System.out.println("Do you want to edit the access period?");
+		char result = sc.next().toLowerCase().charAt(0);
+		if (result == 'y') {
+			accessPeriod.clear();
+			System.out.println("Enter Start Date: (DD-MM-YYYY format):");
+			String dob = sc.next();
+			String[] arrOfStr = dob.split("-", 3);
+			while (dob.length() != 10 || arrOfStr.length != 3) {
+				System.out.println(
+						"Invalid date of birth. Please enter again in DD-MM-YYYY format and include the hyphens.");
+				System.out.println("Student's date of birth (DD-MM-YYYY format):");
+				dob = sc.next();
+				arrOfStr = dob.split("-", 3);
+			}
+			int dd = Integer.parseInt(arrOfStr[0]);
+			int mm = Integer.parseInt(arrOfStr[1]);
+			int yy = Integer.parseInt(arrOfStr[2]);
+			Calendar c = Calendar.getInstance();
+			c.set(yy, mm, dd);
+			accessPeriod.add(c);
+
+			System.out.println("Enter End Date: (DD-MM-YYYY format):");
+			dob = sc.next();
+			arrOfStr = dob.split("-", 3);
+			while (dob.length() != 10 || arrOfStr.length != 3) {
+				System.out.println(
+						"Invalid date of birth. Please enter again in DD-MM-YYYY format and include the hyphens.");
+				System.out.println("Student's date of birth (DD-MM-YYYY format):");
+				dob = sc.next();
+				arrOfStr = dob.split("-", 3);
+			}
+			dd = Integer.parseInt(arrOfStr[0]);
+			mm = Integer.parseInt(arrOfStr[1]);
+			yy = Integer.parseInt(arrOfStr[2]);
+			Calendar c1 = Calendar.getInstance();
+			c1.set(yy, mm, dd);
+			accessPeriod.add(c1);
+			List<Object> object = new ArrayList<Object>();
+			for (Calendar cal : accessPeriod)
+				object.add(cal);
+			FileManager.writeObjectToFile("accessPeriod.dat", object);
+		} else {
+			System.out.println("Access Period remains the same");
+		}
 	}
 
 	public void addCourse() {
@@ -203,14 +258,14 @@ public class AdminUI {
 		Index newIndex = IndexManager.addIndex(indexID, course, totalVacancies, tutorials, labs);
 		if (newIndex == null) {
 			System.out.println("Index already exists");
-		}
-		else {
-		CourseManager.addIndexToCourse(course.getID(), newIndex);
-		System.out.println("Succesfully added Index!");
+		} else {
+			CourseManager.addIndexToCourse(course.getID(), newIndex);
+			System.out.println("Succesfully added Index!");
 
-		IndexManager.addIndex(indexID, course, totalVacancies, tutorials, labs);
+			IndexManager.addIndex(indexID, course, totalVacancies, tutorials, labs);
 		}
 	}
+
 	public void updateIndex() {
 		System.out.println("Updating an index... See below for the list of Index IDs ");
 		IndexManager.printIndexIDs();
@@ -302,15 +357,15 @@ public class AdminUI {
 	public void checkVacancyInIndexSlot() {
 		System.out.println("Enter the Index: ");
 		String indexID = sc.next();
-		while(!IndexManager.checkIfIndexExists(indexID)) {
+		while (!IndexManager.checkIfIndexExists(indexID)) {
 			System.out.println("Invalid Index, please enter a valid Index: ");
 			indexID = sc.next();
 		}
 		Index index = IndexManager.findIndex(indexID);
-		System.out.println(indexID + "has " + Integer.toString(index.getTotalVacancies()-index.getNumStudentsEnrolled())+ " vacancies");
+		System.out.println(indexID + "has "
+				+ Integer.toString(index.getTotalVacancies() - index.getNumStudentsEnrolled()) + " vacancies");
 	}
-	
-	
+
 	public void printStudentListByIndex() {
 		System.out.println("Enter the Index: ");
 		String IndexCode = sc.next();
@@ -404,7 +459,7 @@ public class AdminUI {
 			System.out.println("Please enter another matric number: ");
 			mat_num = sc.next();
 		}
-		StudentManager.addStudent(name, password, email, c, mat_num, school,degree);
+		StudentManager.addStudent(name, password, email, c, mat_num, school, degree);
 		System.out.println("Student added successfully!");
 		return;
 	}

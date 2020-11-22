@@ -13,7 +13,7 @@ import model.Student;
 import model.Index;
 
 public class SendEmail {
-	
+
 	public static void sendEmail(Student student, Index index) {
 
 		final String username = "donotreplyblackboard5@gmail.com";
@@ -35,10 +35,11 @@ public class SendEmail {
 
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("from-email@gmail.com"));
-			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("aditya.chandrasekhar2001@gmail.com")); 
+			message.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse("aditya.chandrasekhar2001@gmail.com"));
 			message.setSubject("STARS Planner");
-			message.setText("Registered Courses: \nCourse" + index.getCourse().getID() + " " + index.getCourse().getName()
-					+ "\nIndex: " + index.getID());
+			message.setText("Registered Courses: \nCourse" + index.getCourse().getID() + " "
+					+ index.getCourse().getName() + "\nIndex: " + index.getID());
 
 			Transport.send(message);
 

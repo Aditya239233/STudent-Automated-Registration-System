@@ -8,10 +8,10 @@ import model.Session;
 
 public class IndexManager {
 	public static List<Index> IndexList = new ArrayList<Index>();
-	
+
 	public static void init(List<Course> CourseList) {
 		List<Index> currentList;
-		for(Course course: CourseList) {
+		for (Course course : CourseList) {
 			currentList = course.getIndexList();
 			IndexList.addAll(currentList);
 		}
@@ -23,14 +23,15 @@ public class IndexManager {
 			System.out.println(i + ") " + IndexList.get(i).getID());
 		}
 	}
-	
+
 	public static List<Index> getIndexList() {
 		return IndexList;
 	}
 
-	public static Index addIndex(String ID, Course course, int totalVacancies, List<Session> tutorials, List<Session> labs) { // check hasTutorial and hasLab in AdminUI => pass null is has__ = false
-		if (IndexList.size() == 0) {}
-		else if (checkIfIndexExists(ID)) {
+	public static Index addIndex(String ID, Course course, int totalVacancies, List<Session> tutorials,
+			List<Session> labs) { // check hasTutorial and hasLab in AdminUI => pass null is has__ = false
+		if (IndexList.size() == 0) {
+		} else if (checkIfIndexExists(ID)) {
 			System.out.println("Index already exists");
 			return null;
 		}
@@ -46,8 +47,9 @@ public class IndexManager {
 		System.out.println("Succesfully added Index");
 		return newIndex;
 	}
-	
-	public static Index updateIndex(String indexID, Course course, int totalVacancies, List<Session> tutorials, List<Session> labs) {
+
+	public static Index updateIndex(String indexID, Course course, int totalVacancies, List<Session> tutorials,
+			List<Session> labs) {
 		if (checkIfIndexExists(indexID)) {
 			Index index = findIndex(indexID);
 			int i = IndexList.indexOf(index);
@@ -66,7 +68,7 @@ public class IndexManager {
 			System.out.println("Index does not exist");
 			return null;
 		}
-		
+
 	}
 
 	public static void deleteIndex(String indexID) {
@@ -82,7 +84,7 @@ public class IndexManager {
 	public static Index findIndex(String indexID) {
 		// finds Index with specific ID in IndexList
 		Index reqIndex = null;
-		for (Index index: IndexList) {
+		for (Index index : IndexList) {
 			if (index.getID().equals(indexID)) {
 				reqIndex = index;
 				break;

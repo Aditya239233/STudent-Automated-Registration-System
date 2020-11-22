@@ -7,6 +7,7 @@ import model.Course;
 import model.Index;
 import model.Student;
 import java.io.Serializable;
+
 public class StudentCourseManager implements Serializable {
 
 	/**

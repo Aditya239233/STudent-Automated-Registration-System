@@ -1,8 +1,6 @@
 package view;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 //import java.io.Console;
 import model.Student;
 import model.Admin;
@@ -17,16 +15,16 @@ public class Main {
 	private static int user;
 	private static Student student;
 	private static PasswordManager pm = new PasswordManager();
-	//private static Console console = System.console();
+	// private static Console console = System.console();
 	static Scanner sc = new Scanner(System.in);
-	
-	public static void main(String [] args) {
+
+	public static void main(String[] args) {
 		try {
-		CourseManager.init();
-		IndexManager.init(CourseManager.getCourseList());
-		StudentManager.init();
-		} catch(Exception e) {
-			
+			CourseManager.init();
+			IndexManager.init(CourseManager.getCourseList());
+			StudentManager.init();
+		} catch (Exception e) {
+
 		}
 		displayWelcome();
 		while (true) {
@@ -56,7 +54,6 @@ public class Main {
 					AdminUI ui = new AdminUI();
 					ui.display();
 				} else {
-					System.out.println("Incorrect Login Credentials");
 					continue;
 				}
 			}
@@ -79,25 +76,32 @@ public class Main {
 	}
 
 	public static Boolean studentLogin() {
-		System.out.print("Enter your Matric Number: ");
-		String matricNumber = sc.next();
+		if (checkAccessPeriod()) {
+			System.out.print("Enter your Matric Number: ");
+			String matricNumber = sc.next();
 
-		// Mask Password
-		System.out.println("Enter your password: ");
-		String password = sc.next();
-		password = pm.hashPassword(password);
-		List<Object> records = FileManager.readObjectFromFile("student.dat");
-		List<Student> students = new ArrayList<Student>();
-		for (Object o : records)
-			students.add((Student) o);
-		for (Student s : students)
-			if (s.getMatricNo().equals(matricNumber)) {
-				if (s.getPassword().equals(password)) {
-					student = s;
-					return true;
+			// Mask Password
+			System.out.println("Enter your password: ");
+			String password = sc.next();
+			password = pm.hashPassword(password);
+			List<Object> records = FileManager.readObjectFromFile("student.dat");
+			List<Student> students = new ArrayList<Student>();
+			for (Object o : records)
+				students.add((Student) o);
+			for (Student s : students)
+				if (s.getMatricNo().equals(matricNumber)) {
+					if (s.getPassword().equals(password)) {
+						student = s;
+						return true;
+					}
 				}
-			}
-		return false;
+			System.out.println("Incorrect Login Credentials");
+			return false;
+		} else {
+			System.out.println("Cannot Login now. STARS Planner is not Active");
+			return false;
+		}
+
 	}
 
 	public static Boolean adminLogin() {
@@ -121,5 +125,18 @@ public class Main {
 					return true;
 			}
 		return false;
+	}
+
+	public static Boolean checkAccessPeriod() {
+		Boolean canLogin = false;
+		List<Object> objects = FileManager.readObjectFromFile("accessPeriod.dat");
+		List<Calendar> accessPeriod = new ArrayList<Calendar>();
+		for (Object o : objects)
+			accessPeriod.add((Calendar) o);
+		Calendar currDate = Calendar.getInstance();
+		System.out.println(currDate);
+		if (currDate.before(accessPeriod.get(1)) && currDate.after(accessPeriod.get(0)))
+			canLogin = true;
+		return canLogin;
 	}
 }

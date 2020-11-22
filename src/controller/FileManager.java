@@ -4,8 +4,8 @@ import model.Admin;
 import model.Course;
 import model.Student;
 import java.io.*;
-import java.util.List;
-import java.util.ArrayList;
+
+import java.util.*;
 
 public class FileManager {
 
@@ -16,6 +16,8 @@ public class FileManager {
 			return "course.dat";
 		else if (object instanceof Admin)
 			return "admin.dat";
+		else if (object instanceof Calendar)
+			return "accessPeriod.dat";
 		return "Error";
 	}
 
