@@ -7,7 +7,7 @@ import model.Index;
 import model.Session;
 
 public class IndexManager {
-	private static List<Index> IndexList;
+	public static List<Index> IndexList;
 
 	public static void printIndexIDs() {
 		int length = IndexList.size();

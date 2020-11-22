@@ -111,14 +111,36 @@ public class StudentCourseManager {
 		FileManager.writeObjectToFile("student.dat", students);
 
 	}
-	
-	public static List<ArrayList<String>> getStudentsInCourse(String CourseCode) {
+
+	public static List<ArrayList<String>> getStudentsInCourse(String IndexCode) {
 		List<ArrayList<String>> studentsEnrolled = new ArrayList<ArrayList<String>>();
-		
+
 		List<Object> objectList = FileManager.readObjectFromFile("student.dat");
 		List<Student> students = new ArrayList<Student>();
-		for (Object o: objectList)
-			students.add((Student)o);
+		for (Object o : objectList)
+			students.add((Student) o);
+		ArrayList<String> newStudent = new ArrayList<String>();
+		for (Student student : students) {
+			for (Index index : student.getIndexes()) {
+				if (index.getID().equals(IndexCode)) {
+					newStudent.add(student.getMatricNo());
+					newStudent.add(student.getName());
+					studentsEnrolled.add(newStudent);
+					newStudent.clear();
+				}
+			}
+		}
+
+		return studentsEnrolled;
+	}
+
+	public static List<ArrayList<String>> getStudentsInIndex(String CourseCode) {
+		List<ArrayList<String>> studentsEnrolled = new ArrayList<ArrayList<String>>();
+
+		List<Object> objectList = FileManager.readObjectFromFile("student.dat");
+		List<Student> students = new ArrayList<Student>();
+		for (Object o : objectList)
+			students.add((Student) o);
 		ArrayList<String> newStudent = new ArrayList<String>();
 		for (Student student : students) {
 			for (Index index : student.getIndexes()) {
@@ -130,8 +152,8 @@ public class StudentCourseManager {
 				}
 			}
 		}
-		
+
 		return studentsEnrolled;
 	}
-	
+
 }

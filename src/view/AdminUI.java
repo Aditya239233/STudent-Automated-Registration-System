@@ -74,11 +74,11 @@ public class AdminUI {
 				break;
 			case 9:
 				// Check available slot for an index number
-				// checkIndexSlot();
+				checkVacancyInIndexSlot();
 				break;
 			case 10:
 				// Print student list by index number
-				// printStudentListIndex();
+				printStudentListByIndex();
 				break;
 			case 11:
 				// Print student list by course
@@ -254,7 +254,7 @@ public class AdminUI {
 				labs.add(lab);
 			}
 		}
-		
+
 		Index newIndex = IndexManager.updateIndex(indexID, course, totalVacancies, tutorials, labs);
 		CourseManager.deleteIndexFromCourse(course.getID(), newIndex);
 		CourseManager.addIndexToCourse(course.getID(), newIndex);
@@ -292,60 +292,73 @@ public class AdminUI {
 		return session;
 	}
 
-//	public void checkIndexSlot() {
-//		System.out.println("Enter the Index: ");
-//		String indexID = sc.next();
-//		while(!IndexManager.checkIfIndexExists(indexID)) {
-//			System.out.println("Invalid Index, please enter a valid Index: ");
-//			indexID = sc.next();
-//		}
-//		for (int i = 0; i < IndexManager.IndexList.size(); i++) {
-//			if (indexID == IndexManager.IndexList.get(i)) {
-//				System.out.println(indexID + "has" + IndexManager.IndexList.get(i).getTotalVacancies() + "vacancies");
-//			}
-//		}
-//		
-//	}
-//	
-//	public void printStudentListIndex() {
-//		System.out.println("Enter the Index: ");
-//		String indexID = sc.next();
-//		while(!IndexManager.cindexheckIfIndexExists(indexID)) {
-//			System.out.println("Invalid Index, please enter a valid Index: ");
-//			indexID = sc.next();
-//		}
-//		for (int i = 0; i < StudentManager.StudentList.size(); i++) {
-//			if (indexID == StudentManager.StudentList.get(i).getIndexes()) {
-//				System.out.println(StudentManager.StudentList.get(i));
-//			}
-//		}
-//	}
+	public void checkVacancyInIndexSlot() {
+		System.out.println("Enter the Index: ");
+		String indexID = sc.next();
+		while(!IndexManager.checkIfIndexExists(indexID)) {
+			System.out.println("Invalid Index, please enter a valid Index: ");
+			indexID = sc.next();
+		}
+		for (int i = 0; i < IndexManager.IndexList.size(); i++) {
+			if (indexID == IndexManager.IndexList.get(i).getID()) {
+				System.out.println(indexID + "has " + Integer.toString(IndexManager.IndexList.get(i).getTotalVacancies()-IndexManager.IndexList.get(i).getNumStudentsEnrolled())+ " vacancies");
+				break;
+			}
+		}
+	}
 	
+	
+	public void printStudentListByIndex() {
+		System.out.println("Enter the Index: ");
+		String IndexCode = sc.next();
+		char loop = 'y';
+		while (loop == 'y') {
+			if (IndexManager.checkIfIndexExists(IndexCode)) {
+				List<ArrayList<String>> studentsEnrolled = StudentCourseManager.getStudentsInIndex(IndexCode);
+				if (studentsEnrolled.size() == 0)
+					System.out.println("There are no students enrolled in the index " + IndexCode);
+				else {
+					for (ArrayList<String> student : studentsEnrolled) {
+						System.out.println("Student Name: " + student.get(1) + " ,Matric Number: " + student.get(0));
+					}
+				}
+			} else {
+				System.out.println("Course does not exist");
+				while (true) {
+					System.out.println("Do you want to try again? (y/n)");
+					loop = sc.next().charAt(0);
+					loop = Character.toLowerCase(loop);
+					if (loop == 'y' || loop == 'n')
+						break;
+				}
+			}
+		}
+	}
+
 	public void printStudentListByCourse() {
 		System.out.println("Enter the Couse: ");
 		String CourseCode = sc.next();
 		char loop = 'y';
-		while (loop == 'y') {		
-		if(CourseManager.checkIfCourseExists(CourseCode)){
-			List<ArrayList<String>> studentsEnrolled = StudentCourseManager.getStudentsInCourse(CourseCode);
-			if (studentsEnrolled.size() == 0)
-				System.out.println("There are no students enrolled in the Course "+CourseCode);
-			else {
-				for (ArrayList<String> student : studentsEnrolled) {
-					System.out.println("Student Name: "+student.get(1)+" ,Matric Number: "+student.get(0));
+		while (loop == 'y') {
+			if (CourseManager.checkIfCourseExists(CourseCode)) {
+				List<ArrayList<String>> studentsEnrolled = StudentCourseManager.getStudentsInCourse(CourseCode);
+				if (studentsEnrolled.size() == 0)
+					System.out.println("There are no students enrolled in the Course " + CourseCode);
+				else {
+					for (ArrayList<String> student : studentsEnrolled) {
+						System.out.println("Student Name: " + student.get(1) + " ,Matric Number: " + student.get(0));
+					}
+				}
+			} else {
+				System.out.println("Course does not exist");
+				while (true) {
+					System.out.println("Do you want to try again? (y/n)");
+					loop = sc.next().charAt(0);
+					loop = Character.toLowerCase(loop);
+					if (loop == 'y' || loop == 'n')
+						break;
 				}
 			}
-		}
-		else {
-			System.out.println("Course does not exist");
-			while (true) {
-			System.out.println("Do you want to try again? (y/n)");
-			loop = sc.next().charAt(0);
-			loop = Character.toLowerCase(loop);
-			if (loop == 'y' || loop == 'n')
-				break;
-			}
-		}
 		}
 	}
 
