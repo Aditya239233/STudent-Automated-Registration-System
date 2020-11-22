@@ -16,11 +16,12 @@ public class IndexManager {
 		}
 	}
 
-	public static void addIndex(String ID, Course course, int totalVacancies, List<Session> tutorials,
-			List<Session> labs) { // check hasTutorial and hasLab in AdminUI => pass null is has__ = false
+
+	public static Index addIndex(String ID, Course course, int totalVacancies, List<Session> tutorials, List<Session> labs) { // check hasTutorial and hasLab in AdminUI => pass null is has__ = false
+
 		if (checkIfIndexExists(ID)) {
 			System.out.println("Index already exists");
-			return;
+			return null;
 		}
 		Index newIndex;
 		if (tutorials != null && labs != null) {
@@ -32,10 +33,10 @@ public class IndexManager {
 		}
 		IndexList.add(newIndex);
 		System.out.println("Succesfully added Index");
+		return newIndex;
 	}
-
-	public static void updateIndex(String indexID, Course course, int totalVacancies, List<Session> tutorials,
-			List<Session> labs) {
+	
+	public static Index updateIndex(String indexID, Course course, int totalVacancies, List<Session> tutorials, List<Session> labs) {
 		if (checkIfIndexExists(indexID)) {
 			Index index = findIndex(indexID);
 			int i = IndexList.indexOf(index);
@@ -49,8 +50,12 @@ public class IndexManager {
 			}
 			IndexList.set(i, newIndex);
 			System.out.println("Succesfully updated Index");
+			return newIndex;
 		} else {
+			System.out.println("Index does not exist");
+			return null;
 		}
+		
 	}
 
 	public static void deleteIndex(String indexID) {

@@ -17,11 +17,12 @@ public class CourseManager {
 		}
 	}
 
-	public static void addCourse(String courseID, String Name, String faculty, int au, List<Index> indexList,
-			List<Session> lectures) {
+
+	public static Course addCourse(String courseID, String Name, String faculty, int au, List<Index> indexList, List<Session> lectures) {
+
 		if (checkIfCourseExists(courseID)) {
 			System.out.println("Course already exists");
-			return;
+			return null;
 		}
 
 		Course newCourse;
@@ -32,6 +33,7 @@ public class CourseManager {
 		}
 		CourseList.add(newCourse);
 		System.out.println("Succesfully added Course");
+		return newCourse;
 	}
 
 	public static void updateCourse(String courseID, String Name, String faculty, int au, List<Index> indexList,
@@ -58,6 +60,26 @@ public class CourseManager {
 			Course course = findCourse(courseID);
 			CourseList.remove(course);
 			System.out.println("Course Has been deleted");
+		} else {
+			System.out.println("Course Does not Exist");
+		}
+	}
+	
+	public static void addIndexToCourse(String courseID, Index index) {
+		if (checkIfCourseExists(courseID)) {
+			Course course = findCourse(courseID);
+			course.addIndex(index);
+			System.out.println("Index " + index.getID() + " has been added to course " + courseID);
+		} else {
+			System.out.println("Course Does not Exist");
+		}
+	}
+	
+	public static void deleteIndexFromCourse(String courseID, Index index) {
+		if (checkIfCourseExists(courseID)) {
+			Course course = findCourse(courseID);
+			course.deleteIndex(index.getID());
+			System.out.println("Index " + index.getID() + " has been deleted from the course " + courseID);
 		} else {
 			System.out.println("Course Does not Exist");
 		}

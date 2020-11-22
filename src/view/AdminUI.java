@@ -117,6 +117,7 @@ public class AdminUI {
 		}
 
 		CourseManager.addCourse(courseID, courseName, faculty, au, null, lectures);
+		System.out.println("Succesfully added Course!");
 	}
 
 	public void updateCourse() {
@@ -144,6 +145,7 @@ public class AdminUI {
 		}
 
 		CourseManager.updateCourse(courseID, courseName, faculty, au, null, lectures);
+		System.out.println("Succesfully updated Course!");
 	}
 
 	public void deleteCourse() {
@@ -152,6 +154,7 @@ public class AdminUI {
 		String courseID = sc.next();
 
 		CourseManager.deleteCourse(courseID);
+		System.out.println("Succesfully deleted Course!");
 	}
 
 	public void addIndex() {
@@ -194,6 +197,10 @@ public class AdminUI {
 			}
 		}
 
+		Index newIndex = IndexManager.addIndex(indexID, course, totalVacancies, tutorials, labs);
+		CourseManager.addIndexToCourse(course.getID(), newIndex);
+		System.out.println("Succesfully added Index!");
+
 		IndexManager.addIndex(indexID, course, totalVacancies, tutorials, labs);
 	}
 
@@ -207,7 +214,7 @@ public class AdminUI {
 			if (IndexManager.checkIfIndexExists(indexID)) {
 				index = IndexManager.findIndex(indexID);
 			} else {
-				System.out.println("The course ID you entered does not exist");
+				System.out.println("The index ID you entered does not exist");
 			}
 		} while (index != null);
 		CourseManager.printCourseIDs();
@@ -246,6 +253,11 @@ public class AdminUI {
 				labs.add(lab);
 			}
 		}
+		
+		Index newIndex = IndexManager.updateIndex(indexID, course, totalVacancies, tutorials, labs);
+		CourseManager.deleteIndexFromCourse(course.getID(), newIndex);
+		CourseManager.addIndexToCourse(course.getID(), newIndex);
+		System.out.println("Succesfully updated Index!");
 
 		IndexManager.updateIndex(indexID, course, totalVacancies, tutorials, labs);
 	}
@@ -256,6 +268,7 @@ public class AdminUI {
 		String indexID = sc.next();
 
 		IndexManager.deleteIndex(indexID);
+		System.out.println("Succesfully deleted Index!");
 	}
 
 	private Session addSession(int ID) {

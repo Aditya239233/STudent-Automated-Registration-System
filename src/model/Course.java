@@ -101,7 +101,11 @@ public class Course implements Serializable {
 	public int getAu() {
 		return this.au;
 	}
-
+	
+	public List<Session> getLecture() {
+		return this.lectures;
+	}
+	
 	public void addLecture(int day, LocalTime startTime, LocalTime endTime, String location, String teacher) {
 		int ID = this.lectures.size();
 		Session lecture = new Session(ID, day, startTime, endTime, location, teacher);
@@ -120,7 +124,24 @@ public class Course implements Serializable {
 		}
 	}
 
-	public List<Session> getLecture() {
-		return this.lectures;
+	
+	public void addIndex(Index index) {
+		if (this.indexList == null) {
+			this.indexList = Arrays.asList(index);
+		} else {
+			this.indexList.add(index);
+		}
+	}
+	
+	public void deleteIndex(String indexID) {
+		Index currentIndex;
+		for(int i=0;i<indexList.size();i++) {
+			currentIndex = indexList.get(i);
+			if (currentIndex.getID() == indexID) {
+				this.indexList.remove(i);
+				System.out.println("Index " + indexID + " has been removed");
+			}
+		}
+
 	}
 }
