@@ -310,7 +310,7 @@ public class AdminUI {
 //	public void printStudentListIndex() {
 //		System.out.println("Enter the Index: ");
 //		String indexID = sc.next();
-//		while(!IndexManager.checkIfIndexExists(indexID)) {
+//		while(!IndexManager.cindexheckIfIndexExists(indexID)) {
 //			System.out.println("Invalid Index, please enter a valid Index: ");
 //			indexID = sc.next();
 //		}
@@ -324,6 +324,8 @@ public class AdminUI {
 	public void printStudentListByCourse() {
 		System.out.println("Enter the Couse: ");
 		String CourseCode = sc.next();
+		char loop = 'y';
+		while (loop == 'y') {		
 		if(CourseManager.checkIfCourseExists(CourseCode)){
 			List<ArrayList<String>> studentsEnrolled = StudentCourseManager.getStudentsInCourse(CourseCode);
 			if (studentsEnrolled.size() == 0)
@@ -336,6 +338,14 @@ public class AdminUI {
 		}
 		else {
 			System.out.println("Course does not exist");
+			while (true) {
+			System.out.println("Do you want to try again? (y/n)");
+			loop = sc.next().charAt(0);
+			loop = Character.toLowerCase(loop);
+			if (loop == 'y' || loop == 'n')
+				break;
+			}
+		}
 		}
 	}
 
