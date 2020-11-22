@@ -82,7 +82,7 @@ public class AdminUI {
 				break;
 			case 11:
 				// Print student list by course
-				printStudentListByCourse();
+				printStudentListByCourse(); //uml
 				break;
 			case 12:
 				break;
@@ -336,7 +336,7 @@ public class AdminUI {
 	}
 
 	public void printStudentListByCourse() {
-		System.out.println("Enter the Couse: ");
+		System.out.println("Enter the Course: ");
 		String CourseCode = sc.next();
 		char loop = 'y';
 		while (loop == 'y') {
