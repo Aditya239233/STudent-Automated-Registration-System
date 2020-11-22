@@ -262,8 +262,7 @@ public class Student extends User implements Serializable {
 		if (isValid1 && isValid2) {
 			this.removeCourse(course);
 			s2.removeCourse(course);
-			CourseManager cm = new CourseManager(); 
-			Course c = cm.findCourse(course);
+			Course c = CourseManager.findCourse(course);
 			List<Index> iList = c.getIndexList();
 			for (Index i : iList) {
 				if (i.getID() == i1) {
