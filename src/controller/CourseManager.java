@@ -8,9 +8,16 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class CourseManager {
-	private static List<Course> CourseList;
 
-	public static void printCourseIDs() {
+	private static List<Course> CourseList = new ArrayList<Course>();
+	
+	public CourseManager() {
+		List<Object> objects = FileManager.readObjectFromFile("course.dat");
+		for (Object o: objects)
+			CourseList.add((Course)o);
+	}
+
+	public void printCourseIDs() {
 		int length = CourseList.size();
 		for (int i = 0; i < length; i++) {
 			System.out.println(i + ") " + CourseList.get(i).getID());
@@ -18,7 +25,7 @@ public class CourseManager {
 	}
 
 
-	public static Course addCourse(String courseID, String Name, String faculty, int au, List<Index> indexList, List<Session> lectures) {
+	public Course addCourse(String courseID, String Name, String faculty, int au, List<Index> indexList, List<Session> lectures) {
 
 		if (checkIfCourseExists(courseID)) {
 			System.out.println("Course already exists");
@@ -36,7 +43,7 @@ public class CourseManager {
 		return newCourse;
 	}
 
-	public static void updateCourse(String courseID, String Name, String faculty, int au, List<Index> indexList,
+	public void updateCourse(String courseID, String Name, String faculty, int au, List<Index> indexList,
 			List<Session> lectures) {
 		if (checkIfCourseExists(courseID)) {
 			Course course = findCourse(courseID);
@@ -55,7 +62,7 @@ public class CourseManager {
 		}
 	}
 
-	public static void deleteCourse(String courseID) {
+	public void deleteCourse(String courseID) {
 		if (checkIfCourseExists(courseID)) {
 			Course course = findCourse(courseID);
 			CourseList.remove(course);
@@ -65,7 +72,7 @@ public class CourseManager {
 		}
 	}
 	
-	public static void addIndexToCourse(String courseID, Index index) {
+	public void addIndexToCourse(String courseID, Index index) {
 		if (checkIfCourseExists(courseID)) {
 			Course course = findCourse(courseID);
 			course.addIndex(index);
@@ -75,7 +82,7 @@ public class CourseManager {
 		}
 	}
 	
-	public static void deleteIndexFromCourse(String courseID, Index index) {
+	public void deleteIndexFromCourse(String courseID, Index index) {
 		if (checkIfCourseExists(courseID)) {
 			Course course = findCourse(courseID);
 			course.deleteIndex(index.getID());
@@ -85,12 +92,12 @@ public class CourseManager {
 		}
 	}
 
-	public static Course findCourse(String CourseID) {
+	public Course findCourse(String CourseID) {
 		// finds Course with specific ID in CourseList
 		return CourseList.stream().filter(Course -> Course.getID() == CourseID).findFirst().orElse(null);
 	}
 
-	public static boolean checkIfCourseExists(String CourseID) {
+	public boolean checkIfCourseExists(String CourseID) {
 		return CourseList.stream().anyMatch(Course -> CourseID.equals(Course.getID()));
 	}
 

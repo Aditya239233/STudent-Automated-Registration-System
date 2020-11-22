@@ -17,6 +17,7 @@ public class AdminUI {
 
 	private int choice;
 	private IndexManager im = new IndexManager();
+	private CourseManager cm = new CourseManager();
 	Scanner sc = new Scanner(System.in);
 
 	public void display() {
@@ -116,7 +117,7 @@ public class AdminUI {
 			lectures.add(lecture);
 		}
 
-		CourseManager.addCourse(courseID, courseName, faculty, au, null, lectures);
+		cm.addCourse(courseID, courseName, faculty, au, null, lectures);
 		System.out.println("Succesfully added Course!");
 	}
 
@@ -144,7 +145,7 @@ public class AdminUI {
 			lectures.add(lecture);
 		}
 
-		CourseManager.updateCourse(courseID, courseName, faculty, au, null, lectures);
+		cm.updateCourse(courseID, courseName, faculty, au, null, lectures);
 		System.out.println("Succesfully updated Course!");
 	}
 
@@ -153,19 +154,19 @@ public class AdminUI {
 		System.out.println("What is the course id? e.g. CZ2002");
 		String courseID = sc.next();
 
-		CourseManager.deleteCourse(courseID);
+		cm.deleteCourse(courseID);
 		System.out.println("Succesfully deleted Course!");
 	}
 
 	public void addIndex() {
 		System.out.println("Adding a new index... See below for the list of Course IDs ");
-		CourseManager.printCourseIDs();
+		cm.printCourseIDs();
 		Course course = null;
 		do {
 			System.out.println("What is the ID of the course that the index belongs? e.g. CZ2002");
 			String courseID = sc.next();
-			if (CourseManager.checkIfCourseExists(courseID)) {
-				course = CourseManager.findCourse(courseID);
+			if (cm.checkIfCourseExists(courseID)) {
+				course = cm.findCourse(courseID);
 			} else {
 				System.out.println("The course ID you entered does not exist");
 			}
@@ -198,7 +199,7 @@ public class AdminUI {
 		}
 
 		Index newIndex = IndexManager.addIndex(indexID, course, totalVacancies, tutorials, labs);
-		CourseManager.addIndexToCourse(course.getID(), newIndex);
+		cm.addIndexToCourse(course.getID(), newIndex);
 		System.out.println("Succesfully added Index!");
 
 		IndexManager.addIndex(indexID, course, totalVacancies, tutorials, labs);
@@ -217,13 +218,13 @@ public class AdminUI {
 				System.out.println("The index ID you entered does not exist");
 			}
 		} while (index != null);
-		CourseManager.printCourseIDs();
+		cm.printCourseIDs();
 		Course course = null;
 		do {
 			System.out.println("What is the ID of the course that the index belongs? e.g. CZ2002");
 			String courseID = sc.next();
-			if (CourseManager.checkIfCourseExists(courseID)) {
-				course = CourseManager.findCourse(courseID);
+			if (cm.checkIfCourseExists(courseID)) {
+				course = cm.findCourse(courseID);
 			} else {
 				System.out.println("The course ID you entered does not exist");
 			}
@@ -255,8 +256,8 @@ public class AdminUI {
 		}
 		
 		Index newIndex = IndexManager.updateIndex(indexID, course, totalVacancies, tutorials, labs);
-		CourseManager.deleteIndexFromCourse(course.getID(), newIndex);
-		CourseManager.addIndexToCourse(course.getID(), newIndex);
+		cm.deleteIndexFromCourse(course.getID(), newIndex);
+		cm.addIndexToCourse(course.getID(), newIndex);
 		System.out.println("Succesfully updated Index!");
 
 		IndexManager.updateIndex(indexID, course, totalVacancies, tutorials, labs);
@@ -323,7 +324,7 @@ public class AdminUI {
 //	public void printStudentListCourse() {
 //		System.out.println("Enter the Couse: ");
 //		String course = sc.next();
-//		while(!CourseManager.checkIfCourseExists(course)){
+//		while(!cm.checkIfCourseExists(course)){
 //			System.out.println("Invalid course code, please enter a valid course code: ");
 //			course = sc.next();
 //		}

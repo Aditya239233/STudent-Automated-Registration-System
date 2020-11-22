@@ -5,7 +5,7 @@ import model.Student;
 import java.util.Calendar;
 import java.util.List;
 
-public class StudentManager extends UserManager {
+public class StudentManager {
 	private static List<Student> StudentList;
 
 	public static boolean addStudent(String Name, String Password, String Email, Calendar dob, String MatricNo,
