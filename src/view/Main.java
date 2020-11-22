@@ -6,7 +6,9 @@ import java.util.Scanner;
 import java.io.Console;
 import model.Student;
 import model.Admin;
+import controller.CourseManager;
 import controller.FileManager;
+import controller.IndexManager;
 import controller.PasswordManager;
 
 public class Main {
@@ -16,8 +18,10 @@ public class Main {
 	PasswordManager pm = new PasswordManager();
 	Console console = System.console();
 	Scanner sc = new Scanner(System.in);
-
+	
 	public void main() {
+		CourseManager.init();
+		IndexManager.init(CourseManager.getCourseList());
 		displayWelcome();
 		while (true) {
 			System.out.println("1. Student");
