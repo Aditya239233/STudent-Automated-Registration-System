@@ -111,5 +111,27 @@ public class StudentCourseManager {
 		FileManager.writeObjectToFile("student.dat", students);
 
 	}
-
+	
+	public static List<ArrayList<String>> getStudentsInCourse(String CourseCode) {
+		List<ArrayList<String>> studentsEnrolled = new ArrayList<ArrayList<String>>();
+		
+		List<Object> objectList = FileManager.readObjectFromFile("student.dat");
+		List<Student> students = new ArrayList<Student>();
+		for (Object o: objectList)
+			students.add((Student)o);
+		ArrayList<String> newStudent = new ArrayList<String>();
+		for (Student student : students) {
+			for (Index index : student.getIndexes()) {
+				if (index.getCourse().getID().equals(CourseCode)) {
+					newStudent.add(student.getMatricNo());
+					newStudent.add(student.getName());
+					studentsEnrolled.add(newStudent);
+					newStudent.clear();
+				}
+			}
+		}
+		
+		return studentsEnrolled;
+	}
+	
 }

@@ -9,6 +9,7 @@ import java.util.Scanner;
 import controller.CourseManager;
 import controller.IndexManager;
 import controller.StudentManager;
+import controller.StudentCourseManager;
 import model.Course;
 import model.Index;
 import model.Session;
@@ -81,7 +82,7 @@ public class AdminUI {
 				break;
 			case 11:
 				// Print student list by course
-				// printStudentListCourse();
+				printStudentListByCourse();
 				break;
 			case 12:
 				break;
@@ -319,20 +320,24 @@ public class AdminUI {
 //			}
 //		}
 //	}
-//	
-//	public void printStudentListCourse() {
-//		System.out.println("Enter the Couse: ");
-//		String course = sc.next();
-//		while(!CourseManager.checkIfCourseExists(course)){
-//			System.out.println("Invalid course code, please enter a valid course code: ");
-//			course = sc.next();
-//		}
-//		for (int i = 0; i < StudentManager.StudentList.size(); i++) {
-//			if (course == StudentManager.StudentList.get(i).getID()) {
-//				System.out.println(StudentManager.StudentList.get(i));
-//			}
-//		}
-//	}
+	
+	public void printStudentListByCourse() {
+		System.out.println("Enter the Couse: ");
+		String CourseCode = sc.next();
+		if(CourseManager.checkIfCourseExists(CourseCode)){
+			List<ArrayList<String>> studentsEnrolled = StudentCourseManager.getStudentsInCourse(CourseCode);
+			if (studentsEnrolled.size() == 0)
+				System.out.println("There are no students enrolled in the Course "+CourseCode);
+			else {
+				for (ArrayList<String> student : studentsEnrolled) {
+					System.out.println("Student Name: "+student.get(1)+" ,Matric Number: "+student.get(0));
+				}
+			}
+		}
+		else {
+			System.out.println("Course does not exist");
+		}
+	}
 
 	public void addStudent() {
 		System.out.println("Enter the following details to add a new student to the system:");
