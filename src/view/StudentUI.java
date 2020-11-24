@@ -22,7 +22,9 @@ public class StudentUI implements UserUI {
 		this.student = s;
 	}
 
-	@Override
+	/**
+     * This function is used to perform all Student actions
+     */
 	public void display() {
 
 		do {
@@ -76,7 +78,10 @@ public class StudentUI implements UserUI {
 
 		} while (choice != 8);
 	}
-
+	
+	/**
+     * This function is used by a Student to add a Course to his Timetable
+     */
 	private void addCourse() {
 		System.out.println("Enter the Course Code: ");
 		String CourseCode = sc.next();
@@ -101,7 +106,10 @@ public class StudentUI implements UserUI {
 			System.out.println("Succesfully Added " + CourseCode);
 		}
 	}
-
+	
+	/**
+     * This function is used by a Student to remove a Course to his Timetable
+     */
 	private void dropCourse() {
 		System.out.println("Enter the Course Code: ");
 		String CourseCode = sc.next();
@@ -137,7 +145,10 @@ public class StudentUI implements UserUI {
 		} else
 			System.out.println("You're not enrolled in the Course " + CourseCode);
 	}
-
+	
+	/**
+     * This function is used by a Student to swop an index of a Course in his/her timetable
+     */
 	private void swopIndex() {
 		System.out.println("Enter the course code whose index number you would like to swap: ");
 		String CourseCode = sc.next();
@@ -181,7 +192,10 @@ public class StudentUI implements UserUI {
 			System.out.println("Succesfully Swopped the index of " + CourseCode + " to " + IndexCode);
 		}
 	}
-
+	
+	/**
+     * This function is used by a Student to swop an index of a Course with a peer in his/her timetable 
+     */
 	private void swopIndexWithPeer() {
 		System.out.println("Enter the course code whose index number you would like to swap: ");
 		String CourseCode = sc.next();
@@ -198,7 +212,10 @@ public class StudentUI implements UserUI {
 		else
 			System.out.println("Succesfully Added Course");
 	}
-
+	
+	/**
+     * This function is used by a Student to swop to change the Notification Mode
+     */
 	private void changeNotificationMode() {
 		NotificationMode curr_nm = student.getNotificationMode();
 		boolean val1 = false, val2 = false;
@@ -254,7 +271,10 @@ public class StudentUI implements UserUI {
 			StudentCourseManager.writeStudentToFile(student);
 		}
 	}
-
+	
+	/**
+     * This function is used by a Student to check the Vacancy Available in a Course
+     */
 	private void checkVacancyAvailable() {
 		System.out.println("Enter the Course Code: ");
 		String CourseCode = sc.next();

@@ -11,7 +11,7 @@ public class PasswordManager implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public String hashPassword(String password) {
+	public static String hashPassword(String password) {
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-1");
 			md.update(password.getBytes());

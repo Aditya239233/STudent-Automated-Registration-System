@@ -18,7 +18,11 @@ public class Main {
 	private static PasswordManager pm = new PasswordManager();
 	// private static Console console = System.console();
 	static Scanner sc = new Scanner(System.in);
-
+	
+	/**
+     * Main function. Program execution begins from here
+     * @param args
+     */
 	public static void main(String[] args) {
 
 		if (CourseManager.getCourseList() == null) {
@@ -60,7 +64,9 @@ public class Main {
 
 		}
 	}
-
+	/**
+     * This function is used to display the Welcome Message
+     */
 	private static void displayWelcome() {
 		System.out.println("#########################################################################");
 		System.out.println("#\t\t___  ___      _____ _____ ___  ______  _____ \t\t#");
@@ -74,7 +80,10 @@ public class Main {
 		System.out.println("#\t    Welcome to My STudent Automated Registration System    \t#");
 		System.out.println("#########################################################################");
 	}
-
+	
+	/**
+     * This function is used by the Student to Login 
+     */
 	public static Boolean studentLogin() {
 		if (checkAccessPeriod()) {
 			System.out.print("Enter your Matric Number: ");
@@ -103,7 +112,10 @@ public class Main {
 		}
 
 	}
-
+	
+	/**
+     * This function is used by the Admin to Login 
+     */
 	public static Boolean adminLogin() {
 		System.out.print("Enter your Email ");
 		String email = sc.next();
@@ -131,7 +143,10 @@ public class Main {
 			}
 		return false;
 	}
-
+	
+	/**
+     * This function is used to check whether the Date and Time is within the Access Period for Student 
+     */
 	public static Boolean checkAccessPeriod() {
 		Boolean canLogin = false;
 		List<Object> objects = FileManager.readObjectFromFile("accessPeriod.dat");

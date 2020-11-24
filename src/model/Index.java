@@ -8,20 +8,22 @@ import java.io.Serializable;
 
 public class Index implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String ID;
 	private Course course;
 	private int totalVacancies;
 	private int numStudentsEnrolled;
-	private LinkedList<String> waitList; // first is head, last is tail
+	private LinkedList<String> waitList; 
 	private List<Session> tutorials;
 	private List<Session> labs;
 
-	public Index(String ID, Course course, int totalVacancies) { // constructor for index without tutorial and lab
-																	// sessions
+	/**
+	 * Parametrized Constructor of Index without tutorial and lab
+	 * @param ID - refers to the Index Code
+	 * @param course - refers to the <Course> Object 
+	 * @param totalVacancies - refers to the total vacancy of the index
+	 */
+	public Index(String ID, Course course, int totalVacancies) { 
 		this.ID = ID;
 		this.course = course;
 		this.totalVacancies = totalVacancies;
@@ -31,9 +33,15 @@ public class Index implements Serializable {
 		this.tutorials = null;
 		this.labs = null;
 	}
-
-	public Index(String ID, Course course, int totalVacancies, List<Session> tutorials) { // constructor for index
-																							// without lab sessions
+	
+	/**
+	 * Parametrized Constructor of Index without tutorial
+	 * @param ID - refers to the Index Code
+	 * @param course - refers to the <Course> Object 
+	 * @param totalVacancies - refers to the total vacancy of the index
+	 * @param tutorials - refers to the <Session> of tutorial for the Course
+	 */
+	public Index(String ID, Course course, int totalVacancies, List<Session> tutorials) { 
 		this.ID = ID;
 		this.course = course;
 		this.totalVacancies = totalVacancies;
@@ -43,7 +51,15 @@ public class Index implements Serializable {
 		this.tutorials = tutorials;
 		this.labs = null;
 	}
-
+	
+	/**
+	 * Parametrized Constructor of Index
+	 * @param ID - refers to the Index Code
+	 * @param course - refers to the <Course> Object 
+	 * @param totalVacancies - refers to the total vacancy of the index
+	 * @param tutorials - refers to the <Session> of tutorial for the Course
+	 * @param labs - refers to the <Session> of lab for the Course
+	 */
 	public Index(String ID, Course course, int totalVacancies, List<Session> tutorials, List<Session> labs) {
 		this.ID = ID;
 		this.course = course;
@@ -54,7 +70,10 @@ public class Index implements Serializable {
 		this.tutorials = tutorials;
 		this.labs = labs;
 	}
-
+	
+	/**
+	 * This function is used to print the Index Details
+	 */
 	public void printIndexDetails() {
 		System.out.println("Index " + ID + " :");
 
@@ -77,30 +96,21 @@ public class Index implements Serializable {
 			}
 		}
 	}
+	
+	/**
+	 * Getter, Setter, Adder, Deletion functions
+	 */
+	public String getID() { return this.ID; }
 
-	public String getID() {
-		return this.ID;
-	}
+	public void setID(String ID) { this.ID = ID; }
 
-	public void setID(String ID) {
-		this.ID = ID;
-	}
+	public Course getCourse() { return this.course; }
 
-	public Course getCourse() {
-		return this.course;
-	}
+	public void setCourse(Course course) { this.course = course; }
 
-	public void setCourse(Course course) {
-		this.course = course;
-	}
+	public void setTotalVacancies(int totalVacancies) { this.totalVacancies = totalVacancies; }
 
-	public void setTotalVacancies(int totalVacancies) {
-		this.totalVacancies = totalVacancies;
-	}
-
-	public int getTotalVacancies() {
-		return this.totalVacancies;
-	}
+	public int getTotalVacancies() { return this.totalVacancies; }
 
 	public void setNumStudentEnrolled(int numStudentsEnrolled) {
 		if (numStudentsEnrolled > getTotalVacancies()) {
@@ -110,17 +120,12 @@ public class Index implements Serializable {
 		}
 	}
 
-	public int getNumStudentsEnrolled() {
-		return this.numStudentsEnrolled;
-	}
+	public int getNumStudentsEnrolled() { return this.numStudentsEnrolled; }
 
-	public LinkedList<String> getWaitList() {
-		return this.waitList;
-	}
+	public LinkedList<String> getWaitList() { return this.waitList; }
 
 	public void addToWaitList(String studentMatricNo) {
 		if (this.numStudentsEnrolled <= this.totalVacancies) {
-			//this.setNumStudentEnrolled(getNumStudentsEnrolled() + 1);
 			this.waitList.addFirst(studentMatricNo);
 		}
 	}
@@ -134,9 +139,7 @@ public class Index implements Serializable {
 		return this.waitList.removeLast();
 	}
 
-	public String viewLastWaitList() {
-		return this.waitList.peekLast();
-	}
+	public String viewLastWaitList() { return this.waitList.peekLast(); }
 
 	public void addTutorial(int day, LocalTime startTime, LocalTime endTime, String location, String teacher) {
 		int ID = this.tutorials.size();
@@ -162,9 +165,7 @@ public class Index implements Serializable {
 		}
 	}
 
-	public List<Session> getTutorial() {
-		return this.tutorials;
-	}
+	public List<Session> getTutorial() { return this.tutorials; }
 
 	public void addLab(int day, LocalTime startTime, LocalTime endTime, String location, String teacher) {
 		int ID = this.labs.size();
@@ -189,7 +190,5 @@ public class Index implements Serializable {
 		}
 	}
 
-	public List<Session> getLab() {
-		return this.labs;
-	}
+	public List<Session> getLab() { return this.labs; }
 }

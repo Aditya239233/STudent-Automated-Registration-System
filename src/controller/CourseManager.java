@@ -3,7 +3,6 @@ package controller;
 import model.Course;
 import model.Index;
 import model.Session;
-import model.Student;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -14,9 +13,7 @@ public class CourseManager {
 
 	public static void init() {
 		try {
-//			List<Object> objects = FileManager.readCourseFromFile("course.dat");
-//			for (Object o : objects)
-//				CourseList.add((Course)o);
+
 			CourseList = FileManager.readCourseFromFile("course.dat");
 		} catch (Exception e) {
 			System.out.println(e);

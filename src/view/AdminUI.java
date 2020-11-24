@@ -20,7 +20,10 @@ public class AdminUI implements UserUI {
 
 	private int choice;
 	Scanner sc = new Scanner(System.in);
-
+	
+	/**
+     * This function is used to perform all Admin actions
+     */
 	public void display() {
 		do {
 			System.out.println("\n#########################################################################");
@@ -86,7 +89,10 @@ public class AdminUI implements UserUI {
 
 		} while (choice != 12);
 	}
-
+	
+	/**
+     * This function is used by the admin to edit the student's Access Period
+     */
 	public void editStudentAccessPeriod() {
 		List<Object> objects = FileManager.readObjectFromFile("accessPeriod.dat");
 		List<Calendar> accessPeriod = new ArrayList<Calendar>();
@@ -137,7 +143,68 @@ public class AdminUI implements UserUI {
 			System.out.println("Access Period remains the same");
 		}
 	}
-
+	
+	/**
+     * This function is used by the admin to add a new Student
+     */
+	public void addStudent() {
+		System.out.println("Enter the following details to add a new student to the system:");
+		char loop = 'y';
+		while (loop == 'y') {
+			System.out.println("Full name of student: ");
+			String name = sc.next();
+			System.out.println("Student account password: ");
+			String password = sc.next();
+			System.out.println("Student account email: ");
+			String email = sc.next();
+			while (!email.contains("@")) {
+				System.out
+						.println("Invalid email address. The email address should be of the form emailId@e.ntu.edu.sg");
+				System.out.println("Please enter the email ID again: ");
+				email = sc.next();
+			}
+			System.out.println("Student's date of birth (DD-MM-YYYY format):");
+			String date = sc.next();
+			String[] arrOfStr = date.split("-", 3);
+			while (date.length() != 10 || arrOfStr.length != 3) {
+				System.out.println(
+						"Invalid date of birth. Please enter again in DD-MM-YYYY format and include the hyphens.");
+				System.out.println("Student's date of birth (DD-MM-YYYY format):");
+				date = sc.next();
+				arrOfStr = date.split("-", 3);
+			}
+			int dd = Integer.parseInt(arrOfStr[0]);
+			int mm = Integer.parseInt(arrOfStr[1]);
+			int yy = Integer.parseInt(arrOfStr[2]);
+			Calendar c = Calendar.getInstance();
+			c.set(yy, mm, dd);
+			System.out.println("Enter the student's school ID: ");
+			String school = sc.next();
+			System.out.println("Enter the student's degree code: ");
+			String degree = sc.next();
+			System.out.println("Student's Matric Number: ");
+			String mat_num = sc.next();
+			System.out.println();
+			if (StudentManager.addStudent(name, password, email, c, mat_num, school, degree)) {
+				System.out.println("Student added successfully!\n");
+				StudentManager.printStudentInfo();
+				return;
+			} else {
+				System.out.println("Cannot add students with duplicate matric numbers.");
+				while (true) {
+					System.out.println("Do you want to try again? (y/n)");
+					loop = sc.next().charAt(0);
+					loop = Character.toLowerCase(loop);
+					if (loop == 'y' || loop == 'n')
+						break;
+				}
+			}
+		}
+	}
+	
+	/**
+     * This function is used by the admin to add a new Course
+     */
 	public void addCourse() {
 		char loop = 'y';
 		while (loop == 'y') {
@@ -190,7 +257,10 @@ public class AdminUI implements UserUI {
 			loop = 'n';
 		}
 	}
-
+	
+	/**
+     * This function is used by the admin to update an existing Course
+     */
 	public void updateCourse() {
 		char loop = 'y';
 		while (loop == 'y') {
@@ -235,7 +305,10 @@ public class AdminUI implements UserUI {
 			loop = 'n';
 		}
 	}
-
+	
+	/**
+     * This function is used by the admin to delete an existing Course
+     */
 	public void deleteCourse() {
 		char loop = 'y';
 		while (loop == 'y') {
@@ -258,7 +331,10 @@ public class AdminUI implements UserUI {
 			}
 		}
 	}
-
+	
+	/**
+     * This function is used by the admin to add a new Index to a Course
+     */
 	public void addIndex() {
 		CourseManager.printCourseIDs();
 		Course course = null;
@@ -321,7 +397,10 @@ public class AdminUI implements UserUI {
 			}
 		}
 	}
-
+	
+	/**
+     * This function is used by the admin to update an existing Index in a Course
+     */
 	public void updateIndex() {
 		char loop = 'y';
 		while (loop == 'y') {
@@ -384,7 +463,10 @@ public class AdminUI implements UserUI {
 			}
 		}
 	}
-
+	
+	/**
+     * This function is used by the admin to delete an Index of a Course
+     */
 	public void deleteIndex() {
 		char loop = 'y';
 		while (loop == 'y') {
@@ -430,7 +512,10 @@ public class AdminUI implements UserUI {
 		Session session = new Session(ID, DayOfWeek, startTime, endTime, location, teacher);
 		return session;
 	}
-
+	
+	/**
+     * This function is used by the admin to check the vacancy in a Index
+     */
 	public void checkVacancyInIndexSlot() {
 		char loop = 'y';
 		while (loop == 'y') {
@@ -454,7 +539,10 @@ public class AdminUI implements UserUI {
 			}
 		}
 	}
-
+	
+	/**
+     * This function is used by the admin to print all the Students enrolled in an Index
+     */
 	public void printStudentListByIndex() {
 		char loop = 'y';
 		while (loop == 'y') {
@@ -485,7 +573,10 @@ public class AdminUI implements UserUI {
 		}
 		System.out.println();
 	}
-
+	
+	/**
+     * This function is used by the admin to print all the Students enrolled in a Course
+     */
 	public void printStudentListByCourse() {
 		char loop = 'y';
 		while (loop == 'y') {
@@ -504,61 +595,6 @@ public class AdminUI implements UserUI {
 				loop = 'n';
 			} else {
 				System.out.println("Course does not exist");
-				while (true) {
-					System.out.println("Do you want to try again? (y/n)");
-					loop = sc.next().charAt(0);
-					loop = Character.toLowerCase(loop);
-					if (loop == 'y' || loop == 'n')
-						break;
-				}
-			}
-		}
-	}
-
-	public void addStudent() {
-		System.out.println("Enter the following details to add a new student to the system:");
-		char loop = 'y';
-		while (loop == 'y') {
-			System.out.println("Full name of student: ");
-			String name = sc.next();
-			System.out.println("Student account password: ");
-			String password = sc.next();
-			System.out.println("Student account email: ");
-			String email = sc.next();
-			while (!email.contains("@")) {
-				System.out
-						.println("Invalid email address. The email address should be of the form emailId@e.ntu.edu.sg");
-				System.out.println("Please enter the email ID again: ");
-				email = sc.next();
-			}
-			System.out.println("Student's date of birth (DD-MM-YYYY format):");
-			String date = sc.next();
-			String[] arrOfStr = date.split("-", 3);
-			while (date.length() != 10 || arrOfStr.length != 3) {
-				System.out.println(
-						"Invalid date of birth. Please enter again in DD-MM-YYYY format and include the hyphens.");
-				System.out.println("Student's date of birth (DD-MM-YYYY format):");
-				date = sc.next();
-				arrOfStr = date.split("-", 3);
-			}
-			int dd = Integer.parseInt(arrOfStr[0]);
-			int mm = Integer.parseInt(arrOfStr[1]);
-			int yy = Integer.parseInt(arrOfStr[2]);
-			Calendar c = Calendar.getInstance();
-			c.set(yy, mm, dd);
-			System.out.println("Enter the student's school ID: ");
-			String school = sc.next();
-			System.out.println("Enter the student's degree code: ");
-			String degree = sc.next();
-			System.out.println("Student's Matric Number: ");
-			String mat_num = sc.next();
-			System.out.println();
-			if (StudentManager.addStudent(name, password, email, c, mat_num, school, degree)) {
-				System.out.println("Student added successfully!\n");
-				StudentManager.printStudentInfo();
-				return;
-			} else {
-				System.out.println("Cannot add students with duplicate matric numbers.");
 				while (true) {
 					System.out.println("Do you want to try again? (y/n)");
 					loop = sc.next().charAt(0);
