@@ -19,14 +19,16 @@ public class Student extends User implements Serializable {
 	private String Degree;
 	private List<Index> indexes = new ArrayList<Index>();
 	private NotificationMode nm;
-
+	private int AU;
+	private final int maxAU = 22;
+	
 	public Student() {
 		super();
 		this.MatricNo = "undefined";
 		this.SchoolID = "undefined";
 		this.Degree = "undefined";
-		nm = NotificationMode.EMAIL;
-
+		this.nm = NotificationMode.EMAIL;
+		this.AU = 0;
 	}
 
 	public Student(String Name, String Password, String Email, Calendar dob, String MatricNo, String SchoolID,
@@ -35,7 +37,9 @@ public class Student extends User implements Serializable {
 		this.MatricNo = MatricNo;
 		this.SchoolID = SchoolID;
 		this.Degree = Degree;
-		nm = NotificationMode.EMAIL;
+		this.nm = NotificationMode.EMAIL;
+		this.AU = 0;
+		
 	}
 
 	public void setNotificationMode(NotificationMode nm) {
@@ -86,8 +90,11 @@ public class Student extends User implements Serializable {
 					isThere = true;
 			if (isThere)
 				return -4;
+			if (getAU() + index.getCourse().getAu() > maxAU)
+				return -5;
 			indexes.add(index);
 			index.setNumStudentEnrolled(index.getNumStudentsEnrolled() + 1);
+			setAU(getAU() + index.getCourse().getAu());
 			return 1;
 		}
 
@@ -102,6 +109,7 @@ public class Student extends User implements Serializable {
 			course = index.getCourse();
 			if (course.getID().equals(ID)) {
 				indexes.remove(index);
+				setAU(getAU() - index.getCourse().getAu());
 				index.setNumStudentEnrolled(index.getNumStudentsEnrolled() - 1);
 				if (handleWaitList(index) == 1)
 					index.setNumStudentEnrolled(index.getNumStudentsEnrolled() + 1);
@@ -315,6 +323,14 @@ public class Student extends User implements Serializable {
 		} else
 			return false;
 
+	}
+
+	public int getAU() {
+		return AU;
+	}
+
+	public void setAU(int aU) {
+		AU = aU;
 	}
 
 }

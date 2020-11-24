@@ -94,6 +94,8 @@ public class StudentUI implements UserUI {
 			System.out.println("There is a TimeTable Clash. Cannot Add this Course");
 		else if (result == -4)
 			System.out.println("You're already registered to this course! Try Registering to Another Course.");
+		else if (result == -5)
+			System.out.println("You can't exceed 22 AUs. You already have "+student.getAU());
 		else {
 			StudentCourseManager.writeStudentToFile(student);
 			System.out.println("Succesfully Added " + CourseCode);
