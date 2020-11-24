@@ -31,6 +31,7 @@ public class Main {
 			System.out.println("3. Exit");
 			user = sc.nextInt();
 			if (user == 3) {
+				System.out.println("\nHope to see you soon!");
 				System.exit(0);
 			} else if (!(user == 1 || user == 2)) {
 				System.out.println("Invalid Choice! Try Again");
@@ -39,6 +40,7 @@ public class Main {
 			if (user == 1) {
 				Boolean isLogged = studentLogin();
 				if (isLogged) {
+					System.out.println("\n### Login Successful! ###");
 					UserUI ui = new StudentUI(student);
 					ui.display();
 				} else {
@@ -48,6 +50,7 @@ public class Main {
 			} else {
 				Boolean isLogged = adminLogin();
 				if (isLogged) {
+					System.out.println("\n### Login Successful! ###");
 					AdminUI ui = new AdminUI();
 					ui.display();
 				} else {
