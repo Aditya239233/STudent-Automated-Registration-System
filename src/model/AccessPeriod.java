@@ -3,8 +3,13 @@ package model;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
+import java.io.Serializable;
 
-public class AccessPeriod {
+public class AccessPeriod implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private List<Date> accessPeriod = new ArrayList<Date>(2);
 
 	public void setAccessPeriod(Date start, Date end) {

@@ -68,5 +68,35 @@ public class FileManager {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void writeCourseToFile(String filename, List<Course> object) {
+		FileOutputStream fos = null;
+		ObjectOutputStream out = null;
+		try {
+			fos = new FileOutputStream("data/" + filename);
+			out = new ObjectOutputStream(fos);
+			out.writeObject(object);
+			out.close();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	public static List<Course> readCourseFromFile(String filename) {
+		List<Course> objects = null;
+		FileInputStream fis = null;
+		ObjectInputStream in = null;
+		try {
+			fis = new FileInputStream("data/" + filename);
+			in = new ObjectInputStream(fis);
+			objects = (ArrayList) in.readObject();
+			in.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 
+		return objects;
+	}
 }

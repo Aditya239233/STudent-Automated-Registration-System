@@ -9,15 +9,16 @@ import java.util.ArrayList;
 
 public class CourseManager {
 
-	public static List<Course> CourseList = new ArrayList<Course>();
+	private static List<Course> CourseList = new ArrayList<Course>();
 
 	public static void init() {
 		try {
-			List<Object> objects = FileManager.readObjectFromFile("course.dat");
-			for (Object o : objects)
-				CourseList.add((Course) o);
+//			List<Object> objects = FileManager.readCourseFromFile("course.dat");
+//			for (Object o : objects)
+//				CourseList.add((Course)o);
+			CourseList = FileManager.readCourseFromFile("course.dat"); 
 		} catch (Exception e) {
-			System.out.println();
+			System.out.println(e);
 		}
 	}
 
@@ -33,31 +34,31 @@ public class CourseManager {
 	}
 
 	public static Course addCourse(String courseID, String Name, String faculty, int au, List<Index> indexList,
-			List<Session> lectures) {
+			List<Session> lectures, Boolean hasTutorial, Boolean hasLab) {
 		if (CourseList.size() == 0) {
 			Course newCourse;
 			if (indexList != null) {
-				newCourse = new Course(courseID, Name, faculty, au, indexList, lectures);
+				newCourse = new Course(courseID, Name, faculty, au, indexList, lectures, hasTutorial, hasLab);
 			} else {
-				newCourse = new Course(courseID, Name, faculty, au, lectures);
+				newCourse = new Course(courseID, Name, faculty, au, lectures, hasTutorial, hasLab);
 			}
 			CourseList.add(newCourse);
 			List<Object> courses = new ArrayList<Object>();
 			courses.add(newCourse);
 			System.out.println("Succesfully added Course");
-			FileManager.writeObjectToFile("course.dat", courses);
+			FileManager.writeCourseToFile("course.dat", CourseList);
 			return newCourse;
 		}
-		if (checkIfCourseExists(courseID)) {
+		else if (checkIfCourseExists(courseID)) {
 			System.out.println("Course already exists");
 			return null;
 		}
 
 		Course newCourse;
 		if (indexList != null) {
-			newCourse = new Course(courseID, Name, faculty, au, indexList, lectures);
+			newCourse = new Course(courseID, Name, faculty, au, indexList, lectures, hasTutorial, hasLab);
 		} else {
-			newCourse = new Course(courseID, Name, faculty, au, lectures);
+			newCourse = new Course(courseID, Name, faculty, au, lectures, hasTutorial, hasLab);
 		}
 		CourseList.add(newCourse);
 		System.out.println("Succesfully added Course");
@@ -66,21 +67,21 @@ public class CourseManager {
 	}
 
 	public static void updateCourse(String courseID, String Name, String faculty, int au, List<Index> indexList,
-			List<Session> lectures) {
+			List<Session> lectures, Boolean hasTutorial, Boolean hasLab) {
 		if (checkIfCourseExists(courseID)) {
 			Course course = findCourse(courseID);
 			int i = CourseList.indexOf(course);
 			Course newCourse;
 			if (indexList != null) {
-				newCourse = new Course(courseID, Name, faculty, au, indexList, lectures);
+				newCourse = new Course(courseID, Name, faculty, au, indexList, lectures, hasTutorial, hasLab);
 			} else {
-				newCourse = new Course(courseID, Name, faculty, au, lectures);
+				newCourse = new Course(courseID, Name, faculty, au, lectures, hasTutorial, hasLab);
 			}
 			CourseList.set(i, newCourse);
 			List<Object> courses = new ArrayList<Object>();
 			for (Course c : CourseList)
 				courses.add((Object) c);
-			FileManager.writeObjectToFile("course.dat", courses);
+			FileManager.writeCourseToFile("course.dat", CourseList);
 			System.out.println("Succesfully updated Course");
 		} else {
 
@@ -95,7 +96,7 @@ public class CourseManager {
 			List<Object> courses = new ArrayList<Object>();
 			for (Course c : CourseList)
 				courses.add((Object) c);
-			FileManager.writeObjectToFile("course.dat", courses);
+			FileManager.writeCourseToFile("course.dat", CourseList);
 			System.out.println("Course Has been deleted");
 		} else {
 			System.out.println("Course Does not Exist");
@@ -106,6 +107,16 @@ public class CourseManager {
 		if (checkIfCourseExists(courseID)) {
 			Course course = findCourse(courseID);
 			course.addIndex(index);
+			for (int i=0; i<CourseList.size();i++) {
+				if (CourseList.get(i).getID().equals(course.getID())) {
+					CourseList.set(i, course);
+					break;
+				}
+			}
+			List<Object> objects = new ArrayList<Object>();
+			for (Course c: CourseList) 
+				objects.add(CourseList);
+			FileManager.writeCourseToFile("course.dat", CourseList);
 			System.out.println("Index " + index.getID() + " has been added to course " + courseID);
 		} else {
 			System.out.println("Course Does not Exist");
@@ -116,6 +127,16 @@ public class CourseManager {
 		if (checkIfCourseExists(courseID)) {
 			Course course = findCourse(courseID);
 			course.deleteIndex(index.getID());
+			for (int i=0; i<CourseList.size();i++) {
+				if (CourseList.get(i).getID().equals(course.getID())) {
+					CourseList.set(i, course);
+					break;
+				}
+			}
+			List<Object> objects = new ArrayList<Object>();
+			for (Course c: CourseList) 
+				objects.add(CourseList);
+			FileManager.writeCourseToFile("course.dat", CourseList);
 			System.out.println("Index " + index.getID() + " has been deleted from the course " + courseID);
 		} else {
 			System.out.println("Course Does not Exist");
@@ -135,6 +156,8 @@ public class CourseManager {
 	}
 
 	public static boolean checkIfCourseExists(String CourseID) {
+		if (CourseList.size() == 0)
+			return false;
 		return CourseList.stream().anyMatch(Course -> CourseID.equals(Course.getID()));
 	}
 

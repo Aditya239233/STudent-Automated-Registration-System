@@ -4,9 +4,14 @@ import java.util.List;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.io.Serializable;
 
-public class Index {
+public class Index implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String ID;
 	private Course course;
 	private int totalVacancies;

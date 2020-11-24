@@ -14,24 +14,26 @@ public class Course implements Serializable {
 	private String Name;
 	private String ID;
 	private String faculty;
-	private boolean hasTutorial;
-	private boolean hasLab;
+	private boolean hasTutorial = false;
+	private boolean hasLab = false;
 	private int au;
 	private List<Index> indexList;
 	private List<Session> lectures;
 
-	public Course(String ID, String Name, String faculty, int au, List<Session> lectures) {
+	public Course(String ID, String Name, String faculty, int au, List<Session> lectures, Boolean hasTutorial, Boolean hasLab) {
 		this.ID = ID;
 		this.Name = Name;
 		this.faculty = faculty;
 		this.au = au;
 
 		this.indexList = new ArrayList<Index>();
-		;
+		
 		this.lectures = lectures;
+		this.hasTutorial = hasTutorial;
+		this.hasLab = hasLab;
 	}
 
-	public Course(String ID, String Name, String faculty, int au, List<Index> indexList, List<Session> lectures) {
+	public Course(String ID, String Name, String faculty, int au, List<Index> indexList, List<Session> lectures, Boolean hasTutorial, Boolean hasLab) {
 		this.ID = ID;
 		this.Name = Name;
 		this.faculty = faculty;
@@ -39,6 +41,8 @@ public class Course implements Serializable {
 
 		this.indexList = indexList;
 		this.lectures = lectures;
+		this.hasTutorial = hasTutorial;
+		this.hasLab = hasLab;
 	}
 
 	public List<Index> getIndexList() {

@@ -44,35 +44,35 @@ public class AdminUI {
 			switch (choice) {
 			case 1:
 				// Edit Student Access Period
-				editStudentAccessPeriod();
+				this.editStudentAccessPeriod();
 				break;
 			case 2:
 				// Add a new Student
-				addStudent();
+				this.addStudent();
 				break;
 			case 3:
 				// Add Course
-				addCourse();
+				this.addCourse();
 				break;
 			case 4:
 				// Update Course
-				updateCourse();
+				this.updateCourse();
 				break;
 			case 5:
 				// Delete Course
-				deleteCourse();
+				this.deleteCourse();
 				break;
 			case 6:
 				// Add Index
-				addIndex();
+				this.addIndex();
 				break;
 			case 7:
 				// Update Index
-				updateIndex();
+				this.updateIndex();
 				break;
 			case 8:
 				// Delete Index
-				deleteIndex();
+				this.deleteIndex();
 				break;
 			case 9:
 				// Check available slot for an index number
@@ -128,7 +128,7 @@ public class AdminUI {
 			arrOfStr = dob.split("-", 3);
 			while (dob.length() != 10 || arrOfStr.length != 3) {
 				System.out.println(
-						"Invalid date of birth. Please enter again in DD-MM-YYYY format and include the hyphens.");
+						"Invalid date. Please enter again in DD-MM-YYYY format and include the hyphens.");
 				System.out.println("Student's date of birth (DD-MM-YYYY format):");
 				dob = sc.next();
 				arrOfStr = dob.split("-", 3);
@@ -150,18 +150,38 @@ public class AdminUI {
 
 	public void addCourse() {
 		System.out.println("Adding a new course... ");
+		char loop = 'y';
+		while (loop == 'y') {
 		System.out.println("What is the course id? e.g. CZ2002");
 		String courseID = sc.next();
+		if (CourseManager.checkIfCourseExists(courseID)) {
+			System.out.println("Course Already Exists!");
+			while (true) {
+				System.out.println("Do you want to try again? (y/n)");
+				loop = sc.next().charAt(0);
+				loop = Character.toLowerCase(loop);
+				if (loop == 'y' || loop == 'n')
+					break;
+			}
+		}
+		if (loop == 'n')
+			break;
 		System.out.println("What is the course name? e.g. Object Oriented Programming and Design");
 		String courseName = sc.next();
-		System.out.println("What is the course faculty? e.g. Professor Tan");
+		System.out.println("What is the course faculty? e.g. SCSE");
 		String faculty = sc.next();
 		System.out.println("How many Academic Units (AU) does the course have? eg. 3");
 		int au = sc.nextInt();
 		System.out.println("Does the course have tutorials? e.g. True/False");
-		boolean hasTutorial = sc.nextBoolean();
+		boolean hasTutorial = false;
+		String tut = sc.next().toLowerCase();
+		if (tut.equals("true"))
+			hasTutorial = true;
 		System.out.println("Does the course have lab sessions? e.g. True/False");
-		boolean hasLab = sc.nextBoolean();
+		boolean hasLab = false;
+		String lab = sc.next().toLowerCase();
+		if (lab.equals("true"))
+			hasLab = true;
 
 		System.out.println("How many lecture sessions does the course have per week? eg. 1");
 		int numLectures = sc.nextInt();
@@ -172,14 +192,30 @@ public class AdminUI {
 			lectures.add(lecture);
 		}
 
-		CourseManager.addCourse(courseID, courseName, faculty, au, null, lectures);
+		CourseManager.addCourse(courseID, courseName, faculty, au, null, lectures, hasTutorial, hasLab);
 		System.out.println("Succesfully added Course!");
+		loop = 'n';
+		}
 	}
 
 	public void updateCourse() {
 		System.out.println("Updating a new course... ");
+		char loop = 'y';
+		while (loop == 'y') {
 		System.out.println("What is the course id? e.g. CZ2002");
 		String courseID = sc.next();
+		if (!CourseManager.checkIfCourseExists(courseID)) {
+			System.out.println("Course Does not Exist!");
+			while (true) {
+				System.out.println("Do you want to try again? (y/n)");
+				loop = sc.next().charAt(0);
+				loop = Character.toLowerCase(loop);
+				if (loop == 'y' || loop == 'n')
+					break;
+			}
+		}
+		if (loop == 'n')
+			break;
 		System.out.println("What is the course name? e.g. Object Oriented Programming and Design");
 		String courseName = sc.next();
 		System.out.println("What is the course faculty? e.g. Professor Tan");
@@ -200,138 +236,186 @@ public class AdminUI {
 			lectures.add(lecture);
 		}
 
-		CourseManager.updateCourse(courseID, courseName, faculty, au, null, lectures);
+		CourseManager.updateCourse(courseID, courseName, faculty, au, null, lectures, hasTutorial, hasLab);
 		System.out.println("Succesfully updated Course!");
+		loop = 'n';
+		}
 	}
 
 	public void deleteCourse() {
 		System.out.println("Deleting course... ");
+		char loop = 'y';
+		while (loop == 'y') {
 		System.out.println("What is the course id? e.g. CZ2002");
 		String courseID = sc.next();
-
+		if (CourseManager.checkIfCourseExists(courseID)) {
 		CourseManager.deleteCourse(courseID);
 		System.out.println("Succesfully deleted Course!");
+		break;
+		}
+		else {
+			while (true) {
+				System.out.println("Do you want to try again? (y/n)");
+				loop = sc.next().charAt(0);
+				loop = Character.toLowerCase(loop);
+				if (loop == 'y' || loop == 'n')
+					break;
+			}
+		}
+		}
 	}
 
 	public void addIndex() {
 		System.out.println("Adding a new index... See below for the list of Course IDs ");
 		CourseManager.printCourseIDs();
 		Course course = null;
-		do {
-			System.out.println("What is the ID of the course that the index belongs? e.g. CZ2002");
-			String courseID = sc.next();
-			if (!CourseManager.checkIfCourseExists(courseID)) {
-				System.out.println("The course ID you entered does not exist");
+		char loop = 'y';
+		while (loop == 'y') {
+		System.out.println("What is the ID of the course that the index belongs? e.g. CZ2002");
+		String courseID = sc.next();
+		if (CourseManager.checkIfCourseExists(courseID)) {
+			System.out.println("What is the index's ID? e.g. BCG10");
+			course = CourseManager.findCourse(courseID);
+			String indexID = sc.next();
+			if (!IndexManager.checkIfIndexExists(indexID)) {
+			System.out.println("How many total vacancies does the index have? eg. 50");
+			int totalVacancies = sc.nextInt();
+
+			List<Session> tutorials = null, labs = null;
+			if (course.getHasTutorial()) {
+				System.out.println("How many tutorial sessions does the course have per week? eg. 1");
+				int numLectures = sc.nextInt();
+				tutorials = new ArrayList<Session>();
+				for (int i = 0; i < numLectures; i++) {
+					System.out.println("Adding tutorial " + i + "...");
+					Session tutorial = addSession(i);
+					tutorials.add(tutorial);
+				}
+			}
+			if (course.getHasLab()) {
+				System.out.println("How many lab sessions does the course have per week? eg. 1");
+				int numLectures = sc.nextInt();
+				labs = new ArrayList<Session>();
+				for (int i = 0; i < numLectures; i++) {
+					System.out.println("Adding lab " + i + "...");
+					Session lab = addSession(i);
+					labs.add(lab);
+				}
+			}
+
+			Index newIndex = IndexManager.addIndex(indexID, course, totalVacancies, tutorials, labs);
+			if (newIndex == null) {
+				System.out.println("Index already exists");
 			} else {
-				course = CourseManager.findCourse(courseID);
-				System.out.println(course.getID());
+				CourseManager.addIndexToCourse(course.getID(), newIndex);
+				System.out.println("Succesfully added Index!");
+
+				IndexManager.addIndex(indexID, course, totalVacancies, tutorials, labs);
+				loop = 'n';
+			}
+		}
+		}
+		if (loop == 'n')
+			break;
+		System.out.println("Invalid Credentials");
+		while (true) {
+			System.out.println("Do you want to try again? (y/n)");
+			loop = sc.next().charAt(0);
+			loop = Character.toLowerCase(loop);
+			if (loop == 'y' || loop == 'n')
 				break;
-			}
-		} while (course != null);
-		System.out.println("What is the index's ID? e.g. BCG10");
-		String indexID = sc.next();
-		System.out.println("How many total vacancies does the index have? eg. 50");
-		int totalVacancies = sc.nextInt();
-
-		List<Session> tutorials = null, labs = null;
-		if (course.getHasTutorial()) {
-			System.out.println("How many tutorial sessions does the course have per week? eg. 1");
-			int numLectures = sc.nextInt();
-			tutorials = new ArrayList<Session>();
-			for (int i = 0; i < numLectures; i++) {
-				System.out.println("Adding tutorial " + i + "...");
-				Session tutorial = addSession(i);
-				tutorials.add(tutorial);
-			}
 		}
-		if (course.getHasLab()) {
-			System.out.println("How many lab sessions does the course have per week? eg. 1");
-			int numLectures = sc.nextInt();
-			labs = new ArrayList<Session>();
-			for (int i = 0; i < numLectures; i++) {
-				System.out.println("Adding lab " + i + "...");
-				Session lab = addSession(i);
-				labs.add(lab);
-			}
-		}
-
-		Index newIndex = IndexManager.addIndex(indexID, course, totalVacancies, tutorials, labs);
-		if (newIndex == null) {
-			System.out.println("Index already exists");
-		} else {
-			CourseManager.addIndexToCourse(course.getID(), newIndex);
-			System.out.println("Succesfully added Index!");
-
-			IndexManager.addIndex(indexID, course, totalVacancies, tutorials, labs);
 		}
 	}
 
 	public void updateIndex() {
 		System.out.println("Updating an index... See below for the list of Index IDs ");
+		char loop = 'y';
+		while (loop == 'y') {
 		IndexManager.printIndexIDs();
 		System.out.println("What is the index's ID? e.g. BCG10");
 		String indexID = sc.next();
 		Index index = null;
-		do {
-			if (IndexManager.checkIfIndexExists(indexID)) {
-				index = IndexManager.findIndex(indexID);
-				break;
-			} else {
-				System.out.println("The index ID you entered does not exist");
-			}
-		} while (index != null);
+		if (IndexManager.checkIfIndexExists(indexID)) {
 		CourseManager.printCourseIDs();
 		Course course = null;
-		do {
-			System.out.println("What is the ID of the course that the index belongs? e.g. CZ2002");
-			String courseID = sc.next();
-			if (CourseManager.checkIfCourseExists(courseID)) {
-				course = CourseManager.findCourse(courseID);
-			} else {
-				System.out.println("The course ID you entered does not exist");
+		
+		System.out.println("What is the ID of the course that the index belongs? e.g. CZ2002");
+		String courseID = sc.next();
+		if (CourseManager.checkIfCourseExists(courseID)) {
+			course = CourseManager.findCourse(courseID);
+			System.out.println("How many total vacancies does the index have? eg. 50");
+			int totalVacancies = sc.nextInt();
+
+			List<Session> tutorials = null, labs = null;
+			if (course.getHasTutorial()) {
+				System.out.println("How many tutorial sessions does the course have per week? eg. 1");
+				int numLectures = sc.nextInt();
+				tutorials = new ArrayList<Session>();
+				for (int i = 0; i < numLectures; i++) {
+					System.out.println("Adding tutorial " + i + "...");
+					Session tutorial = addSession(i);
+					tutorials.add(tutorial);
+				}
 			}
-		} while (course != null);
+			if (course.getHasLab()) {
+				System.out.println("How many lab sessions does the course have per week? eg. 1");
+				int numLectures = sc.nextInt();
+				labs = new ArrayList<Session>();
+				for (int i = 0; i < numLectures; i++) {
+					System.out.println("Adding lab " + i + "...");
+					Session lab = addSession(i);
+					labs.add(lab);
+				}
+			}
 
-		System.out.println("How many total vacancies does the index have? eg. 50");
-		int totalVacancies = sc.nextInt();
+			Index newIndex = IndexManager.updateIndex(indexID, course, totalVacancies, tutorials, labs);
+			CourseManager.deleteIndexFromCourse(course.getID(), newIndex);
+			CourseManager.addIndexToCourse(course.getID(), newIndex);
+			System.out.println("Succesfully updated Index!");
 
-		List<Session> tutorials = null, labs = null;
-		if (course.getHasTutorial()) {
-			System.out.println("How many tutorial sessions does the course have per week? eg. 1");
-			int numLectures = sc.nextInt();
-			tutorials = new ArrayList<Session>();
-			for (int i = 0; i < numLectures; i++) {
-				System.out.println("Adding tutorial " + i + "...");
-				Session tutorial = addSession(i);
-				tutorials.add(tutorial);
+			IndexManager.updateIndex(indexID, course, totalVacancies, tutorials, labs);
+			loop = 'n';
+		} else {
+			System.out.println("The course ID you entered does not exist");
+		}
+		}
+		else {
+			System.out.println("Index DOes not Exist");
+			while (true) {
+				System.out.println("Do you want to try again? (y/n)");
+				loop = sc.next().charAt(0);
+				loop = Character.toLowerCase(loop);
+				if (loop == 'y' || loop == 'n')
+					break;
 			}
 		}
-		if (course.getHasLab()) {
-			System.out.println("How many lab sessions does the course have per week? eg. 1");
-			int numLectures = sc.nextInt();
-			labs = new ArrayList<Session>();
-			for (int i = 0; i < numLectures; i++) {
-				System.out.println("Adding lab " + i + "...");
-				Session lab = addSession(i);
-				labs.add(lab);
-			}
 		}
-
-		Index newIndex = IndexManager.updateIndex(indexID, course, totalVacancies, tutorials, labs);
-		CourseManager.deleteIndexFromCourse(course.getID(), newIndex);
-		CourseManager.addIndexToCourse(course.getID(), newIndex);
-		System.out.println("Succesfully updated Index!");
-
-		IndexManager.updateIndex(indexID, course, totalVacancies, tutorials, labs);
 	}
 
 	public void deleteIndex() {
+		char loop = 'y';
+		while (loop == 'y') {
 		System.out.println("Deleting index... ");
 		System.out.println("What is the index id? e.g. BCG10");
 		String indexID = sc.next();
+		if (IndexManager.checkIfIndexExists(indexID)) {
 
 		IndexManager.deleteIndex(indexID);
 		System.out.println("Succesfully deleted Index!");
+		loop = 'n';
+		}
+		else {
+			System.out.println("Index Does not Exist");
+			while (true) {
+				System.out.println("Do you want to try again? (y/n)");
+				loop = sc.next().charAt(0);
+				loop = Character.toLowerCase(loop);
+				if (loop == 'y' || loop == 'n')
+					break;
+			}
+		}
+		}
 	}
 
 	private Session addSession(int ID) {
@@ -355,33 +439,47 @@ public class AdminUI {
 	}
 
 	public void checkVacancyInIndexSlot() {
+		char loop = 'y';
+		while (loop == 'y') {
 		System.out.println("Enter the Index: ");
 		String indexID = sc.next();
-		while (!IndexManager.checkIfIndexExists(indexID)) {
-			System.out.println("Invalid Index, please enter a valid Index: ");
-			indexID = sc.next();
+		if (IndexManager.checkIfIndexExists(indexID)) {
+			Index index = IndexManager.findIndex(indexID);
+			System.out.println(indexID + " has "
+					+ Integer.toString(index.getTotalVacancies() - index.getNumStudentsEnrolled()) + " vacancies");
+			loop = 'n';
 		}
-		Index index = IndexManager.findIndex(indexID);
-		System.out.println(indexID + "has "
-				+ Integer.toString(index.getTotalVacancies() - index.getNumStudentsEnrolled()) + " vacancies");
+		else {
+			System.out.println("Index does not exist");
+			while (true) {
+				System.out.println("Do you want to try again? (y/n)");
+				loop = sc.next().charAt(0);
+				loop = Character.toLowerCase(loop);
+				if (loop == 'y' || loop == 'n')
+					break;
+			}
+		}
+		}
 	}
 
 	public void printStudentListByIndex() {
-		System.out.println("Enter the Index: ");
-		String IndexCode = sc.next();
 		char loop = 'y';
 		while (loop == 'y') {
+			System.out.println("Enter the Index: ");
+			String IndexCode = sc.next();
 			if (IndexManager.checkIfIndexExists(IndexCode)) {
 				List<ArrayList<String>> studentsEnrolled = StudentCourseManager.getStudentsInIndex(IndexCode);
 				if (studentsEnrolled.size() == 0)
-					System.out.println("There are no students enrolled in the index " + IndexCode);
+					System.out.println("There are 0 students enrolled in the index " + IndexCode);
 				else {
 					for (ArrayList<String> student : studentsEnrolled) {
 						System.out.println("Student Name: " + student.get(1) + " ,Matric Number: " + student.get(0));
 					}
+					
 				}
+				loop = 'n';
 			} else {
-				System.out.println("Course does not exist");
+				System.out.println("Index does not exist");
 				while (true) {
 					System.out.println("Do you want to try again? (y/n)");
 					loop = sc.next().charAt(0);
@@ -394,10 +492,10 @@ public class AdminUI {
 	}
 
 	public void printStudentListByCourse() {
-		System.out.println("Enter the Course: ");
-		String CourseCode = sc.next();
 		char loop = 'y';
 		while (loop == 'y') {
+			System.out.println("Enter the Course: ");
+			String CourseCode = sc.next();
 			if (CourseManager.checkIfCourseExists(CourseCode)) {
 				List<ArrayList<String>> studentsEnrolled = StudentCourseManager.getStudentsInCourse(CourseCode);
 				if (studentsEnrolled.size() == 0)
@@ -407,6 +505,7 @@ public class AdminUI {
 						System.out.println("Student Name: " + student.get(1) + " ,Matric Number: " + student.get(0));
 					}
 				}
+				loop = 'n';
 			} else {
 				System.out.println("Course does not exist");
 				while (true) {
@@ -422,6 +521,8 @@ public class AdminUI {
 
 	public void addStudent() {
 		System.out.println("Enter the following details to add a new student to the system:");
+		char loop = 'y';
+		while (loop == 'y') {
 		System.out.println("Full name of student: ");
 		String name = sc.next();
 		System.out.println("Student account password: ");
@@ -454,13 +555,20 @@ public class AdminUI {
 		String degree = sc.next();
 		System.out.println("Student's Matric Number: ");
 		String mat_num = sc.next();
-		while (!StudentManager.addStudent(name, password, email, c, mat_num, school, degree)) {
-			System.out.println("Cannot add students with duplicate matric numbers.");
-			System.out.println("Please enter another matric number: ");
-			mat_num = sc.next();
+		if (StudentManager.addStudent(name, password, email, c, mat_num, school, degree)) {
+			System.out.println("Student added successfully!");
+			return;
 		}
-		StudentManager.addStudent(name, password, email, c, mat_num, school, degree);
-		System.out.println("Student added successfully!");
-		return;
+		else {
+			System.out.println("Cannot add students with duplicate matric numbers.");
+			while (true) {
+				System.out.println("Do you want to try again? (y/n)");
+				loop = sc.next().charAt(0);
+				loop = Character.toLowerCase(loop);
+				if (loop == 'y' || loop == 'n')
+					break;
+			}
+		}
+	}
 	}
 }

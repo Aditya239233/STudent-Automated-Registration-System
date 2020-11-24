@@ -127,6 +127,8 @@ public class StudentCourseManager implements Serializable {
 			students.add((Student) o);
 		ArrayList<String> newStudent = new ArrayList<String>();
 		for (Student student : students) {
+			if (student.getIndexes() == null)
+				continue;
 			for (Index index : student.getIndexes()) {
 				if (index.getID().equals(IndexCode)) {
 					newStudent.add(student.getMatricNo());
@@ -149,6 +151,8 @@ public class StudentCourseManager implements Serializable {
 			students.add((Student) o);
 		ArrayList<String> newStudent = new ArrayList<String>();
 		for (Student student : students) {
+			if (student.getIndexes() == null)
+				continue;
 			for (Index index : student.getIndexes()) {
 				if (index.getCourse().getID().equals(CourseCode)) {
 					newStudent.add(student.getMatricNo());
