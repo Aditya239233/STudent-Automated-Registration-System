@@ -12,10 +12,9 @@ import javax.mail.internet.MimeMessage;
 import model.Student;
 import model.Index;
 
-public class SendEmail {
+public class SendEmail implements Notification {
 
-	public static void sendEmail(Student student, Index index) {
-
+	public static void sendMessage(Student student, Index index) {
 		final String username = "donotreplyblackboard5@gmail.com";
 		final String password = "Pokemon@1234";
 
@@ -45,5 +44,6 @@ public class SendEmail {
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
+		
 	}
 }

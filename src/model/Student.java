@@ -124,7 +124,7 @@ public class Student extends User implements Serializable {
 			Student s = students.get(i);
 			if (s.getMatricNo().equals(matricNumber))
 				if (s.addCourse(index) == 1) {
-					SendEmail.sendEmail(s, index);
+					SendEmail.sendMessage(s, index);
 					index.removeFromWaitList(matricNumber);
 					students.set(i, s);
 					result = 1;
