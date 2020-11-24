@@ -16,23 +16,34 @@ public class StudentCourseManager implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public int registerCourse(Student student, String CourseCode, String IndexCode) {
-		int result = -3;
+		int result = -4;
 		List<Course> courseList = new ArrayList<Course>();
 		List<Object> objectList = FileManager.readObjectFromFile("course.dat");
 		for (Object o : objectList) {
 			courseList.add((Course) o);
 		}
-		for (Course c : courseList) {
+		for (int i = 0; i < courseList.size(); i++) {
+			Course c = courseList.get(i);
 			if (c.getID().equals(CourseCode)) {
 				result = -2;
-				for (Index i : c.getIndexList()) {
-					if (i.getID().equals(IndexCode)) {
-						result = student.addCourse(i);
+				for (int j = 0; j < c.getIndexList().size(); j++) {
+					Index index = c.getIndexList().get(j);
+					if (index.getID().equals(IndexCode)) {
+						result = student.addCourse(index);
+						for (int idx = 0; idx < c.getIndexList().size(); idx++) {
+							Index id = c.getIndexList().get(idx);
+							if (id.getID().equals(index.getID())) {
+								c.getIndexList().set(idx, index);
+								courseList.set(i, c);
+								break;
+							}
+						}
+						FileManager.writeCourseToFile("course.dat", courseList);
 						break;
 					}
 				}
 			}
-			if (result != 3)
+			if (result != -4)
 				break;
 		}
 
@@ -51,6 +62,8 @@ public class StudentCourseManager implements Serializable {
 				break;
 			}
 		}
+		if (course == null)
+			return -1;
 		for (Index i : course.getIndexList()) {
 			if (i.getID().equals(IndexCode)) {
 				student.removeCourse(course.getID());
@@ -72,7 +85,7 @@ public class StudentCourseManager implements Serializable {
 		int result = -1;
 		String s1_index = "";
 		for (Index i : indexes) {
-			if (i.getCourse().getID() == CourseCode) {
+			if (i.getCourse().getID().equals(CourseCode)) {
 				result = 1;
 				s1_index = i.getID();
 				break;
@@ -82,7 +95,7 @@ public class StudentCourseManager implements Serializable {
 			return result;
 		result = -2;
 		Student s2 = null;
-		List<Object> students = FileManager.readObjectFromFile("Students.dat");
+		List<Object> students = FileManager.readObjectFromFile("student.dat");
 		Student s;
 		for (Object o : students) {
 			s = (Student) o;

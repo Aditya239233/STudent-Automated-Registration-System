@@ -80,8 +80,14 @@ public class Student extends User implements Serializable {
 			return -1;
 		}
 		if (!checkTimeTableClash(index)) {
+			Boolean isThere = false;
+			for (Index i : getIndexes())
+				if (i.getCourse().getID().equals(index.getCourse().getID()))
+					isThere = true;
+			if (isThere)
+				return -4;
 			indexes.add(index);
-			index.setNumStudentEnrolled(index.getNumStudentsEnrolled() - 1);
+			index.setNumStudentEnrolled(index.getNumStudentsEnrolled() + 1);
 			return 1;
 		}
 
@@ -105,18 +111,27 @@ public class Student extends User implements Serializable {
 	}
 
 	private void handleWaitList(Index index) {
+		if (index.getWaitList().size() == 0)
+			return;
 		String matricNumber = index.getWaitList().getFirst();
 		List<Object> objects = FileManager.readObjectFromFile("student.dat");
 		List<Student> students = new ArrayList<Student>();
 		for (Object o : objects)
 			students.add((Student) o);
-		for (Student s : students) {
+		for (int i = 0; i < students.size(); i++) {
+			Student s = students.get(i);
 			if (s.getMatricNo().equals(matricNumber))
 				if (s.addCourse(index) == 1) {
 					SendEmail.sendEmail(s, index);
 					index.removeFromWaitList(matricNumber);
+					System.out.println(s.getName());
+					students.set(i, s);
 				}
 		}
+		List<Object> object = new ArrayList<Object>();
+		for (Student s : students)
+			object.add((Object) s);
+		FileManager.writeObjectToFile("student.dat", object);
 	}
 
 	public Boolean checkTimeTableClash(Index index) {
@@ -125,26 +140,33 @@ public class Student extends User implements Serializable {
 		for (Index i : indexes) {
 			if (isClash)
 				break;
+			if (index.getID().equals(i.getID()))
+				continue;
 			Course c = i.getCourse();
 			// Lecture Clash
 			for (Session lecture : c.getLecture()) {
 				for (Session newLecture : newCourse.getLecture()) {
-					isClash = checkClash(lecture, newLecture);
-					if (isClash)
-						return isClash;
+					if (!c.getID().equals(newCourse.getID())) {
+						isClash = checkClash(lecture, newLecture);
+						if (isClash)
+							return isClash;
+					}
 				}
-				for (Session newTutorial : index.getTutorial()) {
-					isClash = checkClash(newTutorial, lecture);
-					if (isClash)
-						return isClash;
+				if (index.getCourse().getHasTutorial()) {
+					for (Session newTutorial : index.getTutorial()) {
+						isClash = checkClash(newTutorial, lecture);
+						if (isClash)
+							return isClash;
+					}
 				}
-				for (Session newLab : index.getLab()) {
-					isClash = checkClash(newLab, lecture);
-					if (isClash)
-						return isClash;
+				if (index.getCourse().getHasLab()) {
+					for (Session newLab : index.getLab()) {
+						isClash = checkClash(newLab, lecture);
+						if (isClash)
+							return isClash;
+					}
 				}
 			}
-
 			// Tutorial Clash
 			for (Session tutorial : i.getTutorial()) {
 				for (Session newLecture : newCourse.getLecture()) {
@@ -152,15 +174,19 @@ public class Student extends User implements Serializable {
 					if (isClash)
 						return isClash;
 				}
-				for (Session newTutorial : index.getTutorial()) {
-					isClash = checkClash(newTutorial, tutorial);
-					if (isClash)
-						return isClash;
+				if (index.getCourse().getHasTutorial()) {
+					for (Session newTutorial : index.getTutorial()) {
+						isClash = checkClash(newTutorial, tutorial);
+						if (isClash)
+							return isClash;
+					}
 				}
-				for (Session newLab : index.getLab()) {
-					isClash = checkClash(newLab, tutorial);
-					if (isClash)
-						return isClash;
+				if (index.getCourse().getHasLab()) {
+					for (Session newLab : index.getLab()) {
+						isClash = checkClash(newLab, tutorial);
+						if (isClash)
+							return isClash;
+					}
 				}
 			}
 
@@ -171,15 +197,19 @@ public class Student extends User implements Serializable {
 					if (isClash)
 						return isClash;
 				}
-				for (Session newTutorial : index.getTutorial()) {
-					isClash = checkClash(newTutorial, lab);
-					if (isClash)
-						return isClash;
+				if (index.getCourse().getHasTutorial()) {
+					for (Session newTutorial : index.getTutorial()) {
+						isClash = checkClash(newTutorial, lab);
+						if (isClash)
+							return isClash;
+					}
 				}
-				for (Session newLab : index.getLab()) {
-					isClash = checkClash(newLab, lab);
-					if (isClash)
-						return isClash;
+				if (index.getCourse().getHasLab()) {
+					for (Session newLab : index.getLab()) {
+						isClash = checkClash(newLab, lab);
+						if (isClash)
+							return isClash;
+					}
 				}
 			}
 		}

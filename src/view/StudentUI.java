@@ -1,8 +1,13 @@
 package view;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import controller.CourseManager;
+import controller.FileManager;
+import model.Course;
+import model.Index;
 import model.NotificationMode;
 import model.Student;
 import controller.StudentCourseManager;
@@ -54,6 +59,7 @@ public class StudentUI {
 				break;
 			case 6:
 				swopIndexWithPeer();
+				break;
 			case 7:
 				changeNotificationMode();
 				scm.writeStudentToFile(student);
@@ -81,6 +87,8 @@ public class StudentUI {
 			System.out.println("There are no vacancies. You've been added to the waitlist");
 		else if (result == 0)
 			System.out.println("There is a TimeTable Clash. Cannot Add Course");
+		else if (result == -4)
+			System.out.println("You're already registered to this course");
 		else {
 			scm.writeStudentToFile(student);
 			System.out.println("Succesfully Added " + CourseCode);
@@ -90,9 +98,33 @@ public class StudentUI {
 	private void dropCourse() {
 		System.out.println("Enter the Course Code: ");
 		String CourseCode = sc.next();
+		String idx = null;
+		for (Index i : student.getIndexes()) {
+			if (i.getCourse().getID().equals(CourseCode)) {
+				idx = i.getID();
+				break;
+			}
+		}
 		Boolean result = student.removeCourse(CourseCode);
+
 		if (result) {
 			scm.writeStudentToFile(student);
+			List<Object> object = FileManager.readObjectFromFile("course.dat");
+			List<Course> courses = new ArrayList<Course>();
+			for (Object o : object) {
+				Course c = (Course) o;
+				if (c.getID().equals(CourseCode)) {
+					for (int i = 0; i < c.getIndexList().size(); i++) {
+						if (c.getIndexList().get(i).getID().equals(idx)) {
+							c.getIndexList().get(i)
+									.setNumStudentEnrolled(c.getIndexList().get(i).getNumStudentsEnrolled() - 1);
+							break;
+						}
+					}
+				}
+				courses.add(c);
+			}
+			FileManager.writeCourseToFile("course.dat", courses);
 			System.out.println("Succesfully Dropped the Course " + CourseCode);
 		} else
 			System.out.println("You're not enrolled in the Course " + CourseCode);
@@ -101,18 +133,41 @@ public class StudentUI {
 	private void swopIndex() {
 		System.out.println("Enter the course code whose index number you would like to swap: ");
 		String CourseCode = sc.next();
-		System.out.println("Invalid course code, please enter a valid course code: ");
-		CourseCode = sc.next();
+		String idx = null;
+		for (Index i : student.getIndexes()) {
+			if (i.getCourse().getID().equals(CourseCode)) {
+				idx = i.getID();
+				break;
+			}
+		}
 		System.out.println("Enter the index code you would like to swap: ");
 		String IndexCode = sc.next();
-		// Test if valid index
+
 		int result = scm.swopIndex(student, CourseCode, IndexCode);
 
-		if (result == -1)
+		if (result == -2)
+			System.out.println("Course not found!");
+		else if (result == -1)
 			System.out.println("You're not registered to the Course");
 		else if (result == 0)
 			System.out.println("Could not swop index! There's a timetable clash");
 		else {
+			List<Object> object = FileManager.readObjectFromFile("course.dat");
+			List<Course> courses = new ArrayList<Course>();
+			for (Object o : object) {
+				Course c = (Course) o;
+				if (c.getID().equals(CourseCode)) {
+					for (int i = 0; i < c.getIndexList().size(); i++) {
+						if (c.getIndexList().get(i).getID().equals(idx)) {
+							c.getIndexList().get(i)
+									.setNumStudentEnrolled(c.getIndexList().get(i).getNumStudentsEnrolled() + 1);
+						} else if (c.getIndexList().get(i).getID().equals(IndexCode))
+							c.getIndexList().get(i)
+									.setNumStudentEnrolled(c.getIndexList().get(i).getNumStudentsEnrolled() - 1);
+					}
+				}
+				courses.add(c);
+			}
 			scm.writeStudentToFile(student);
 			System.out.println("Succesfully Swopped the index of " + CourseCode + " to " + IndexCode);
 		}
@@ -122,13 +177,13 @@ public class StudentUI {
 		System.out.println("Enter the course code whose index number you would like to swap: ");
 		String CourseCode = sc.next();
 		System.out.println("Enter the matric number of the student you would like to swap with: ");
-		String s2_mat = sc.nextLine();
+		String s2_mat = sc.next();
 		int result = scm.swopIndexWithPeer(student, CourseCode, s2_mat);
 		if (result == -1)
 			System.out.println("You have not been enrolled in the course " + CourseCode);
 		else if (result == -2)
 			System.out.println("Matric Number " + s2_mat + " does not exist");
-		if (result == -3)
+		else if (result == -3)
 			System.out.println("Your peer has not been enrolled in the course " + CourseCode);
 		else
 			System.out.println("Succesfully Added Course");

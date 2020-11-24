@@ -4,6 +4,7 @@ import java.util.*;
 //import java.io.Console;
 import model.Student;
 import model.Admin;
+import model.Course;
 import controller.CourseManager;
 import controller.FileManager;
 import controller.IndexManager;
@@ -26,6 +27,9 @@ public class Main {
 		} catch (Exception e) {
 
 		}
+		if (CourseManager.getCourseList() == null) {
+			CourseManager.setCourseList(new ArrayList<Course>());
+		}
 		displayWelcome();
 		while (true) {
 			System.out.println("1. Student");
@@ -44,7 +48,6 @@ public class Main {
 					StudentUI ui = new StudentUI(student);
 					ui.display();
 				} else {
-					System.out.println("Incorrect Login Credentials");
 					continue;
 				}
 
@@ -118,9 +121,6 @@ public class Main {
 			admins.add((Admin) o);
 		for (Admin a : admins)
 			if (a.getEmail().equals(email)) {
-				System.out.println(a.getEmail());
-				System.out.println(a.getPassword());
-				System.out.println(password);
 				if (a.getPassword().equals(hashedPassword))
 					return true;
 			}
@@ -134,7 +134,6 @@ public class Main {
 		for (Object o : objects)
 			accessPeriod.add((Calendar) o);
 		Calendar currDate = Calendar.getInstance();
-		System.out.println(currDate);
 		if (currDate.before(accessPeriod.get(1)) && currDate.after(accessPeriod.get(0)))
 			canLogin = true;
 		return canLogin;

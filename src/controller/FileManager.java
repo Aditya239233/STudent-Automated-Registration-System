@@ -68,7 +68,7 @@ public class FileManager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void writeCourseToFile(String filename, List<Course> object) {
 		FileOutputStream fos = null;
 		ObjectOutputStream out = null;
@@ -81,7 +81,7 @@ public class FileManager {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public static List<Course> readCourseFromFile(String filename) {
 		List<Course> objects = null;
 		FileInputStream fis = null;

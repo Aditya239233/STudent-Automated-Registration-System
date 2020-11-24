@@ -20,20 +20,22 @@ public class Course implements Serializable {
 	private List<Index> indexList;
 	private List<Session> lectures;
 
-	public Course(String ID, String Name, String faculty, int au, List<Session> lectures, Boolean hasTutorial, Boolean hasLab) {
+	public Course(String ID, String Name, String faculty, int au, List<Session> lectures, Boolean hasTutorial,
+			Boolean hasLab) {
 		this.ID = ID;
 		this.Name = Name;
 		this.faculty = faculty;
 		this.au = au;
 
 		this.indexList = new ArrayList<Index>();
-		
+
 		this.lectures = lectures;
 		this.hasTutorial = hasTutorial;
 		this.hasLab = hasLab;
 	}
 
-	public Course(String ID, String Name, String faculty, int au, List<Index> indexList, List<Session> lectures, Boolean hasTutorial, Boolean hasLab) {
+	public Course(String ID, String Name, String faculty, int au, List<Index> indexList, List<Session> lectures,
+			Boolean hasTutorial, Boolean hasLab) {
 		this.ID = ID;
 		this.Name = Name;
 		this.faculty = faculty;
