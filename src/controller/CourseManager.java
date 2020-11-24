@@ -3,6 +3,7 @@ package controller;
 import model.Course;
 import model.Index;
 import model.Session;
+import model.Student;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -115,7 +116,7 @@ public class CourseManager {
 			}
 			List<Object> objects = new ArrayList<Object>();
 			for (Course c : CourseList)
-				objects.add(CourseList);
+				objects.add(c);
 			FileManager.writeCourseToFile("course.dat", CourseList);
 			System.out.println("Index " + index.getID() + " has been added to course " + courseID);
 		} else {
@@ -135,7 +136,7 @@ public class CourseManager {
 			}
 			List<Object> objects = new ArrayList<Object>();
 			for (Course c : CourseList)
-				objects.add(CourseList);
+				objects.add(c);
 			FileManager.writeCourseToFile("course.dat", CourseList);
 			System.out.println("Index " + index.getID() + " has been deleted from the course " + courseID);
 		} else {
@@ -161,7 +162,7 @@ public class CourseManager {
 		return CourseList.stream().anyMatch(Course -> CourseID.equals(Course.getID()));
 	}
 
-	public int getCourseVacancy(String CourseCode) {
+	public static int getCourseVacancy(String CourseCode) {
 		int result = -1;
 		List<Course> courseList = new ArrayList<Course>();
 		List<Object> objectList = FileManager.readObjectFromFile("course.dat");
@@ -177,6 +178,29 @@ public class CourseManager {
 				break;
 			}
 		return result;
+	}
+	
+	public static int getTotalCourseVacancy(String CourseCode) {
+		int result = -1;
+		List<Course> courseList = new ArrayList<Course>();
+		List<Object> objectList = FileManager.readObjectFromFile("course.dat");
+		for (Object o : objectList) {
+			courseList.add((Course) o);
+		}
+		for (Course course : courseList)
+			if (course.getID().equals(CourseCode)) {
+				result = 0;
+				for (Index i : course.getIndexList()) {
+					result += i.getTotalVacancies();
+				}
+				break;
+			}
+		return result;
+	}
+	
+	public static void printCourseInfo() {
+		for (Course course: CourseList)
+			System.out.println("Name: "+course.getName()+" Course Code: "+course.getID() + " Number of AUs"+course.getAu()+" School: "+course.getFaculty());
 	}
 
 }

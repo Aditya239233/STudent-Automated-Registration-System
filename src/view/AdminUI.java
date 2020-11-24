@@ -14,16 +14,17 @@ import controller.StudentCourseManager;
 import model.Course;
 import model.Index;
 import model.Session;
+import model.Student;
 
-public class AdminUI {
+public class AdminUI implements UserUI {
 
 	private int choice;
-	private IndexManager im = new IndexManager();
 	Scanner sc = new Scanner(System.in);
 
 	public void display() {
 		do {
-			System.out.println("Please Select One of the Options Below");
+			System.out.println("\n#########################################################################");
+			System.out.println("\nPlease Select One of the Options Below");
 			System.out.println("1. Edit Student Access Period");
 			System.out.println("2. Add a Student");
 			System.out.println("3. Add a course");
@@ -35,56 +36,47 @@ public class AdminUI {
 			System.out.println("9. Check available slot for an index number");
 			System.out.println("10. Print student list by index number");
 			System.out.println("11. Print student list by course");
-			System.out.println("12. Log out");
+			System.out.println("12. Log out\n");
+			System.out.println("#########################################################################\n");
 			while (!sc.hasNextInt()) {
 				sc.next();
 				System.out.println("Please enter valid option:");
 			}
 			choice = sc.nextInt();
+			System.out.println("\n");
 			switch (choice) {
 			case 1:
-				// Edit Student Access Period
 				this.editStudentAccessPeriod();
 				break;
 			case 2:
-				// Add a new Student
 				this.addStudent();
 				break;
 			case 3:
-				// Add Course
 				this.addCourse();
 				break;
 			case 4:
-				// Update Course
 				this.updateCourse();
 				break;
 			case 5:
-				// Delete Course
 				this.deleteCourse();
 				break;
 			case 6:
-				// Add Index
 				this.addIndex();
 				break;
 			case 7:
-				// Update Index
 				this.updateIndex();
 				break;
 			case 8:
-				// Delete Index
 				this.deleteIndex();
 				break;
 			case 9:
-				// Check available slot for an index number
 				checkVacancyInIndexSlot();
 				break;
 			case 10:
-				// Print student list by index number
 				printStudentListByIndex();
 				break;
 			case 11:
-				// Print student list by course
-				printStudentListByCourse(); // uml
+				printStudentListByCourse();
 				break;
 			case 12:
 				break;
@@ -102,19 +94,17 @@ public class AdminUI {
 			accessPeriod.add((Calendar) o);
 		System.out.println("Start time: " + accessPeriod.get(0).getTime());
 		System.out.println("End time: " + accessPeriod.get(1).getTime());
-		System.out.println("Do you want to edit the access period?");
+		System.out.println("Do you want to edit the access period? (y/n)");
 		char result = sc.next().toLowerCase().charAt(0);
 		if (result == 'y') {
 			accessPeriod.clear();
 			System.out.println("Enter Start Date: (DD-MM-YYYY format):");
-			String dob = sc.next();
-			String[] arrOfStr = dob.split("-", 3);
-			while (dob.length() != 10 || arrOfStr.length != 3) {
-				System.out.println(
-						"Invalid date of birth. Please enter again in DD-MM-YYYY format and include the hyphens.");
-				System.out.println("Student's date of birth (DD-MM-YYYY format):");
-				dob = sc.next();
-				arrOfStr = dob.split("-", 3);
+			String date = sc.next();
+			String[] arrOfStr = date.split("-", 3);
+			while (date.length() != 10 || arrOfStr.length != 3) {
+				System.out.println("Invalid date. Please enter again in DD-MM-YYYY format and include the hyphens.");
+				date = sc.next();
+				arrOfStr = date.split("-", 3);
 			}
 			int dd = Integer.parseInt(arrOfStr[0]);
 			int mm = Integer.parseInt(arrOfStr[1]);
@@ -124,13 +114,12 @@ public class AdminUI {
 			accessPeriod.add(c);
 
 			System.out.println("Enter End Date: (DD-MM-YYYY format):");
-			dob = sc.next();
-			arrOfStr = dob.split("-", 3);
-			while (dob.length() != 10 || arrOfStr.length != 3) {
+			date = sc.next();
+			arrOfStr = date.split("-", 3);
+			while (date.length() != 10 || arrOfStr.length != 3) {
 				System.out.println("Invalid date. Please enter again in DD-MM-YYYY format and include the hyphens.");
-				System.out.println("Student's date of birth (DD-MM-YYYY format):");
-				dob = sc.next();
-				arrOfStr = dob.split("-", 3);
+				date = sc.next();
+				arrOfStr = date.split("-", 3);
 			}
 			dd = Integer.parseInt(arrOfStr[0]);
 			mm = Integer.parseInt(arrOfStr[1]);
@@ -138,6 +127,7 @@ public class AdminUI {
 			Calendar c1 = Calendar.getInstance();
 			c1.set(yy, mm, dd);
 			accessPeriod.add(c1);
+			System.out.println();
 			List<Object> object = new ArrayList<Object>();
 			for (Calendar cal : accessPeriod)
 				object.add(cal);
@@ -149,11 +139,12 @@ public class AdminUI {
 	}
 
 	public void addCourse() {
-		System.out.println("Adding a new course... ");
 		char loop = 'y';
 		while (loop == 'y') {
+			System.out.println("Adding a new course... ");
 			System.out.println("What is the course id? e.g. CZ2002");
 			String courseID = sc.next();
+			
 			if (CourseManager.checkIfCourseExists(courseID)) {
 				System.out.println("Course Already Exists!");
 				while (true) {
@@ -191,17 +182,19 @@ public class AdminUI {
 				Session lecture = addSession(i);
 				lectures.add(lecture);
 			}
-
+			
+			System.out.println();
 			CourseManager.addCourse(courseID, courseName, faculty, au, null, lectures, hasTutorial, hasLab);
+			CourseManager.printCourseInfo();
 			System.out.println("Succesfully added Course!");
 			loop = 'n';
 		}
 	}
 
 	public void updateCourse() {
-		System.out.println("Updating a new course... ");
 		char loop = 'y';
 		while (loop == 'y') {
+			System.out.println("Updating a new course... ");
 			System.out.println("What is the course id? e.g. CZ2002");
 			String courseID = sc.next();
 			if (!CourseManager.checkIfCourseExists(courseID)) {
@@ -235,7 +228,8 @@ public class AdminUI {
 				Session lecture = addSession(i);
 				lectures.add(lecture);
 			}
-
+			
+			System.out.println();
 			CourseManager.updateCourse(courseID, courseName, faculty, au, null, lectures, hasTutorial, hasLab);
 			System.out.println("Succesfully updated Course!");
 			loop = 'n';
@@ -243,13 +237,14 @@ public class AdminUI {
 	}
 
 	public void deleteCourse() {
-		System.out.println("Deleting course... ");
 		char loop = 'y';
 		while (loop == 'y') {
+			System.out.println("Deleting course... ");
 			System.out.println("What is the course id? e.g. CZ2002");
 			String courseID = sc.next();
 			if (CourseManager.checkIfCourseExists(courseID)) {
 				CourseManager.deleteCourse(courseID);
+				System.out.println();
 				System.out.println("Succesfully deleted Course!");
 				break;
 			} else {
@@ -265,11 +260,11 @@ public class AdminUI {
 	}
 
 	public void addIndex() {
-		System.out.println("Adding a new index... See below for the list of Course IDs ");
 		CourseManager.printCourseIDs();
 		Course course = null;
 		char loop = 'y';
 		while (loop == 'y') {
+			System.out.println("\nAdding a new index... See below for the list of Course IDs ");
 			System.out.println("What is the ID of the course that the index belongs? e.g. CZ2002");
 			String courseID = sc.next();
 			if (CourseManager.checkIfCourseExists(courseID)) {
@@ -301,7 +296,7 @@ public class AdminUI {
 							labs.add(lab);
 						}
 					}
-
+					System.out.println();
 					Index newIndex = IndexManager.addIndex(indexID, course, totalVacancies, tutorials, labs);
 					if (newIndex == null) {
 						System.out.println("Index already exists");
@@ -328,13 +323,12 @@ public class AdminUI {
 	}
 
 	public void updateIndex() {
-		System.out.println("Updating an index... See below for the list of Index IDs ");
 		char loop = 'y';
 		while (loop == 'y') {
+			System.out.println("Updating an index... See below for the list of Index IDs ");
 			IndexManager.printIndexIDs();
 			System.out.println("What is the index's ID? e.g. BCG10");
 			String indexID = sc.next();
-			Index index = null;
 			if (IndexManager.checkIfIndexExists(indexID)) {
 				CourseManager.printCourseIDs();
 				Course course = null;
@@ -367,7 +361,7 @@ public class AdminUI {
 							labs.add(lab);
 						}
 					}
-
+					System.out.println();
 					Index newIndex = IndexManager.updateIndex(indexID, course, totalVacancies, tutorials, labs);
 					CourseManager.deleteIndexFromCourse(course.getID(), newIndex);
 					CourseManager.addIndexToCourse(course.getID(), newIndex);
@@ -395,8 +389,10 @@ public class AdminUI {
 		char loop = 'y';
 		while (loop == 'y') {
 			System.out.println("Deleting index... ");
+			IndexManager.printIndexIDs();
 			System.out.println("What is the index id? e.g. BCG10");
 			String indexID = sc.next();
+			System.out.println();
 			if (IndexManager.checkIfIndexExists(indexID)) {
 
 				IndexManager.deleteIndex(indexID);
@@ -440,6 +436,7 @@ public class AdminUI {
 		while (loop == 'y') {
 			System.out.println("Enter the Index: ");
 			String indexID = sc.next();
+			System.out.println();
 			if (IndexManager.checkIfIndexExists(indexID)) {
 				Index index = IndexManager.findIndex(indexID);
 				System.out.println(indexID + " has "
@@ -464,14 +461,15 @@ public class AdminUI {
 			System.out.println("Enter the Index: ");
 			String IndexCode = sc.next();
 			if (IndexManager.checkIfIndexExists(IndexCode)) {
-				List<ArrayList<String>> studentsEnrolled = StudentCourseManager.getStudentsInIndex(IndexCode);
+				List<Student> studentsEnrolled = StudentCourseManager.getStudentsInIndex(IndexCode);
 				if (studentsEnrolled.size() == 0)
 					System.out.println("There are 0 students enrolled in the index " + IndexCode);
 				else {
-					for (ArrayList<String> student : studentsEnrolled) {
-						System.out.println("Student Name: " + student.get(1) + " ,Matric Number: " + student.get(0));
+					if (studentsEnrolled.size() > 0) {
+					for (Student student : studentsEnrolled) {
+						System.out.println("Student Name: " + student.getName() + " ,Matric Number: " + student.getMatricNo());
 					}
-
+					}
 				}
 				loop = 'n';
 			} else {
@@ -485,6 +483,7 @@ public class AdminUI {
 				}
 			}
 		}
+		System.out.println();
 	}
 
 	public void printStudentListByCourse() {
@@ -492,13 +491,14 @@ public class AdminUI {
 		while (loop == 'y') {
 			System.out.println("Enter the Course: ");
 			String CourseCode = sc.next();
+			System.out.println();
 			if (CourseManager.checkIfCourseExists(CourseCode)) {
-				List<ArrayList<String>> studentsEnrolled = StudentCourseManager.getStudentsInCourse(CourseCode);
+				List<Student> studentsEnrolled = StudentCourseManager.getStudentsInCourse(CourseCode);
 				if (studentsEnrolled.size() == 0)
 					System.out.println("There are no students enrolled in the Course " + CourseCode);
 				else {
-					for (ArrayList<String> student : studentsEnrolled) {
-						System.out.println("Student Name: " + student.get(1) + " ,Matric Number: " + student.get(0));
+					for (Student student : studentsEnrolled) {
+						System.out.println("\nStudent Name: " + student.getName() + " ,Matric Number: " + student.getMatricNo());
 					}
 				}
 				loop = 'n';
@@ -532,14 +532,14 @@ public class AdminUI {
 				email = sc.next();
 			}
 			System.out.println("Student's date of birth (DD-MM-YYYY format):");
-			String dob = sc.next();
-			String[] arrOfStr = dob.split("-", 3);
-			while (dob.length() != 10 || arrOfStr.length != 3) {
+			String date = sc.next();
+			String[] arrOfStr = date.split("-", 3);
+			while (date.length() != 10 || arrOfStr.length != 3) {
 				System.out.println(
 						"Invalid date of birth. Please enter again in DD-MM-YYYY format and include the hyphens.");
 				System.out.println("Student's date of birth (DD-MM-YYYY format):");
-				dob = sc.next();
-				arrOfStr = dob.split("-", 3);
+				date = sc.next();
+				arrOfStr = date.split("-", 3);
 			}
 			int dd = Integer.parseInt(arrOfStr[0]);
 			int mm = Integer.parseInt(arrOfStr[1]);
@@ -552,8 +552,10 @@ public class AdminUI {
 			String degree = sc.next();
 			System.out.println("Student's Matric Number: ");
 			String mat_num = sc.next();
+			System.out.println();
 			if (StudentManager.addStudent(name, password, email, c, mat_num, school, degree)) {
-				System.out.println("Student added successfully!");
+				System.out.println("Student added successfully!\n");
+				StudentManager.printStudentInfo();
 				return;
 			} else {
 				System.out.println("Cannot add students with duplicate matric numbers.");

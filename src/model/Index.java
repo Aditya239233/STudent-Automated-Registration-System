@@ -119,11 +119,9 @@ public class Index implements Serializable {
 	}
 
 	public void addToWaitList(String studentMatricNo) {
-		if (this.numStudentsEnrolled < this.totalVacancies) {
-			this.setNumStudentEnrolled(getNumStudentsEnrolled() + 1);
+		if (this.numStudentsEnrolled <= this.totalVacancies) {
+			//this.setNumStudentEnrolled(getNumStudentsEnrolled() + 1);
 			this.waitList.addFirst(studentMatricNo);
-		} else {
-			System.out.println("Error, Index " + getID() + " is full!");
 		}
 	}
 

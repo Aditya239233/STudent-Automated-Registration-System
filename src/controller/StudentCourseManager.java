@@ -15,7 +15,7 @@ public class StudentCourseManager implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public int registerCourse(Student student, String CourseCode, String IndexCode) {
+	public static int registerCourse(Student student, String CourseCode, String IndexCode) {
 		int result = -4;
 		List<Course> courseList = new ArrayList<Course>();
 		List<Object> objectList = FileManager.readObjectFromFile("course.dat");
@@ -50,7 +50,7 @@ public class StudentCourseManager implements Serializable {
 		return result;
 	}
 
-	public int swopIndex(Student student, String CourseCode, String IndexCode) {
+	public static int swopIndex(Student student, String CourseCode, String IndexCode) {
 		int result = -1;
 		List<Index> indexes = student.getIndexes();
 		Index currIndex = null;
@@ -66,6 +66,8 @@ public class StudentCourseManager implements Serializable {
 			return -1;
 		for (Index i : course.getIndexList()) {
 			if (i.getID().equals(IndexCode)) {
+				if (i.getNumStudentsEnrolled() == i.getTotalVacancies())
+					return -3;
 				student.removeCourse(course.getID());
 				if (student.addCourse(i) == 1)
 					result = 1;
@@ -79,7 +81,7 @@ public class StudentCourseManager implements Serializable {
 		return result;
 	}
 
-	public int swopIndexWithPeer(Student student, String CourseCode, String MatricNumber) {
+	public static int swopIndexWithPeer(Student student, String CourseCode, String MatricNumber) {
 		List<Index> indexes = student.getIndexes();
 
 		int result = -1;
@@ -118,7 +120,7 @@ public class StudentCourseManager implements Serializable {
 		return result;
 	}
 
-	public void writeStudentToFile(Student student) {
+	public static void writeStudentToFile(Student student) {
 		List<Object> objectList = FileManager.readObjectFromFile("student.dat");
 		List<Object> students = new ArrayList<Object>();
 		for (int i = 0; i < objectList.size(); i++) {
@@ -131,23 +133,19 @@ public class StudentCourseManager implements Serializable {
 
 	}
 
-	public static List<ArrayList<String>> getStudentsInCourse(String IndexCode) {
-		List<ArrayList<String>> studentsEnrolled = new ArrayList<ArrayList<String>>();
+	public static List<Student> getStudentsInCourse(String CourseCode) {
+		List<Student> studentsEnrolled = new ArrayList<Student>();
 
 		List<Object> objectList = FileManager.readObjectFromFile("student.dat");
 		List<Student> students = new ArrayList<Student>();
 		for (Object o : objectList)
 			students.add((Student) o);
-		ArrayList<String> newStudent = new ArrayList<String>();
 		for (Student student : students) {
 			if (student.getIndexes() == null)
 				continue;
 			for (Index index : student.getIndexes()) {
-				if (index.getID().equals(IndexCode)) {
-					newStudent.add(student.getMatricNo());
-					newStudent.add(student.getName());
-					studentsEnrolled.add(newStudent);
-					newStudent.clear();
+				if (index.getCourse().getID().equals(CourseCode)) {
+					studentsEnrolled.add(student);
 				}
 			}
 		}
@@ -155,23 +153,19 @@ public class StudentCourseManager implements Serializable {
 		return studentsEnrolled;
 	}
 
-	public static List<ArrayList<String>> getStudentsInIndex(String CourseCode) {
-		List<ArrayList<String>> studentsEnrolled = new ArrayList<ArrayList<String>>();
+	public static List<Student> getStudentsInIndex(String IndexCode) {
+		List<Student> studentsEnrolled = new ArrayList<Student>();
 
 		List<Object> objectList = FileManager.readObjectFromFile("student.dat");
 		List<Student> students = new ArrayList<Student>();
 		for (Object o : objectList)
 			students.add((Student) o);
-		ArrayList<String> newStudent = new ArrayList<String>();
 		for (Student student : students) {
 			if (student.getIndexes() == null)
 				continue;
 			for (Index index : student.getIndexes()) {
-				if (index.getCourse().getID().equals(CourseCode)) {
-					newStudent.add(student.getMatricNo());
-					newStudent.add(student.getName());
-					studentsEnrolled.add(newStudent);
-					newStudent.clear();
+				if (index.getID().equals(IndexCode)) {
+					studentsEnrolled.add(student);
 				}
 			}
 		}

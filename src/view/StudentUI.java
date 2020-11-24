@@ -12,21 +12,21 @@ import model.NotificationMode;
 import model.Student;
 import controller.StudentCourseManager;
 
-public class StudentUI {
+public class StudentUI implements UserUI {
 
 	private int choice;
 	private Student student; // Student object for the student who is logged in
-	private CourseManager cm = new CourseManager();
-	private StudentCourseManager scm = new StudentCourseManager();
 	Scanner sc = new Scanner(System.in);
 
 	public StudentUI(Student s) {
 		this.student = s;
 	}
 
+	@Override
 	public void display() {
 
 		do {
+			System.out.println("\n#########################################################################");
 			System.out.println("Please Select One of the Options Below");
 			System.out.println("1. Register Course");
 			System.out.println("2. Drop Course");
@@ -36,17 +36,21 @@ public class StudentUI {
 			System.out.println("6. Swop Index Number with Another Student");
 			System.out.println("7. Change notification mode");
 			System.out.println("8. Log out");
+			System.out.println("\n#########################################################################");
 			while (!sc.hasNextInt()) {
 				sc.next();
 				System.out.println("Please enter valid option:");
 			}
 			choice = sc.nextInt();
+			System.out.println("\n");
 			switch (choice) {
 			case 1:
 				addCourse();
+				student.printCoursesRegistered();
 				break;
 			case 2:
 				dropCourse();
+				student.printCoursesRegistered();
 				break;
 			case 3:
 				student.printCoursesRegistered();
@@ -62,7 +66,7 @@ public class StudentUI {
 				break;
 			case 7:
 				changeNotificationMode();
-				scm.writeStudentToFile(student);
+				StudentCourseManager.writeStudentToFile(student);
 				break;
 			case 8:
 				break;
@@ -78,7 +82,8 @@ public class StudentUI {
 		String CourseCode = sc.next();
 		System.out.println("Enter the Course Index: ");
 		String IndexCode = sc.next();
-		int result = scm.registerCourse(student, CourseCode, IndexCode);
+		int result = StudentCourseManager.registerCourse(student, CourseCode, IndexCode);
+		System.out.println();
 		if (result == -3)
 			System.out.println("Course Not Found");
 		else if (result == -2)
@@ -86,11 +91,11 @@ public class StudentUI {
 		else if (result == -1)
 			System.out.println("There are no vacancies. You've been added to the waitlist");
 		else if (result == 0)
-			System.out.println("There is a TimeTable Clash. Cannot Add Course");
+			System.out.println("There is a TimeTable Clash. Cannot Add this Course");
 		else if (result == -4)
-			System.out.println("You're already registered to this course");
+			System.out.println("You're already registered to this course! Try Registering to Another Course.");
 		else {
-			scm.writeStudentToFile(student);
+			StudentCourseManager.writeStudentToFile(student);
 			System.out.println("Succesfully Added " + CourseCode);
 		}
 	}
@@ -99,6 +104,7 @@ public class StudentUI {
 		System.out.println("Enter the Course Code: ");
 		String CourseCode = sc.next();
 		String idx = null;
+		System.out.println();
 		for (Index i : student.getIndexes()) {
 			if (i.getCourse().getID().equals(CourseCode)) {
 				idx = i.getID();
@@ -108,7 +114,7 @@ public class StudentUI {
 		Boolean result = student.removeCourse(CourseCode);
 
 		if (result) {
-			scm.writeStudentToFile(student);
+			StudentCourseManager.writeStudentToFile(student);
 			List<Object> object = FileManager.readObjectFromFile("course.dat");
 			List<Course> courses = new ArrayList<Course>();
 			for (Object o : object) {
@@ -142,10 +148,11 @@ public class StudentUI {
 		}
 		System.out.println("Enter the index code you would like to swap: ");
 		String IndexCode = sc.next();
-
-		int result = scm.swopIndex(student, CourseCode, IndexCode);
-
-		if (result == -2)
+		System.out.println();
+		int result = StudentCourseManager.swopIndex(student, CourseCode, IndexCode);
+		if (result == -1)
+			System.out.println("Index "+IndexCode+" does not have any vacancy");
+		else if (result == -2)
 			System.out.println("Course not found!");
 		else if (result == -1)
 			System.out.println("You're not registered to the Course");
@@ -168,7 +175,7 @@ public class StudentUI {
 				}
 				courses.add(c);
 			}
-			scm.writeStudentToFile(student);
+			StudentCourseManager.writeStudentToFile(student);
 			System.out.println("Succesfully Swopped the index of " + CourseCode + " to " + IndexCode);
 		}
 	}
@@ -178,7 +185,8 @@ public class StudentUI {
 		String CourseCode = sc.next();
 		System.out.println("Enter the matric number of the student you would like to swap with: ");
 		String s2_mat = sc.next();
-		int result = scm.swopIndexWithPeer(student, CourseCode, s2_mat);
+		System.out.println();
+		int result = StudentCourseManager.swopIndexWithPeer(student, CourseCode, s2_mat);
 		if (result == -1)
 			System.out.println("You have not been enrolled in the course " + CourseCode);
 		else if (result == -2)
@@ -195,6 +203,7 @@ public class StudentUI {
 		System.out.println("Your current notification mode is: " + curr_nm);
 		System.out.println("Would you like to change your notification mode? (y/n)");
 		char opt = sc.next().charAt(0);
+		System.out.println();
 		while (!val1 || !val2) {
 			switch (opt) {
 			case 'y': {
@@ -203,6 +212,7 @@ public class StudentUI {
 				System.out.println("2. SMS");
 				System.out.println("3. WhatsApp");
 				int new_nm = sc.nextInt();
+				System.out.println();
 				switch (new_nm) {
 				case 1: {
 					student.setNotificationMode(NotificationMode.EMAIL);
@@ -239,18 +249,20 @@ public class StudentUI {
 				System.out.println("Invalid choice");
 			}
 			}
-			scm.writeStudentToFile(student);
+			StudentCourseManager.writeStudentToFile(student);
 		}
 	}
 
 	private void checkVacancyAvailable() {
 		System.out.println("Enter the Course Code: ");
 		String CourseCode = sc.next();
-		int result = cm.getCourseVacancy(CourseCode);
+		System.out.println();
+		int result = CourseManager.getCourseVacancy(CourseCode);
+		int total = CourseManager.getTotalCourseVacancy(CourseCode);
 		if (result == -1)
 			System.out.println("Course does not exist");
 		else
-			System.out.println("Vacancy for the Course " + CourseCode + " is " + result);
+			System.out.println("Vacancy for the Course " + CourseCode + " is " + result+"/"+total);
 	}
 
 }

@@ -2,7 +2,6 @@ package controller;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.io.Serializable;
 
 public class PasswordManager implements Serializable {

@@ -19,7 +19,6 @@ public class Student extends User implements Serializable {
 	private String Degree;
 	private List<Index> indexes = new ArrayList<Index>();
 	private NotificationMode nm;
-	StudentCourseManager scm = new StudentCourseManager();
 
 	public Student() {
 		super();
@@ -73,9 +72,10 @@ public class Student extends User implements Serializable {
 
 	public int addCourse(Index index) {
 		if (index.getTotalVacancies() - index.getNumStudentsEnrolled() < 1) {
-			for (String matric : index.getWaitList())
+			for (String matric : index.getWaitList()) {
 				if (matric.equals(this.getMatricNo()))
 					return -1;
+			}
 			index.addToWaitList(this.MatricNo);
 			return -1;
 		}
@@ -103,17 +103,19 @@ public class Student extends User implements Serializable {
 			if (course.getID().equals(ID)) {
 				indexes.remove(index);
 				index.setNumStudentEnrolled(index.getNumStudentsEnrolled() - 1);
-				handleWaitList(index);
+				if (handleWaitList(index) == 1)
+					index.setNumStudentEnrolled(index.getNumStudentsEnrolled() + 1);
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private void handleWaitList(Index index) {
+	private int handleWaitList(Index index) {
+		int result = 0;
 		if (index.getWaitList().size() == 0)
-			return;
-		String matricNumber = index.getWaitList().getFirst();
+			return result;
+		String matricNumber = index.viewLastWaitList();
 		List<Object> objects = FileManager.readObjectFromFile("student.dat");
 		List<Student> students = new ArrayList<Student>();
 		for (Object o : objects)
@@ -124,14 +126,15 @@ public class Student extends User implements Serializable {
 				if (s.addCourse(index) == 1) {
 					SendEmail.sendEmail(s, index);
 					index.removeFromWaitList(matricNumber);
-					System.out.println(s.getName());
 					students.set(i, s);
+					result = 1;
 				}
 		}
 		List<Object> object = new ArrayList<Object>();
 		for (Student s : students)
 			object.add((Object) s);
 		FileManager.writeObjectToFile("student.dat", object);
+		return result;
 	}
 
 	public Boolean checkTimeTableClash(Index index) {
@@ -143,6 +146,7 @@ public class Student extends User implements Serializable {
 			if (index.getID().equals(i.getID()))
 				continue;
 			Course c = i.getCourse();
+			
 			// Lecture Clash
 			for (Session lecture : c.getLecture()) {
 				for (Session newLecture : newCourse.getLecture()) {
@@ -168,6 +172,7 @@ public class Student extends User implements Serializable {
 				}
 			}
 			// Tutorial Clash
+			if (i.getCourse().getHasTutorial()) {
 			for (Session tutorial : i.getTutorial()) {
 				for (Session newLecture : newCourse.getLecture()) {
 					isClash = checkClash(newLecture, tutorial);
@@ -189,8 +194,9 @@ public class Student extends User implements Serializable {
 					}
 				}
 			}
-
+			}
 			// Lab Clash
+			if (i.getCourse().getHasLab()) {
 			for (Session lab : i.getLab()) {
 				for (Session newLecture : newCourse.getLecture()) {
 					isClash = checkClash(newLecture, lab);
@@ -212,6 +218,7 @@ public class Student extends User implements Serializable {
 					}
 				}
 			}
+		}
 		}
 		return isClash;
 	}
@@ -237,13 +244,14 @@ public class Student extends User implements Serializable {
 			System.out.println("No Courses Registered");
 			return;
 		}
+		System.out.println("\n#########################################################################");
 		for (Index i : indexes) {
 			Course c = i.getCourse();
 			System.out.println("Course Code: " + c.getID());
 			System.out.println("Course Name: " + c.getName());
 			System.out.println("AUs: " + c.getAu());
 			System.out.println("Index: " + i.getID());
-			System.out.println("-----------------------------------------------------------------");
+			System.out.println("\n#########################################################################");
 		}
 	}
 
@@ -301,8 +309,8 @@ public class Student extends User implements Serializable {
 					s2.addCourse(i);
 				}
 			}
-			scm.writeStudentToFile(this);
-			scm.writeStudentToFile(s2);
+			StudentCourseManager.writeStudentToFile(this);
+			StudentCourseManager.writeStudentToFile(s2);
 			return true;
 		} else
 			return false;

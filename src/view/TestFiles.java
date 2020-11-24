@@ -27,13 +27,13 @@ public class TestFiles {
 //		List<Object> students = new ArrayList<Object>();
 //		students.add((Object)student);
 //		FileManager.writeObjectToFile("student.dat", students);
-		Calendar c = Calendar.getInstance();
-		List<Object> accessPeriod = new ArrayList<Object>();
-		c.set(2020, 9, 1);
-		accessPeriod.add(c);
-		Calendar c1 = Calendar.getInstance();
-		c1.set(2020, 11, 30);
-		accessPeriod.add(c1);
-		FileManager.writeObjectToFile("accessPeriod.dat", accessPeriod);
+//		Calendar c = Calendar.getInstance();
+//		List<Object> accessPeriod = new ArrayList<Object>();
+//		c.set(2020, 9, 1);
+//		accessPeriod.add(c);
+//		Calendar c1 = Calendar.getInstance();
+//		c1.set(2020, 11, 30);
+//		accessPeriod.add(c1);
+//		FileManager.writeObjectToFile("accessPeriod.dat", accessPeriod);
 	}
 }

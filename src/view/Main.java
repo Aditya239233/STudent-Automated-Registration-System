@@ -20,13 +20,7 @@ public class Main {
 	static Scanner sc = new Scanner(System.in);
 
 	public static void main(String[] args) {
-		try {
-			CourseManager.init();
-			IndexManager.init(CourseManager.getCourseList());
-			StudentManager.init();
-		} catch (Exception e) {
 
-		}
 		if (CourseManager.getCourseList() == null) {
 			CourseManager.setCourseList(new ArrayList<Course>());
 		}
@@ -45,7 +39,7 @@ public class Main {
 			if (user == 1) {
 				Boolean isLogged = studentLogin();
 				if (isLogged) {
-					StudentUI ui = new StudentUI(student);
+					UserUI ui = new StudentUI(student);
 					ui.display();
 				} else {
 					continue;
@@ -121,8 +115,16 @@ public class Main {
 			admins.add((Admin) o);
 		for (Admin a : admins)
 			if (a.getEmail().equals(email)) {
-				if (a.getPassword().equals(hashedPassword))
+				if (a.getPassword().equals(hashedPassword)) {
+					try {
+						CourseManager.init();
+						IndexManager.init(CourseManager.getCourseList());
+						StudentManager.init();
+					} catch (Exception e) {
+						System.out.println(e);
+					}
 					return true;
+				}
 			}
 		return false;
 	}

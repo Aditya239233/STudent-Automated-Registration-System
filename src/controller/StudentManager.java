@@ -5,7 +5,6 @@ import model.Student;
 import java.util.Calendar;
 import java.util.List;
 import java.util.ArrayList;
-import controller.FileManager;
 
 public class StudentManager {
 	private static List<Student> StudentList = new ArrayList<Student>();
@@ -59,5 +58,10 @@ public class StudentManager {
 
 	public static boolean checkIfStudentExists(String MatricNo) {
 		return StudentList.stream().anyMatch(Student -> MatricNo.equals(Student.getMatricNo()));
+	}
+	
+	public static void printStudentInfo() {
+		for (Student student: StudentList)
+			System.out.println("Name: "+student.getName()+" Matric Number: "+student.getMatricNo() + " Degree:"+student.getDegree());
 	}
 }
