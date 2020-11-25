@@ -1,6 +1,9 @@
 package view;
 
+import java.io.Console;
 import java.util.*;
+import java.util.stream.Collectors;
+
 //import java.io.Console;
 import model.Student;
 import model.Admin;
@@ -117,13 +120,19 @@ public class Main {
      * This function is used by the Admin to Login 
      */
 	public static Boolean adminLogin() {
+		Console cnsl = System.console();
+		StringBuilder sb = new StringBuilder();
 		System.out.print("Enter your Email ");
 		String email = sc.next();
 
 		// Mask Password
 		System.out.println("Enter your password: ");
-		String password = sc.next();
-		String hashedPassword = pm.hashPassword(password);
+		char[] pwd = cnsl.readPassword("Password: ");
+		for (Character ch : pwd) { 
+            sb.append(ch); 
+		}
+		String password = sb.toString();
+		String hashedPassword = PasswordManager.hashPassword(password);
 		List<Object> records = FileManager.readObjectFromFile("admin.dat");
 		List<Admin> admins = new ArrayList<Admin>();
 		for (Object o : records)
