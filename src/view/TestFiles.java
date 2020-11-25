@@ -6,8 +6,10 @@ import model.Admin;
 import model.Student;
 
 import java.util.List;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class TestFiles {
 	public static void main(String args[]) throws Exception {
@@ -27,7 +29,11 @@ public class TestFiles {
 //		List<Object> students = new ArrayList<Object>();
 //		students.add((Object)student);
 //		FileManager.writeObjectToFile("student.dat", students);
-//		Calendar c = Calendar.getInstance();
+		Calendar c = Calendar.getInstance();
+		SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date(System.currentTimeMillis());
+		//c.set(date.getDate());
+		System.out.println(date.getMonth());
 //		List<Object> accessPeriod = new ArrayList<Object>();
 //		c.set(2020, 9, 1);
 //		accessPeriod.add(c);

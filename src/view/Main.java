@@ -35,7 +35,13 @@ public class Main {
 			System.out.println("1. Student");
 			System.out.println("2. Admin");
 			System.out.println("3. Exit");
+			try {
 			user = sc.nextInt();
+			} catch (InputMismatchException e) {
+				System.out.println("\nInvalid Input");
+				main(null);
+				return;
+			}
 			if (user == 3) {
 				System.out.println("\nHope to see you soon!");
 				System.exit(0);

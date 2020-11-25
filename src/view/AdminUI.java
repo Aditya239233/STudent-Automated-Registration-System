@@ -3,6 +3,7 @@ package view;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -45,7 +46,16 @@ public class AdminUI implements UserUI {
 				sc.next();
 				System.out.println("Please enter valid option:");
 			}
+			try {
 			choice = sc.nextInt();
+			} catch (InputMismatchException e) {
+				System.out.println("\nInvalid Input");
+				System.out.println("Do you want to Try again? (y/n)");
+				char trial = sc.next().toLowerCase().charAt(0);
+				if (trial == 'y')
+					display();
+				return;
+			}
 			System.out.println("\n");
 			switch (choice) {
 			case 1:
@@ -166,16 +176,23 @@ public class AdminUI implements UserUI {
 			System.out.println("Student's date of birth (DD-MM-YYYY format):");
 			String date = sc.next();
 			String[] arrOfStr = date.split("-", 3);
-			while (date.length() != 10 || arrOfStr.length != 3) {
-				System.out.println(
-						"Invalid date of birth. Please enter again in DD-MM-YYYY format and include the hyphens.");
-				System.out.println("Student's date of birth (DD-MM-YYYY format):");
-				date = sc.next();
-				arrOfStr = date.split("-", 3);
+
+			date = sc.next();
+			arrOfStr = date.split("-", 3);
+			
+			int dd = 0, mm = 0, yy = 0;
+			try {
+			dd = Integer.parseInt(arrOfStr[0]);
+			mm = Integer.parseInt(arrOfStr[1]);
+			yy = Integer.parseInt(arrOfStr[2]);
+			} catch(Exception e) {
+				System.out.println("Invalid Input");
+				System.out.println("Do you want to Try again? (y/n)");
+				char trial = sc.next().toLowerCase().charAt(0);
+				if (trial == 'y')
+					addStudent();
+				return;
 			}
-			int dd = Integer.parseInt(arrOfStr[0]);
-			int mm = Integer.parseInt(arrOfStr[1]);
-			int yy = Integer.parseInt(arrOfStr[2]);
 			Calendar c = Calendar.getInstance();
 			c.set(yy, mm, dd);
 			System.out.println("Enter the student's school ID: ");
@@ -232,8 +249,12 @@ public class AdminUI implements UserUI {
 			int au;
 			try {
 			au = sc.nextInt();
-			} catch (Exception e) {
-				System.out.println("Invalid input!");
+			} catch(InputMismatchException e) {
+				System.out.println("Invalid Input");
+				System.out.println("Do you want to Try again? (y/n)");
+				char trial = sc.next().toLowerCase().charAt(0);
+				if (trial == 'y')
+					addCourse();
 				return;
 			}
 			System.out.println("Does the course have tutorials? e.g. True/False");
@@ -290,7 +311,17 @@ public class AdminUI implements UserUI {
 			System.out.println("What is the course faculty? e.g. Professor Tan");
 			String faculty = sc.next();
 			System.out.println("How many Academic Units (AU) does the course have? eg. 3");
-			int au = sc.nextInt();
+			int au;
+			try {
+			au = sc.nextInt();
+			} catch(InputMismatchException e) {
+				System.out.println("Invalid Input");
+				System.out.println("Do you want to Try again? (y/n)");
+				char trial = sc.next().toLowerCase().charAt(0);
+				if (trial == 'y')
+					updateCourse();
+				return;
+			}
 			System.out.println("Does the course have tutorials? e.g. True/False");
 			boolean hasTutorial = sc.nextBoolean();
 			System.out.println("Does the course have lab sessions? e.g. True/False");
@@ -355,12 +386,31 @@ public class AdminUI implements UserUI {
 				String indexID = sc.next();
 				if (!IndexManager.checkIfIndexExists(indexID)) {
 					System.out.println("How many total vacancies does the index have? eg. 50");
-					int totalVacancies = sc.nextInt();
-
+					int totalVacancies;
+					try {
+					totalVacancies = sc.nextInt();
+					} catch(InputMismatchException e) {
+						System.out.println("Invalid Input");
+						System.out.println("Do you want to Try again? (y/n)");
+						char trial = sc.next().toLowerCase().charAt(0);
+						if (trial == 'y')
+							addIndex();
+						return;
+					}
 					List<Session> tutorials = null, labs = null;
 					if (course.getHasTutorial()) {
 						System.out.println("How many tutorial sessions does the course have per week? eg. 1");
-						int numLectures = sc.nextInt();
+						int numLectures;
+						try {
+						numLectures= sc.nextInt();
+						} catch(InputMismatchException e) {
+							System.out.println("Invalid Input");
+							System.out.println("Do you want to Try again? (y/n)");
+							char trial = sc.next().toLowerCase().charAt(0);
+							if (trial == 'y')
+								addIndex();
+							return;
+						}
 						tutorials = new ArrayList<Session>();
 						for (int i = 0; i < numLectures; i++) {
 							System.out.println("Adding tutorial " + i + "...");
@@ -370,7 +420,17 @@ public class AdminUI implements UserUI {
 					}
 					if (course.getHasLab()) {
 						System.out.println("How many lab sessions does the course have per week? eg. 1");
-						int numLectures = sc.nextInt();
+						int numLectures;
+						try {
+						numLectures= sc.nextInt();
+						} catch(InputMismatchException e) {
+							System.out.println("Invalid Input");
+							System.out.println("Do you want to Try again? (y/n)");
+							char trial = sc.next().toLowerCase().charAt(0);
+							if (trial == 'y')
+								addIndex();
+							return;
+						}
 						labs = new ArrayList<Session>();
 						for (int i = 0; i < numLectures; i++) {
 							System.out.println("Adding lab " + i + "...");
@@ -423,12 +483,31 @@ public class AdminUI implements UserUI {
 				if (CourseManager.checkIfCourseExists(courseID)) {
 					course = CourseManager.findCourse(courseID);
 					System.out.println("How many total vacancies does the index have? eg. 50");
-					int totalVacancies = sc.nextInt();
-
+					int totalVacancies;
+					try {
+					totalVacancies = sc.nextInt();
+					} catch(InputMismatchException e) {
+						System.out.println("Invalid Input");
+						System.out.println("Do you want to Try again? (y/n)");
+						char trial = sc.next().toLowerCase().charAt(0);
+						if (trial == 'y')
+							updateIndex();
+						return;
+					}
 					List<Session> tutorials = null, labs = null;
 					if (course.getHasTutorial()) {
 						System.out.println("How many tutorial sessions does the course have per week? eg. 1");
-						int numLectures = sc.nextInt();
+						int numLectures;
+						try {
+						numLectures= sc.nextInt();
+						} catch(InputMismatchException e) {
+							System.out.println("Invalid Input");
+							System.out.println("Do you want to Try again? (y/n)");
+							char trial = sc.next().toLowerCase().charAt(0);
+							if (trial == 'y')
+								updateIndex();
+							return;
+						}
 						tutorials = new ArrayList<Session>();
 						for (int i = 0; i < numLectures; i++) {
 							System.out.println("Adding tutorial " + i + "...");
@@ -438,7 +517,17 @@ public class AdminUI implements UserUI {
 					}
 					if (course.getHasLab()) {
 						System.out.println("How many lab sessions does the course have per week? eg. 1");
-						int numLectures = sc.nextInt();
+						int numLectures;
+						try {
+						numLectures= sc.nextInt();
+						} catch(InputMismatchException e) {
+							System.out.println("Invalid Input");
+							System.out.println("Do you want to Try again? (y/n)");
+							char trial = sc.next().toLowerCase().charAt(0);
+							if (trial == 'y')
+								updateIndex();
+							return;
+						}
 						labs = new ArrayList<Session>();
 						for (int i = 0; i < numLectures; i++) {
 							System.out.println("Adding lab " + i + "...");
@@ -501,13 +590,54 @@ public class AdminUI implements UserUI {
 
 	private Session addSession(int ID) {
 		System.out.println("What day of the week is the session held? e.g. 4 = Thursday");
-		int DayOfWeek = sc.nextInt();
+		int DayOfWeek;
+		try {
+		DayOfWeek = sc.nextInt();
+		} catch(InputMismatchException e) {
+			System.out.println("Invalid Input");
+			System.out.println("Do you want to Try again? (y/n)");
+			char trial = sc.next().toLowerCase().charAt(0);
+			if (trial == 'y')
+				addSession(ID);
+			return null;
+		}
 		System.out.println("Which hour is the session held? e.g. 13 = 1pm");
-		int hour = sc.nextInt();
+		int hour;
+		try {
+		hour = sc.nextInt();
+		} catch(InputMismatchException e) {
+			System.out.println("Invalid Input");
+			System.out.println("Do you want to Try again? (y/n)");
+			char trial = sc.next().toLowerCase().charAt(0);
+			if (trial == 'y')
+				addSession(ID);
+			return null;
+		}
 		System.out.println("What minute is the session held? e.g. 30 = 1:30pm");
-		int minute = sc.nextInt();
+		
+		int minute;
+		try {
+		minute = sc.nextInt();
+		} catch(InputMismatchException e) {
+			System.out.println("Invalid Input");
+			System.out.println("Do you want to Try again? (y/n)");
+			char trial = sc.next().toLowerCase().charAt(0);
+			if (trial == 'y')
+				addSession(ID);
+			return null;
+		}
 		System.out.println("Duration of session in minutes? e.g 60");
-		int duration = sc.nextInt();
+		int duration;
+		try {
+			duration = sc.nextInt();
+		} catch(InputMismatchException e) {
+			System.out.println("Invalid Input");
+			System.out.println("Do you want to Try again? (y/n)");
+			char trial = sc.next().toLowerCase().charAt(0);
+			if (trial == 'y')
+				addSession(ID);
+			return null;
+		}
 		System.out.println("Venue of session? e.g Lecture Hall 5");
 		String location = sc.next();
 		System.out.println("Who is teaching the course? e.g Professor Zhang");

@@ -3,6 +3,7 @@ package view;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 import controller.CourseManager;
 import controller.FileManager;
@@ -43,7 +44,16 @@ public class StudentUI implements UserUI {
 				sc.next();
 				System.out.println("Please enter valid option:");
 			}
+			try {
 			choice = sc.nextInt();
+			} catch (InputMismatchException e) {
+				System.out.println("\nInvalid Input");
+				System.out.println("Do you want to Try again? (y/n)");
+				char trial = sc.next().toLowerCase().charAt(0);
+				if (trial == 'y')
+					display();
+				return;
+			}
 			System.out.println("\n");
 			switch (choice) {
 			case 1:
