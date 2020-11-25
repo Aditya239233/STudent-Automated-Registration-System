@@ -44,7 +44,6 @@ public class IndexManager {
 			List<Session> labs) { // check hasTutorial and hasLab in AdminUI => pass null is has__ = false
 		if (IndexList.size() == 0) {
 		} else if (checkIfIndexExists(ID)) {
-			System.out.println("Index already exists");
 			return null;
 		}
 		Index newIndex;
@@ -56,7 +55,6 @@ public class IndexManager {
 			newIndex = new Index(ID, course, totalVacancies);
 		}
 		IndexList.add(newIndex);
-		System.out.println("Succesfully added Index");
 		return newIndex;
 	}
 	
@@ -65,7 +63,7 @@ public class IndexManager {
 	 * @param indexID - refers to the Index ID
 	 * @param course - <Course> course for which the index is added
 	 * @param totalVacancies - total vacancies in Index
-	 * @param tutorials - <Session> of tuttorial
+	 * @param tutorials - <Session> of tutorial
 	 * @param labs - <Session> of lab
 	 * @return
 	 */

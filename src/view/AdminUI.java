@@ -159,7 +159,7 @@ public class AdminUI implements UserUI {
 			String email = sc.next();
 			while (!email.contains("@")) {
 				System.out
-						.println("Invalid email address. The email address should be of the form emailId@e.ntu.edu.sg");
+						.println("Invalid email address.");
 				System.out.println("Please enter the email ID again: ");
 				email = sc.next();
 			}
@@ -229,7 +229,13 @@ public class AdminUI implements UserUI {
 			System.out.println("What is the course faculty? e.g. SCSE");
 			String faculty = sc.next();
 			System.out.println("How many Academic Units (AU) does the course have? eg. 3");
-			int au = sc.nextInt();
+			int au;
+			try {
+			au = sc.nextInt();
+			} catch (Exception e) {
+				System.out.println("Invalid input!");
+				return;
+			}
 			System.out.println("Does the course have tutorials? e.g. True/False");
 			boolean hasTutorial = false;
 			String tut = sc.next().toLowerCase();
