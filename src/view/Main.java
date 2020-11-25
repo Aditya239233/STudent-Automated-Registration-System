@@ -2,7 +2,6 @@ package view;
 
 import java.io.Console;
 import java.util.*;
-import java.util.stream.Collectors;
 
 //import java.io.Console;
 import model.Student;
