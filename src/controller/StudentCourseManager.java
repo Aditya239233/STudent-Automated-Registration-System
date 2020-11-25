@@ -10,11 +10,15 @@ import java.io.Serializable;
 
 public class StudentCourseManager implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * This function is used to register a student to a course
+	 * @param student - <Student> student the Course is added to
+	 * @param CourseCode - refers to the COurse Code
+	 * @param IndexCode - refers to the Index Code
+	 * @return
+	 */
 	public static int registerCourse(Student student, String CourseCode, String IndexCode) {
 		int result = -4;
 		List<Course> courseList = new ArrayList<Course>();
@@ -49,7 +53,14 @@ public class StudentCourseManager implements Serializable {
 
 		return result;
 	}
-
+	
+	/**
+	 * This function is used to swop a student's index in a course
+	 * @param student - <Student> student who swaps his/her index
+	 * @param CourseCode - refers to the COurse Code
+	 * @param IndexCode - refers to the Index Code
+	 * @return
+	 */
 	public static int swopIndex(Student student, String CourseCode, String IndexCode) {
 		int result = -1;
 		List<Index> indexes = student.getIndexes();
@@ -80,7 +91,14 @@ public class StudentCourseManager implements Serializable {
 		}
 		return result;
 	}
-
+	
+	/**
+	 * This function is used by a student to swap index of a course with his/her peer
+	 * @param student - <Student> student who's index is to be swapped with his/her peer
+	 * @param CourseCode - refers to the COurse Code
+	 * @param MatricNumber - refers to the Matriculation Number of peer
+	 * @return
+	 */
 	public static int swopIndexWithPeer(Student student, String CourseCode, String MatricNumber) {
 		List<Index> indexes = student.getIndexes();
 
@@ -119,7 +137,11 @@ public class StudentCourseManager implements Serializable {
 			}
 		return result;
 	}
-
+	
+	/**
+	 * This function is used to write student object to the database
+	 * @param student - <Student> student who's details are written to file
+	 */
 	public static void writeStudentToFile(Student student) {
 		List<Object> objectList = FileManager.readObjectFromFile("student.dat");
 		List<Object> students = new ArrayList<Object>();
@@ -132,7 +154,12 @@ public class StudentCourseManager implements Serializable {
 		FileManager.writeObjectToFile("student.dat", students);
 
 	}
-
+	
+	/**
+	 * This function is used to retrieve all students registered in a course
+	 * @param CourseCode - refers to the CourseCode
+	 * @return
+	 */
 	public static List<Student> getStudentsInCourse(String CourseCode) {
 		List<Student> studentsEnrolled = new ArrayList<Student>();
 
@@ -152,7 +179,12 @@ public class StudentCourseManager implements Serializable {
 
 		return studentsEnrolled;
 	}
-
+	
+	/**
+	 * This function is used to get all students registered in an Index
+	 * @param IndexCode - refers to the Index Code
+	 * @return
+	 */
 	public static List<Student> getStudentsInIndex(String IndexCode) {
 		List<Student> studentsEnrolled = new ArrayList<Student>();
 

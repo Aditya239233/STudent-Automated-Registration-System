@@ -8,7 +8,11 @@ import model.Session;
 
 public class IndexManager {
 	public static List<Index> IndexList = new ArrayList<Index>();
-
+	
+	/**
+	 * This function is used to initialize the IndexList
+	 * @param CourseList - list of all courses 
+	 */
 	public static void init(List<Course> CourseList) {
 		List<Index> currentList;
 		for (Course course : CourseList) {
@@ -16,18 +20,26 @@ public class IndexManager {
 			IndexList.addAll(currentList);
 		}
 	}
-
+	
+	/**
+	 * This function is used to print all the Index IDs
+	 */
 	public static void printIndexIDs() {
 		int length = IndexList.size();
 		for (int i = 0; i < length; i++) {
 			System.out.println(i + ") " + IndexList.get(i).getID());
 		}
 	}
-
-	public static List<Index> getIndexList() {
-		return IndexList;
-	}
-
+	
+	/**
+	 * This function is used to add a new index to a course
+	 * @param ID - refers to the Index ID
+	 * @param course - <Course> course for which the index is added
+	 * @param totalVacancies - total vacancies in Index
+	 * @param tutorials - <Session> of tuttorial
+	 * @param labs - <Session> of lab
+	 * @return
+	 */
 	public static Index addIndex(String ID, Course course, int totalVacancies, List<Session> tutorials,
 			List<Session> labs) { // check hasTutorial and hasLab in AdminUI => pass null is has__ = false
 		if (IndexList.size() == 0) {
@@ -47,7 +59,16 @@ public class IndexManager {
 		System.out.println("Succesfully added Index");
 		return newIndex;
 	}
-
+	
+	/**
+	 * This function is used to add a new index to a course
+	 * @param indexID - refers to the Index ID
+	 * @param course - <Course> course for which the index is added
+	 * @param totalVacancies - total vacancies in Index
+	 * @param tutorials - <Session> of tuttorial
+	 * @param labs - <Session> of lab
+	 * @return
+	 */
 	public static Index updateIndex(String indexID, Course course, int totalVacancies, List<Session> tutorials,
 			List<Session> labs) {
 		if (checkIfIndexExists(indexID)) {
@@ -80,7 +101,12 @@ public class IndexManager {
 			System.out.println("Index Does not Exist");
 		}
 	}
-
+	
+	/**
+	 * This function is used to find and return a <Index> index
+	 * @param indexID - refers to the Index Code
+	 * @return
+	 */
 	public static Index findIndex(String indexID) {
 		// finds Index with specific ID in IndexList
 		Index reqIndex = null;
@@ -92,8 +118,21 @@ public class IndexManager {
 		}
 		return reqIndex;
 	}
-
+	
+	/**
+	 * This function is used to check if an Index exists
+	 * @param indexID - refers to the Index Code
+	 * @return
+	 */
 	public static boolean checkIfIndexExists(String indexID) {
 		return IndexList.stream().anyMatch(index -> indexID.equals(index.getID()));
+	}
+	
+	/**
+	 * Getter function for IndexList
+	 * @return
+	 */
+	public static List<Index> getIndexList() {
+		return IndexList;
 	}
 }

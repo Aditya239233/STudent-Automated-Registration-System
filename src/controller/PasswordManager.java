@@ -6,11 +6,13 @@ import java.io.Serializable;
 
 public class PasswordManager implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * This function is used to hash a given password and return it
+	 * @param password - refers to the password that is to be hashed
+	 * @return
+	 */
 	public static String hashPassword(String password) {
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-1");
