@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class StudentManager {
 	private static List<Student> StudentList = new ArrayList<Student>();
-	
+
 	/**
 	 * This function is used to initialize the StudentList from database
 	 */
@@ -17,16 +17,18 @@ public class StudentManager {
 		for (Object o : objects)
 			StudentList.add((Student) o);
 	}
-	
+
 	/**
-	 * This function is used to add a new Student to the database. The logic flow happens in this function
-	 * @param Name - Name of the Student
+	 * This function is used to add a new Student to the database. The logic flow
+	 * happens in this function
+	 * 
+	 * @param Name     - Name of the Student
 	 * @param Password - Password of the Student
-	 * @param Email - Email ID of the Student
-	 * @param dob - Date of birth of the Student
+	 * @param Email    - Email ID of the Student
+	 * @param dob      - Date of birth of the Student
 	 * @param MatricNo - Matriculation Number of the Student
 	 * @param SchoolID - School the student studies in
-	 * @param Degree - refers to his/her Major
+	 * @param Degree   - refers to his/her Major
 	 * @return
 	 */
 	public static boolean addStudent(String Name, String Password, String Email, Calendar dob, String MatricNo,
@@ -51,9 +53,11 @@ public class StudentManager {
 		FileManager.addObjectToFile(newStudent);
 		return true;
 	}
-	
+
 	/**
-	 * This function is used to delete a Student from the database. The logic flow happens in this function
+	 * This function is used to delete a Student from the database. The logic flow
+	 * happens in this function
+	 * 
 	 * @param MatricNo - refers to the matriculation number of a Student
 	 */
 	public void deleteStudent(String MatricNo) {
@@ -73,21 +77,23 @@ public class StudentManager {
 			System.out.println("Student Does not Exist");
 		}
 	}
-	
+
 	/**
-	 * This function is used to check whether a student exists in the database 
+	 * This function is used to check whether a student exists in the database
+	 * 
 	 * @param MatricNo - refers to the matriculation number of student
 	 * @return
 	 */
 	public static boolean checkIfStudentExists(String MatricNo) {
 		return StudentList.stream().anyMatch(Student -> MatricNo.equals(Student.getMatricNo()));
 	}
-	
+
 	/**
 	 * This function is used to print all the Students Information
 	 */
 	public static void printStudentInfo() {
-		for (Student student: StudentList)
-			System.out.println("Name: "+student.getName()+" Matric Number: "+student.getMatricNo() + " Degree:"+student.getDegree());
+		for (Student student : StudentList)
+			System.out.println("Name: " + student.getName() + " Matric Number: " + student.getMatricNo() + " Degree:"
+					+ student.getDegree());
 	}
 }

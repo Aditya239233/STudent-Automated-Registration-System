@@ -17,14 +17,13 @@ public class Main {
 
 	private static int user;
 	private static Student student;
-	private static PasswordManager pm = new PasswordManager();
-	// private static Console console = System.console();
 	static Scanner sc = new Scanner(System.in);
-	
+
 	/**
-     * Main function. Program execution begins from here
-     * @param args
-     */
+	 * Main function. Program execution begins from here
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 
 		if (CourseManager.getCourseList() == null) {
@@ -36,7 +35,7 @@ public class Main {
 			System.out.println("2. Admin");
 			System.out.println("3. Exit");
 			try {
-			user = sc.nextInt();
+				user = sc.nextInt();
 			} catch (InputMismatchException e) {
 				System.out.println("\nInvalid Input");
 				main(null);
@@ -72,9 +71,10 @@ public class Main {
 
 		}
 	}
+
 	/**
-     * This function is used to display the Welcome Message
-     */
+	 * This function is used to display the Welcome Message
+	 */
 	private static void displayWelcome() {
 		System.out.println("#########################################################################");
 		System.out.println("#\t\t___  ___      _____ _____ ___  ______  _____ \t\t#");
@@ -88,19 +88,25 @@ public class Main {
 		System.out.println("#\t    Welcome to My STudent Automated Registration System    \t#");
 		System.out.println("#########################################################################");
 	}
-	
+
 	/**
-     * This function is used by the Student to Login 
-     */
+	 * This function is used by the Student to Login
+	 */
 	public static Boolean studentLogin() {
 		if (checkAccessPeriod()) {
+			Console cnsl = System.console();
+			StringBuilder sb = new StringBuilder();
 			System.out.print("Enter your Matric Number: ");
 			String matricNumber = sc.next();
 
 			// Mask Password
 			System.out.println("Enter your password: ");
-			String password = sc.next();
-			password = pm.hashPassword(password);
+			char[] pwd = cnsl.readPassword("Password: ");
+			for (Character ch : pwd) {
+				sb.append(ch);
+			}
+			String password = sb.toString();
+			password = PasswordManager.hashPassword(password);
 			List<Object> records = FileManager.readObjectFromFile("student.dat");
 			List<Student> students = new ArrayList<Student>();
 			for (Object o : records)
@@ -120,10 +126,10 @@ public class Main {
 		}
 
 	}
-	
+
 	/**
-     * This function is used by the Admin to Login 
-     */
+	 * This function is used by the Admin to Login
+	 */
 	public static Boolean adminLogin() {
 		Console cnsl = System.console();
 		StringBuilder sb = new StringBuilder();
@@ -133,8 +139,8 @@ public class Main {
 		// Mask Password
 		System.out.println("Enter your password: ");
 		char[] pwd = cnsl.readPassword("Password: ");
-		for (Character ch : pwd) { 
-            sb.append(ch); 
+		for (Character ch : pwd) {
+			sb.append(ch);
 		}
 		String password = sb.toString();
 		String hashedPassword = PasswordManager.hashPassword(password);
@@ -149,6 +155,8 @@ public class Main {
 						CourseManager.init();
 						IndexManager.init(CourseManager.getCourseList());
 						StudentManager.init();
+						if (CourseManager.getCourseList() == null)
+							CourseManager.setCourseList(new ArrayList<Course>());
 					} catch (Exception e) {
 						System.out.println(e);
 					}
@@ -157,10 +165,11 @@ public class Main {
 			}
 		return false;
 	}
-	
+
 	/**
-     * This function is used to check whether the Date and Time is within the Access Period for Student 
-     */
+	 * This function is used to check whether the Date and Time is within the Access
+	 * Period for Student
+	 */
 	public static Boolean checkAccessPeriod() {
 		Boolean canLogin = false;
 		List<Object> objects = FileManager.readObjectFromFile("accessPeriod.dat");

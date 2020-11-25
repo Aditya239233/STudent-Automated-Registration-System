@@ -8,10 +8,11 @@ import model.Session;
 
 public class IndexManager {
 	public static List<Index> IndexList = new ArrayList<Index>();
-	
+
 	/**
 	 * This function is used to initialize the IndexList
-	 * @param CourseList - list of all courses 
+	 * 
+	 * @param CourseList - list of all courses
 	 */
 	public static void init(List<Course> CourseList) {
 		List<Index> currentList;
@@ -20,7 +21,7 @@ public class IndexManager {
 			IndexList.addAll(currentList);
 		}
 	}
-	
+
 	/**
 	 * This function is used to print all the Index IDs
 	 */
@@ -30,14 +31,15 @@ public class IndexManager {
 			System.out.println(i + ") " + IndexList.get(i).getID());
 		}
 	}
-	
+
 	/**
 	 * This function is used to add a new index to a course
-	 * @param ID - refers to the Index ID
-	 * @param course - <Course> course for which the index is added
+	 * 
+	 * @param ID             - refers to the Index ID
+	 * @param course         - <Course> course for which the index is added
 	 * @param totalVacancies - total vacancies in Index
-	 * @param tutorials - <Session> of tuttorial
-	 * @param labs - <Session> of lab
+	 * @param tutorials      - <Session> of tuttorial
+	 * @param labs           - <Session> of lab
 	 * @return
 	 */
 	public static Index addIndex(String ID, Course course, int totalVacancies, List<Session> tutorials,
@@ -57,14 +59,15 @@ public class IndexManager {
 		IndexList.add(newIndex);
 		return newIndex;
 	}
-	
+
 	/**
 	 * This function is used to add a new index to a course
-	 * @param indexID - refers to the Index ID
-	 * @param course - <Course> course for which the index is added
+	 * 
+	 * @param indexID        - refers to the Index ID
+	 * @param course         - <Course> course for which the index is added
 	 * @param totalVacancies - total vacancies in Index
-	 * @param tutorials - <Session> of tutorial
-	 * @param labs - <Session> of lab
+	 * @param tutorials      - <Session> of tutorial
+	 * @param labs           - <Session> of lab
 	 * @return
 	 */
 	public static Index updateIndex(String indexID, Course course, int totalVacancies, List<Session> tutorials,
@@ -99,9 +102,10 @@ public class IndexManager {
 			System.out.println("Index Does not Exist");
 		}
 	}
-	
+
 	/**
 	 * This function is used to find and return a <Index> index
+	 * 
 	 * @param indexID - refers to the Index Code
 	 * @return
 	 */
@@ -116,18 +120,20 @@ public class IndexManager {
 		}
 		return reqIndex;
 	}
-	
+
 	/**
 	 * This function is used to check if an Index exists
+	 * 
 	 * @param indexID - refers to the Index Code
 	 * @return
 	 */
 	public static boolean checkIfIndexExists(String indexID) {
 		return IndexList.stream().anyMatch(index -> indexID.equals(index.getID()));
 	}
-	
+
 	/**
 	 * Getter function for IndexList
+	 * 
 	 * @return
 	 */
 	public static List<Index> getIndexList() {

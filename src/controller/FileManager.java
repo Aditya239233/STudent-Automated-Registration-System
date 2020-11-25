@@ -8,9 +8,10 @@ import java.io.*;
 import java.util.*;
 
 public class FileManager {
-	
+
 	/**
 	 * This function is used to get the FilePath based on Object type
+	 * 
 	 * @param object - is the Object that is to be stored
 	 * @return
 	 */
@@ -25,9 +26,10 @@ public class FileManager {
 			return "accessPeriod.dat";
 		return "Error";
 	}
-	
+
 	/**
 	 * This function is used to read the object from a file
+	 * 
 	 * @param filename - Name of the file that is to be read
 	 * @return
 	 */
@@ -48,11 +50,12 @@ public class FileManager {
 
 		return objects;
 	}
-	
+
 	/**
 	 * This function is used to write an Object to file
+	 * 
 	 * @param filename - Name of the file that is to be written
-	 * @param object - <Object> that is to be stored
+	 * @param object   - <Object> that is to be stored
 	 */
 	public static void writeObjectToFile(String filename, List<Object> object) {
 		FileOutputStream fos = null;
@@ -66,9 +69,10 @@ public class FileManager {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * This function is used to append an Object to a file
+	 * 
 	 * @param object - <Object> that is to be added
 	 */
 	public static void addObjectToFile(Object object) {
@@ -87,11 +91,12 @@ public class FileManager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * This function is used to write an Course Object to file
+	 * 
 	 * @param filename - Name of the file that is to be written
-	 * @param object - <Course> that is to be stored
+	 * @param object   - <Course> that is to be stored
 	 */
 	public static void writeCourseToFile(String filename, List<Course> object) {
 		FileOutputStream fos = null;
@@ -105,9 +110,10 @@ public class FileManager {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * This function is used to read the Course Object from a file
+	 * 
 	 * @param filename - Name of the file that is to be read
 	 * @return
 	 */

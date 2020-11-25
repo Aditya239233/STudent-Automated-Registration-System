@@ -21,10 +21,10 @@ public class AdminUI implements UserUI {
 
 	private int choice;
 	Scanner sc = new Scanner(System.in);
-	
+
 	/**
-     * This function is used to perform all Admin actions
-     */
+	 * This function is used to perform all Admin actions
+	 */
 	public void display() {
 		do {
 			System.out.println("\n#########################################################################");
@@ -47,7 +47,7 @@ public class AdminUI implements UserUI {
 				System.out.println("Please enter valid option:");
 			}
 			try {
-			choice = sc.nextInt();
+				choice = sc.nextInt();
 			} catch (InputMismatchException e) {
 				System.out.println("\nInvalid Input");
 				System.out.println("Do you want to Try again? (y/n)");
@@ -99,10 +99,10 @@ public class AdminUI implements UserUI {
 
 		} while (choice != 12);
 	}
-	
+
 	/**
-     * This function is used by the admin to edit the student's Access Period
-     */
+	 * This function is used by the admin to edit the student's Access Period
+	 */
 	public void editStudentAccessPeriod() {
 		List<Object> objects = FileManager.readObjectFromFile("accessPeriod.dat");
 		List<Calendar> accessPeriod = new ArrayList<Calendar>();
@@ -153,10 +153,10 @@ public class AdminUI implements UserUI {
 			System.out.println("Access Period remains the same");
 		}
 	}
-	
+
 	/**
-     * This function is used by the admin to add a new Student
-     */
+	 * This function is used by the admin to add a new Student
+	 */
 	public void addStudent() {
 		System.out.println("Enter the following details to add a new student to the system:");
 		char loop = 'y';
@@ -168,30 +168,23 @@ public class AdminUI implements UserUI {
 			System.out.println("Student account email: ");
 			String email = sc.next();
 			while (!email.contains("@")) {
-				System.out
-						.println("Invalid email address.");
+				System.out.println("Invalid email address.");
 				System.out.println("Please enter the email ID again: ");
 				email = sc.next();
 			}
 			System.out.println("Student's date of birth (DD-MM-YYYY format):");
-			String date = sc.next();
-			String[] arrOfStr = date.split("-", 3);
-
+			String date;
+			String[] arrOfStr;
 			date = sc.next();
 			arrOfStr = date.split("-", 3);
-			
 			int dd = 0, mm = 0, yy = 0;
 			try {
-			dd = Integer.parseInt(arrOfStr[0]);
-			mm = Integer.parseInt(arrOfStr[1]);
-			yy = Integer.parseInt(arrOfStr[2]);
-			} catch(Exception e) {
-				System.out.println("Invalid Input");
-				System.out.println("Do you want to Try again? (y/n)");
-				char trial = sc.next().toLowerCase().charAt(0);
-				if (trial == 'y')
-					addStudent();
-				return;
+				dd = Integer.parseInt(arrOfStr[0]);
+				mm = Integer.parseInt(arrOfStr[1]);
+				yy = Integer.parseInt(arrOfStr[2]);
+			} catch (Exception e) {
+				System.out.println("Invalid Input!");
+
 			}
 			Calendar c = Calendar.getInstance();
 			c.set(yy, mm, dd);
@@ -218,17 +211,17 @@ public class AdminUI implements UserUI {
 			}
 		}
 	}
-	
+
 	/**
-     * This function is used by the admin to add a new Course
-     */
+	 * This function is used by the admin to add a new Course
+	 */
 	public void addCourse() {
 		char loop = 'y';
 		while (loop == 'y') {
 			System.out.println("Adding a new course... ");
 			System.out.println("What is the course id? e.g. CZ2002");
 			String courseID = sc.next();
-			
+
 			if (CourseManager.checkIfCourseExists(courseID)) {
 				System.out.println("Course Already Exists!");
 				while (true) {
@@ -248,8 +241,8 @@ public class AdminUI implements UserUI {
 			System.out.println("How many Academic Units (AU) does the course have? eg. 3");
 			int au;
 			try {
-			au = sc.nextInt();
-			} catch(InputMismatchException e) {
+				au = sc.nextInt();
+			} catch (InputMismatchException e) {
 				System.out.println("Invalid Input");
 				System.out.println("Do you want to Try again? (y/n)");
 				char trial = sc.next().toLowerCase().charAt(0);
@@ -276,7 +269,7 @@ public class AdminUI implements UserUI {
 				Session lecture = addSession(i);
 				lectures.add(lecture);
 			}
-			
+
 			System.out.println();
 			CourseManager.addCourse(courseID, courseName, faculty, au, null, lectures, hasTutorial, hasLab);
 			CourseManager.printCourseInfo();
@@ -284,10 +277,10 @@ public class AdminUI implements UserUI {
 			loop = 'n';
 		}
 	}
-	
+
 	/**
-     * This function is used by the admin to update an existing Course
-     */
+	 * This function is used by the admin to update an existing Course
+	 */
 	public void updateCourse() {
 		char loop = 'y';
 		while (loop == 'y') {
@@ -313,8 +306,8 @@ public class AdminUI implements UserUI {
 			System.out.println("How many Academic Units (AU) does the course have? eg. 3");
 			int au;
 			try {
-			au = sc.nextInt();
-			} catch(InputMismatchException e) {
+				au = sc.nextInt();
+			} catch (InputMismatchException e) {
 				System.out.println("Invalid Input");
 				System.out.println("Do you want to Try again? (y/n)");
 				char trial = sc.next().toLowerCase().charAt(0);
@@ -335,17 +328,17 @@ public class AdminUI implements UserUI {
 				Session lecture = addSession(i);
 				lectures.add(lecture);
 			}
-			
+
 			System.out.println();
 			CourseManager.updateCourse(courseID, courseName, faculty, au, null, lectures, hasTutorial, hasLab);
 			System.out.println("Succesfully updated Course!");
 			loop = 'n';
 		}
 	}
-	
+
 	/**
-     * This function is used by the admin to delete an existing Course
-     */
+	 * This function is used by the admin to delete an existing Course
+	 */
 	public void deleteCourse() {
 		char loop = 'y';
 		while (loop == 'y') {
@@ -368,10 +361,10 @@ public class AdminUI implements UserUI {
 			}
 		}
 	}
-	
+
 	/**
-     * This function is used by the admin to add a new Index to a Course
-     */
+	 * This function is used by the admin to add a new Index to a Course
+	 */
 	public void addIndex() {
 		CourseManager.printCourseIDs();
 		Course course = null;
@@ -388,8 +381,8 @@ public class AdminUI implements UserUI {
 					System.out.println("How many total vacancies does the index have? eg. 50");
 					int totalVacancies;
 					try {
-					totalVacancies = sc.nextInt();
-					} catch(InputMismatchException e) {
+						totalVacancies = sc.nextInt();
+					} catch (InputMismatchException e) {
 						System.out.println("Invalid Input");
 						System.out.println("Do you want to Try again? (y/n)");
 						char trial = sc.next().toLowerCase().charAt(0);
@@ -402,8 +395,8 @@ public class AdminUI implements UserUI {
 						System.out.println("How many tutorial sessions does the course have per week? eg. 1");
 						int numLectures;
 						try {
-						numLectures= sc.nextInt();
-						} catch(InputMismatchException e) {
+							numLectures = sc.nextInt();
+						} catch (InputMismatchException e) {
 							System.out.println("Invalid Input");
 							System.out.println("Do you want to Try again? (y/n)");
 							char trial = sc.next().toLowerCase().charAt(0);
@@ -422,8 +415,8 @@ public class AdminUI implements UserUI {
 						System.out.println("How many lab sessions does the course have per week? eg. 1");
 						int numLectures;
 						try {
-						numLectures= sc.nextInt();
-						} catch(InputMismatchException e) {
+							numLectures = sc.nextInt();
+						} catch (InputMismatchException e) {
 							System.out.println("Invalid Input");
 							System.out.println("Do you want to Try again? (y/n)");
 							char trial = sc.next().toLowerCase().charAt(0);
@@ -463,10 +456,10 @@ public class AdminUI implements UserUI {
 			}
 		}
 	}
-	
+
 	/**
-     * This function is used by the admin to update an existing Index in a Course
-     */
+	 * This function is used by the admin to update an existing Index in a Course
+	 */
 	public void updateIndex() {
 		char loop = 'y';
 		while (loop == 'y') {
@@ -485,8 +478,8 @@ public class AdminUI implements UserUI {
 					System.out.println("How many total vacancies does the index have? eg. 50");
 					int totalVacancies;
 					try {
-					totalVacancies = sc.nextInt();
-					} catch(InputMismatchException e) {
+						totalVacancies = sc.nextInt();
+					} catch (InputMismatchException e) {
 						System.out.println("Invalid Input");
 						System.out.println("Do you want to Try again? (y/n)");
 						char trial = sc.next().toLowerCase().charAt(0);
@@ -499,8 +492,8 @@ public class AdminUI implements UserUI {
 						System.out.println("How many tutorial sessions does the course have per week? eg. 1");
 						int numLectures;
 						try {
-						numLectures= sc.nextInt();
-						} catch(InputMismatchException e) {
+							numLectures = sc.nextInt();
+						} catch (InputMismatchException e) {
 							System.out.println("Invalid Input");
 							System.out.println("Do you want to Try again? (y/n)");
 							char trial = sc.next().toLowerCase().charAt(0);
@@ -519,8 +512,8 @@ public class AdminUI implements UserUI {
 						System.out.println("How many lab sessions does the course have per week? eg. 1");
 						int numLectures;
 						try {
-						numLectures= sc.nextInt();
-						} catch(InputMismatchException e) {
+							numLectures = sc.nextInt();
+						} catch (InputMismatchException e) {
 							System.out.println("Invalid Input");
 							System.out.println("Do you want to Try again? (y/n)");
 							char trial = sc.next().toLowerCase().charAt(0);
@@ -558,10 +551,10 @@ public class AdminUI implements UserUI {
 			}
 		}
 	}
-	
+
 	/**
-     * This function is used by the admin to delete an Index of a Course
-     */
+	 * This function is used by the admin to delete an Index of a Course
+	 */
 	public void deleteIndex() {
 		char loop = 'y';
 		while (loop == 'y') {
@@ -592,8 +585,8 @@ public class AdminUI implements UserUI {
 		System.out.println("What day of the week is the session held? e.g. 4 = Thursday");
 		int DayOfWeek;
 		try {
-		DayOfWeek = sc.nextInt();
-		} catch(InputMismatchException e) {
+			DayOfWeek = sc.nextInt();
+		} catch (InputMismatchException e) {
 			System.out.println("Invalid Input");
 			System.out.println("Do you want to Try again? (y/n)");
 			char trial = sc.next().toLowerCase().charAt(0);
@@ -604,8 +597,8 @@ public class AdminUI implements UserUI {
 		System.out.println("Which hour is the session held? e.g. 13 = 1pm");
 		int hour;
 		try {
-		hour = sc.nextInt();
-		} catch(InputMismatchException e) {
+			hour = sc.nextInt();
+		} catch (InputMismatchException e) {
 			System.out.println("Invalid Input");
 			System.out.println("Do you want to Try again? (y/n)");
 			char trial = sc.next().toLowerCase().charAt(0);
@@ -614,11 +607,11 @@ public class AdminUI implements UserUI {
 			return null;
 		}
 		System.out.println("What minute is the session held? e.g. 30 = 1:30pm");
-		
+
 		int minute;
 		try {
-		minute = sc.nextInt();
-		} catch(InputMismatchException e) {
+			minute = sc.nextInt();
+		} catch (InputMismatchException e) {
 			System.out.println("Invalid Input");
 			System.out.println("Do you want to Try again? (y/n)");
 			char trial = sc.next().toLowerCase().charAt(0);
@@ -630,7 +623,7 @@ public class AdminUI implements UserUI {
 		int duration;
 		try {
 			duration = sc.nextInt();
-		} catch(InputMismatchException e) {
+		} catch (InputMismatchException e) {
 			System.out.println("Invalid Input");
 			System.out.println("Do you want to Try again? (y/n)");
 			char trial = sc.next().toLowerCase().charAt(0);
@@ -648,10 +641,10 @@ public class AdminUI implements UserUI {
 		Session session = new Session(ID, DayOfWeek, startTime, endTime, location, teacher);
 		return session;
 	}
-	
+
 	/**
-     * This function is used by the admin to check the vacancy in a Index
-     */
+	 * This function is used by the admin to check the vacancy in a Index
+	 */
 	public void checkVacancyInIndexSlot() {
 		char loop = 'y';
 		while (loop == 'y') {
@@ -675,10 +668,11 @@ public class AdminUI implements UserUI {
 			}
 		}
 	}
-	
+
 	/**
-     * This function is used by the admin to print all the Students enrolled in an Index
-     */
+	 * This function is used by the admin to print all the Students enrolled in an
+	 * Index
+	 */
 	public void printStudentListByIndex() {
 		char loop = 'y';
 		while (loop == 'y') {
@@ -690,9 +684,10 @@ public class AdminUI implements UserUI {
 					System.out.println("There are 0 students enrolled in the index " + IndexCode);
 				else {
 					if (studentsEnrolled.size() > 0) {
-					for (Student student : studentsEnrolled) {
-						System.out.println("Student Name: " + student.getName() + " ,Matric Number: " + student.getMatricNo());
-					}
+						for (Student student : studentsEnrolled) {
+							System.out.println(
+									"Student Name: " + student.getName() + " ,Matric Number: " + student.getMatricNo());
+						}
 					}
 				}
 				loop = 'n';
@@ -709,10 +704,11 @@ public class AdminUI implements UserUI {
 		}
 		System.out.println();
 	}
-	
+
 	/**
-     * This function is used by the admin to print all the Students enrolled in a Course
-     */
+	 * This function is used by the admin to print all the Students enrolled in a
+	 * Course
+	 */
 	public void printStudentListByCourse() {
 		char loop = 'y';
 		while (loop == 'y') {
@@ -725,7 +721,8 @@ public class AdminUI implements UserUI {
 					System.out.println("There are no students enrolled in the Course " + CourseCode);
 				else {
 					for (Student student : studentsEnrolled) {
-						System.out.println("\nStudent Name: " + student.getName() + " ,Matric Number: " + student.getMatricNo());
+						System.out.println(
+								"\nStudent Name: " + student.getName() + " ,Matric Number: " + student.getMatricNo());
 					}
 				}
 				loop = 'n';

@@ -13,11 +13,12 @@ import model.Student;
 import model.Index;
 
 public class SendEmail implements Notification {
-	
+
 	/**
 	 * This function is used to send a message through Email
+	 * 
 	 * @param student - refers to the student to whom the email is sent
-	 * @param index - refers to the Index that the student is added to
+	 * @param index   - refers to the Index that the student is added to
 	 */
 	public static void sendMessage(Student student, Index index) {
 		final String username = "donotreplyblackboard5@gmail.com";
@@ -49,6 +50,6 @@ public class SendEmail implements Notification {
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
-		
+
 	}
 }

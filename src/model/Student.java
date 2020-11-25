@@ -10,7 +10,6 @@ import controller.StudentCourseManager;
 
 public class Student extends User implements Serializable {
 
-
 	private static final long serialVersionUID = 1L;
 	private String MatricNo;
 	private String SchoolID;
@@ -19,16 +18,17 @@ public class Student extends User implements Serializable {
 	private NotificationMode nm;
 	private int AU;
 	private final int maxAU = 22;
-	
+
 	/**
 	 * Parametrized Constructor for Student
-	 * @param Name - Determines the Name of the Student
-     * @param Password - Determines the hashed password of the Student
-     * @param Email - Determines the Email ID of the Student
-     * @param dob - Determines the Date of Birth of the Student
+	 * 
+	 * @param Name     - Determines the Name of the Student
+	 * @param Password - Determines the hashed password of the Student
+	 * @param Email    - Determines the Email ID of the Student
+	 * @param dob      - Determines the Date of Birth of the Student
 	 * @param MatricNo - Determines the Matriculation Number of Student
 	 * @param SchoolID - Determines the SchoolID of the Student
-	 * @param Degree - Determines the Degree of the Student
+	 * @param Degree   - Determines the Degree of the Student
 	 */
 	public Student(String Name, String Password, String Email, Calendar dob, String MatricNo, String SchoolID,
 			String Degree) {
@@ -38,13 +38,14 @@ public class Student extends User implements Serializable {
 		this.Degree = Degree;
 		this.nm = NotificationMode.EMAIL;
 		this.AU = 0;
-		
+
 	}
-	
+
 	/**
 	 * This function is by the student to register to a course
+	 * 
 	 * @param index - indicates the <Index> the student wants to be enrolled in
-	 * @return 
+	 * @return
 	 */
 	public int addCourse(Index index) {
 		if (index.getTotalVacancies() - index.getNumStudentsEnrolled() < 1) {
@@ -74,8 +75,10 @@ public class Student extends User implements Serializable {
 			return 0;
 		}
 	}
+
 	/**
 	 * This function is by the student to de-register to a course
+	 * 
 	 * @param ID - indicates the Course Code
 	 * @return
 	 */
@@ -94,9 +97,10 @@ public class Student extends User implements Serializable {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * This function is used to handle the waitlist
+	 * 
 	 * @param index - indicates the <Index> index
 	 * @return
 	 */
@@ -125,9 +129,10 @@ public class Student extends User implements Serializable {
 		FileManager.writeObjectToFile("student.dat", object);
 		return result;
 	}
-	
+
 	/**
 	 * This function is used to check for a timetable clash
+	 * 
 	 * @param index - is the index that is going to be added in the timetable
 	 * @return
 	 */
@@ -140,7 +145,7 @@ public class Student extends User implements Serializable {
 			if (index.getID().equals(i.getID()))
 				continue;
 			Course c = i.getCourse();
-			
+
 			// Lecture Clash
 			for (Session lecture : c.getLecture()) {
 				for (Session newLecture : newCourse.getLecture()) {
@@ -167,58 +172,59 @@ public class Student extends User implements Serializable {
 			}
 			// Tutorial Clash
 			if (i.getCourse().getHasTutorial()) {
-			for (Session tutorial : i.getTutorial()) {
-				for (Session newLecture : newCourse.getLecture()) {
-					isClash = checkClash(newLecture, tutorial);
-					if (isClash)
-						return isClash;
-				}
-				if (index.getCourse().getHasTutorial()) {
-					for (Session newTutorial : index.getTutorial()) {
-						isClash = checkClash(newTutorial, tutorial);
+				for (Session tutorial : i.getTutorial()) {
+					for (Session newLecture : newCourse.getLecture()) {
+						isClash = checkClash(newLecture, tutorial);
 						if (isClash)
 							return isClash;
 					}
-				}
-				if (index.getCourse().getHasLab()) {
-					for (Session newLab : index.getLab()) {
-						isClash = checkClash(newLab, tutorial);
-						if (isClash)
-							return isClash;
+					if (index.getCourse().getHasTutorial()) {
+						for (Session newTutorial : index.getTutorial()) {
+							isClash = checkClash(newTutorial, tutorial);
+							if (isClash)
+								return isClash;
+						}
+					}
+					if (index.getCourse().getHasLab()) {
+						for (Session newLab : index.getLab()) {
+							isClash = checkClash(newLab, tutorial);
+							if (isClash)
+								return isClash;
+						}
 					}
 				}
-			}
 			}
 			// Lab Clash
 			if (i.getCourse().getHasLab()) {
-			for (Session lab : i.getLab()) {
-				for (Session newLecture : newCourse.getLecture()) {
-					isClash = checkClash(newLecture, lab);
-					if (isClash)
-						return isClash;
-				}
-				if (index.getCourse().getHasTutorial()) {
-					for (Session newTutorial : index.getTutorial()) {
-						isClash = checkClash(newTutorial, lab);
+				for (Session lab : i.getLab()) {
+					for (Session newLecture : newCourse.getLecture()) {
+						isClash = checkClash(newLecture, lab);
 						if (isClash)
 							return isClash;
 					}
-				}
-				if (index.getCourse().getHasLab()) {
-					for (Session newLab : index.getLab()) {
-						isClash = checkClash(newLab, lab);
-						if (isClash)
-							return isClash;
+					if (index.getCourse().getHasTutorial()) {
+						for (Session newTutorial : index.getTutorial()) {
+							isClash = checkClash(newTutorial, lab);
+							if (isClash)
+								return isClash;
+						}
+					}
+					if (index.getCourse().getHasLab()) {
+						for (Session newLab : index.getLab()) {
+							isClash = checkClash(newLab, lab);
+							if (isClash)
+								return isClash;
+						}
 					}
 				}
 			}
 		}
-		}
 		return isClash;
 	}
-	
+
 	/**
 	 * This function is to check a time clash between 2 <Session> sessions
+	 * 
 	 * @param s1 - First Session
 	 * @param s2 - Second Session
 	 * @return
@@ -238,7 +244,7 @@ public class Student extends User implements Serializable {
 		}
 		return isClash;
 	}
-	
+
 	/**
 	 * This function is used to print all the Courses Registered by the Student
 	 */
@@ -257,9 +263,11 @@ public class Student extends User implements Serializable {
 			System.out.println("\n#########################################################################");
 		}
 	}
-	
+
 	/**
-	 * This function is used to check whether a course is already registered by a student
+	 * This function is used to check whether a course is already registered by a
+	 * student
+	 * 
 	 * @param index - referes the to Index Code
 	 * @return
 	 */
@@ -271,11 +279,12 @@ public class Student extends User implements Serializable {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * This function is used to swap Index with a Peer
+	 * 
 	 * @param s1_index - This is the current Student's Index Code
-	 * @param s2 - Refers to the Peer <Student>
+	 * @param s2       - Refers to the Peer <Student>
 	 * @param s2_index - This is the Peer's Index Code
 	 * @return
 	 */
@@ -331,28 +340,48 @@ public class Student extends User implements Serializable {
 			return false;
 
 	}
-	
+
 	/**
 	 * Getter and Setter functions
 	 */
-	public void setNotificationMode(NotificationMode nm) { this.nm = nm; }
+	public void setNotificationMode(NotificationMode nm) {
+		this.nm = nm;
+	}
 
-	public NotificationMode getNotificationMode() { return this.nm; }
+	public NotificationMode getNotificationMode() {
+		return this.nm;
+	}
 
-	public void setDegree(String Degree) { this.Degree = Degree; }
+	public void setDegree(String Degree) {
+		this.Degree = Degree;
+	}
 
-	public List<Index> getIndexes() { return this.indexes; }
+	public List<Index> getIndexes() {
+		return this.indexes;
+	}
 
-	public String getDegree() { return this.Degree; }
+	public String getDegree() {
+		return this.Degree;
+	}
 
-	public void setSchoolID(String SchoolID) { this.SchoolID = SchoolID; }
+	public void setSchoolID(String SchoolID) {
+		this.SchoolID = SchoolID;
+	}
 
-	public String getSchoolID() { return this.SchoolID; }
+	public String getSchoolID() {
+		return this.SchoolID;
+	}
 
-	public String getMatricNo() { return this.MatricNo; }
-	
-	public int getAU() { return AU; }
+	public String getMatricNo() {
+		return this.MatricNo;
+	}
 
-	public void setAU(int aU) { AU = aU; }
+	public int getAU() {
+		return AU;
+	}
+
+	public void setAU(int aU) {
+		AU = aU;
+	}
 
 }
